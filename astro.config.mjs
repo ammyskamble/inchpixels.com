@@ -23,6 +23,21 @@ export default defineConfig({
   },
   integrations: [
     react(),
-    sitemap(),
+    sitemap({
+      filter: (page) => !page.includes('/404') && !page.includes('/500'),
+      i18n: {
+        defaultLocale: 'en',
+        locales: {
+          en: 'en',
+          es: 'es',
+          ja: 'ja',
+          fr: 'fr',
+          de: 'de',
+          pt: 'pt',
+          ko: 'ko',
+          it: 'it',
+        },
+      },
+    }),
   ],
 });
