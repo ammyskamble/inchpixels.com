@@ -1,0 +1,31 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ErrorPageContent from '../../components/ErrorPageContent.astro';
+import { languages, defaultLang, type SupportedLanguage } from '../../i18n/ui';
+import { useTranslations } from '../../i18n/utils';
+
+export function getStaticPaths() {
+  return Object.keys(languages)
+    .filter((l) => l !== defaultLang)
+    .map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: SupportedLanguage };
+const t = useTranslations(lang);
+---
+
+<Layout
+  lang={lang}
+  title={t('error.404.title')}
+  description={t('error.404.desc')}
+>
+  <Header />
+
+  <main class="flex-1 w-full flex items-center justify-center">
+    <ErrorPageContent errorCode={404} lang={lang} />
+  </main>
+
+  <Footer lang={lang} />
+</Layout>
