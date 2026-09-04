@@ -1,0 +1,132 @@
+---
+/**
+ * SubjectHubSection.astro
+ * Homepage showcase section attaching all dedicated subject pages to the main converter hub.
+ * Structured into Dimension Converters and Technical Prepress Guides with rich SEO cards.
+ */
+import { SUBJECTS } from '../data/subjects';
+import { useTranslatedPath } from '../i18n/utils';
+import type { SupportedLanguage } from '../i18n/ui';
+
+interface Props {
+  lang?: SupportedLanguage;
+}
+
+const { lang = 'en' } = Astro.props;
+const translatePath = useTranslatedPath(lang);
+
+const dimensionSubjects = SUBJECTS.filter((s) => s.category === 'dimension');
+const guideSubjects = SUBJECTS.filter((s) => s.category === 'guide');
+---
+
+<section id="subjects" class="w-full mt-20 scroll-mt-24 flex flex-col gap-10">
+  {/* Section Header */}
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+    <div>
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20 mb-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+        <span>SEO Topic Clusters</span>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+        Popular Conversion Subjects & Design Guides
+      </h2>
+      <p class="text-sm text-muted-foreground mt-1 max-w-2xl">
+        Explore dedicated standalone converters, resolution formulas, and prepress software tutorials calibrated for designers, developers, and printmakers.
+      </p>
+    </div>
+
+    <div class="flex items-center gap-2 text-xs font-mono text-muted-foreground bg-muted/40 px-3 py-1.5 rounded-xl border border-border/60 self-start md:self-auto">
+      <span>10 In-Depth Landing Pages</span>
+    </div>
+  </div>
+
+  {/* Subsection 1: Dimension Converters */}
+  <div class="flex flex-col gap-4">
+    <div class="flex items-center gap-2">
+      <span class="text-xs font-bold uppercase tracking-wider text-foreground">Dimension & Format Converters</span>
+      <span class="h-px bg-border/80 flex-1"></span>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {dimensionSubjects.map((subject) => (
+        <a
+          href={translatePath(`/${subject.slug}`)}
+          class="p-5 rounded-2xl bg-card border border-border/80 hover:border-primary/50 hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col justify-between gap-4 group"
+        >
+          <div class="flex flex-col gap-2">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-primary/10 text-primary">
+                {subject.badge}
+              </span>
+              <span class="font-mono text-[11px] text-muted-foreground">
+                {subject.initialCalc.dpi} DPI
+              </span>
+            </div>
+
+            <h3 class="text-base font-bold text-foreground group-hover:text-primary transition-colors m-0">
+              {subject.name}
+            </h3>
+
+            <p class="text-xs text-muted-foreground line-clamp-2 leading-relaxed m-0">
+              {subject.tagline}
+            </p>
+          </div>
+
+          <div class="pt-3 border-t border-border/50 flex items-center justify-between text-xs font-medium">
+            <span class="font-mono text-primary font-bold">
+              {subject.quickStats[0]?.value}
+            </span>
+            <span class="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all inline-flex items-center gap-1">
+              <span>Open tool</span>
+              <span>→</span>
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+
+  {/* Subsection 2: Technical Guides & Software Tutorials */}
+  <div class="flex flex-col gap-4 mt-4">
+    <div class="flex items-center gap-2">
+      <span class="text-xs font-bold uppercase tracking-wider text-foreground">Technical Guides & Prepress Tutorials</span>
+      <span class="h-px bg-border/80 flex-1"></span>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {guideSubjects.map((subject) => (
+        <a
+          href={translatePath(`/${subject.slug}`)}
+          class="p-5 rounded-2xl bg-card border border-border/80 hover:border-primary/50 hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col justify-between gap-4 group"
+        >
+          <div class="flex flex-col gap-2">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-cyan-glow/10 text-cyan-glow">
+                {subject.badge}
+              </span>
+              <span class="font-mono text-[11px] text-muted-foreground">Tutorial</span>
+            </div>
+
+            <h3 class="text-base font-bold text-foreground group-hover:text-primary transition-colors m-0">
+              {subject.name}
+            </h3>
+
+            <p class="text-xs text-muted-foreground line-clamp-2 leading-relaxed m-0">
+              {subject.tagline}
+            </p>
+          </div>
+
+          <div class="pt-3 border-t border-border/50 flex items-center justify-between text-xs font-medium">
+            <span class="font-mono text-muted-foreground text-[11px]">
+              {subject.quickStats[0]?.label}: <strong class="text-foreground">{subject.quickStats[0]?.value}</strong>
+            </span>
+            <span class="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all inline-flex items-center gap-1">
+              <span>Read guide</span>
+              <span>→</span>
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

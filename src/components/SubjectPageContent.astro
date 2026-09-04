@@ -1,0 +1,244 @@
+---
+/**
+ * SubjectPageContent.astro
+ * High-performance, rich SEO landing template for individual conversion subjects and guides.
+ * Pre-populates ConverterIsland, renders custom tables, formulas, tutorial steps, and FAQs.
+ */
+import ConverterIsland from './ConverterIsland';
+import type { SubjectItem } from '../data/subjects';
+import { SUBJECTS } from '../data/subjects';
+import { useTranslations, useTranslatedPath } from '../i18n/utils';
+import type { SupportedLanguage } from '../i18n/ui';
+
+interface Props {
+  subject: SubjectItem;
+  lang: SupportedLanguage;
+}
+
+const { subject, lang } = Astro.props;
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+
+const labels = {
+  inToPx: t('calc.mode.inToPx'),
+  pxToIn: t('calc.mode.pxToIn'),
+  width: t('calc.label.width'),
+  height: t('calc.label.height'),
+  dpi: t('calc.label.dpi'),
+  copyRaw: t('calc.copy.raw'),
+  copyCss: t('calc.copy.css'),
+  copyTailwind: t('calc.copy.tailwind'),
+  copyPrint: t('calc.copy.print'),
+};
+
+const relatedSubjects = SUBJECTS.filter((s) => subject.relatedSlugs.includes(s.slug));
+---
+
+<div class="w-full flex flex-col items-center">
+  {/* Breadcrumbs */}
+  <nav aria-label="Breadcrumb" class="w-full max-w-5xl mx-auto px-4 py-4 text-xs text-muted-foreground flex items-center gap-2">
+    <a href={translatePath('/')} class="hover:text-primary transition-colors">Home</a>
+    <span>/</span>
+    <span class="text-muted-foreground/60">{subject.category === 'dimension' ? 'Dimension Converters' : 'Technical Guides'}</span>
+    <span>/</span>
+    <span class="text-foreground font-semibold truncate">{subject.shortTitle}</span>
+  </nav>
+
+  {/* Subject Hero Header */}
+  <header class="text-center max-w-3xl mx-auto px-4 pt-4 pb-8 sm:pb-12 flex flex-col items-center">
+    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20 mb-4 animate-in fade-in duration-300">
+      <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+      <span>{subject.badge}</span>
+    </div>
+
+    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground leading-[1.15]">
+      {subject.h1}
+    </h1>
+
+    <p class="text-sm sm:text-base text-muted-foreground mt-4 max-w-2xl leading-relaxed">
+      {subject.tagline}
+    </p>
+
+    {/* Quick Stats Grid */}
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full mt-6 text-left">
+      {subject.quickStats.map((stat) => (
+        <div class="p-3.5 rounded-xl bg-card border border-border/80 shadow-2xs flex flex-col gap-1">
+          <span class="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">{stat.label}</span>
+          <span class="font-mono font-bold text-sm text-foreground truncate">{stat.value}</span>
+        </div>
+      ))}
+    </div>
+  </header>
+
+  {/* Pre-populated Interactive Calculator Island */}
+  <section id="converter" class="w-full max-w-5xl mx-auto px-4 scroll-mt-24 mb-16">
+    <div class="flex items-center justify-between mb-3 px-1">
+      <span class="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-success"></span>
+        <span>Interactive Live Calculator</span>
+      </span>
+      <span class="text-xs font-mono text-muted-foreground">Pre-calibrated for {subject.shortTitle}</span>
+    </div>
+    <ConverterIsland
+      client:load
+      labels={labels}
+      initialMode={subject.initialCalc.mode}
+      initialWidth={subject.initialCalc.width}
+      initialHeight={subject.initialCalc.height}
+      initialSingle={subject.initialCalc.single}
+      initialDpi={subject.initialCalc.dpi}
+    />
+  </section>
+
+  {/* In-depth Overview Article Section */}
+  <section class="w-full max-w-5xl mx-auto px-4 flex flex-col gap-12 text-foreground">
+    <div class="p-6 sm:p-8 rounded-2xl bg-card border border-border/80 shadow-sm flex flex-col gap-4">
+      <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight text-foreground m-0">
+        Overview & Resolution Specifications
+      </h2>
+      <p class="text-sm sm:text-base text-muted-foreground leading-relaxed m-0">
+        {subject.overview}
+      </p>
+    </div>
+
+    {/* Table Data (if present) */}
+    {subject.tableData && subject.tableData.length > 0 && (
+      <div class="p-6 sm:p-8 rounded-2xl bg-card border border-border/80 shadow-sm flex flex-col gap-5">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight text-foreground m-0">
+            Resolution Breakdown Across DPI Standards
+          </h2>
+          <span class="text-xs font-mono text-muted-foreground hidden sm:inline">72 to 600 DPI</span>
+        </div>
+        <div class="overflow-x-auto rounded-xl border border-border">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead class="bg-muted/70 border-b border-border text-muted-foreground font-semibold uppercase tracking-wider">
+              <tr>
+                <th scope="col" class="py-3 px-4 text-foreground font-bold">Standard</th>
+                <th scope="col" class="py-3 px-4">DPI</th>
+                <th scope="col" class="py-3 px-4 text-primary font-bold">Pixel Dimensions</th>
+                <th scope="col" class="py-3 px-4 text-success font-bold">Megapixels</th>
+                <th scope="col" class="py-3 px-4">Common Use Case</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-border/40 font-mono tabular-numbers text-foreground">
+              {subject.tableData.map((row) => (
+                <tr class="hover:bg-muted/30 transition-colors">
+                  <td class="py-2.5 px-4 font-sans font-bold text-foreground">{row.resolution}</td>
+                  <td class="py-2.5 px-4 text-muted-foreground">{row.dpi} DPI</td>
+                  <td class="py-2.5 px-4 text-primary font-semibold">{row.dimensions}</td>
+                  <td class="py-2.5 px-4 text-success font-semibold">{row.megapixels}</td>
+                  <td class="py-2.5 px-4 font-sans text-muted-foreground">{row.useCase}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    )}
+
+    {/* Step-by-Step Tutorial (for software guides) */}
+    {subject.steps && subject.steps.length > 0 && (
+      <div class="p-6 sm:p-8 rounded-2xl bg-card border border-border/80 shadow-sm flex flex-col gap-6">
+        <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight text-foreground m-0">
+          Step-by-Step Instructions
+        </h2>
+        <div class="flex flex-col gap-4">
+          {subject.steps.map((step) => (
+            <div class="p-4 sm:p-5 rounded-xl bg-muted/20 border border-border/70 flex items-start gap-4">
+              <div class="w-8 h-8 rounded-xl bg-primary text-primary-foreground font-mono font-black text-sm flex items-center justify-center flex-shrink-0 shadow-xs">
+                {step.step}
+              </div>
+              <div class="flex flex-col gap-1 flex-1">
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                  <h3 class="text-sm sm:text-base font-bold text-foreground m-0">{step.title}</h3>
+                  {step.shortcut && (
+                    <span class="px-2 py-0.5 rounded-md bg-card border border-border font-mono text-[11px] text-muted-foreground">
+                      {step.shortcut}
+                    </span>
+                  )}
+                </div>
+                <p class="text-xs sm:text-sm text-muted-foreground leading-relaxed m-0">{step.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {/* Mathematical Formulas (if present) */}
+    {subject.formulas && subject.formulas.length > 0 && (
+      <div class="p-6 sm:p-8 rounded-2xl bg-card border border-border/80 shadow-sm flex flex-col gap-5">
+        <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight text-foreground m-0">
+          Calculation Formulas & Arithmetic
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {subject.formulas.map((form) => (
+            <div class="p-4 rounded-xl bg-muted/30 border border-primary/30 flex flex-col gap-1.5">
+              <span class="text-xs font-bold uppercase tracking-wider text-primary">{form.title}</span>
+              <div class="text-base font-mono font-bold text-foreground">{form.formula}</div>
+              <span class="text-xs text-muted-foreground">{form.explanation}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {/* Frequently Asked Questions */}
+    {subject.faqItems && subject.faqItems.length > 0 && (
+      <div class="p-6 sm:p-8 rounded-2xl bg-card border border-border/80 shadow-sm flex flex-col gap-5">
+        <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight text-foreground m-0">
+          Frequently Asked Questions
+        </h2>
+        <div class="divide-y divide-border/60">
+          {subject.faqItems.map((faq, index) => (
+            <details class="py-4 group cursor-pointer" open={index === 0}>
+              <summary class="text-sm sm:text-base font-bold text-foreground flex items-center justify-between list-none hover:text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded-lg py-1">
+                <span class="flex items-center gap-2.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></span>
+                  <span>{faq.question}</span>
+                </span>
+                <span class="text-muted-foreground group-open:rotate-180 transition-transform text-xs font-mono ml-4 flex-shrink-0">
+                  ▼
+                </span>
+              </summary>
+              <div class="mt-2.5 text-xs sm:text-sm leading-relaxed text-muted-foreground pl-4 border-l-2 border-primary/20">
+                {faq.answer}
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {/* Related Conversion Subjects */}
+    {relatedSubjects.length > 0 && (
+      <div class="p-6 sm:p-8 rounded-2xl bg-muted/20 border border-border/80 flex flex-col gap-5">
+        <div class="flex items-center justify-between">
+          <h2 class="text-lg sm:text-xl font-bold tracking-tight text-foreground m-0">
+            Related Conversion Subjects & Tools
+          </h2>
+          <a href={translatePath('/')} class="text-xs font-semibold text-primary hover:underline">
+            All Converters →
+          </a>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+          {relatedSubjects.map((rel) => (
+            <a
+              href={translatePath(`/${rel.slug}`)}
+              class="p-4 rounded-xl bg-card border border-border/80 hover:border-primary/50 hover:shadow-md transition-all flex flex-col justify-between gap-2 group"
+            >
+              <div class="flex flex-col gap-1">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-primary">{rel.badge}</span>
+                <span class="text-sm font-bold text-foreground group-hover:text-primary transition-colors">{rel.name}</span>
+              </div>
+              <span class="text-xs text-muted-foreground font-medium inline-flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                Explore guide →
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+  </section>
+</div>

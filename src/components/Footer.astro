@@ -41,14 +41,24 @@ const translatePath = useTranslatedPath(lang);
     </div>
 
     {/* Footer Navigation Columns */}
-    <div class="grid grid-cols-2 sm:grid-cols-3 gap-6 text-xs text-muted-foreground">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 text-xs text-muted-foreground">
       {/* Quick Converter Links */}
       <div class="flex flex-col gap-2">
         <span class="font-bold text-foreground">Tools</span>
         <a href={translatePath('/')} class="hover:text-primary transition-colors">1D & 2D Converter</a>
+        <a href={`${translatePath('/')}#subjects`} class="hover:text-primary transition-colors">Subject Hub</a>
         <a href={`${translatePath('/')}#faq`} class="hover:text-primary transition-colors">FAQ & Guides</a>
-        <a href="/?mode=2d&w=8.5&h=11&dpi=300" class="hover:text-primary transition-colors">US Letter (300 DPI)</a>
-        <a href="/?mode=2d&w=4&h=6&dpi=300" class="hover:text-primary transition-colors">4 × 6" Photo (300 DPI)</a>
+        <a href={translatePath('/8-5-inches-to-pixels')} class="hover:text-primary transition-colors">8.5" Linear Scale</a>
+      </div>
+
+      {/* Popular Subjects */}
+      <div class="flex flex-col gap-2">
+        <span class="font-bold text-foreground">Subjects</span>
+        <a href={translatePath('/8-5-x-11-inches-to-pixels')} class="hover:text-primary transition-colors">8.5 × 11" to Pixels</a>
+        <a href={translatePath('/4x6-inches-in-pixels-at-300-dpi')} class="hover:text-primary transition-colors">4 × 6" at 300 DPI</a>
+        <a href={translatePath('/a4-inches-to-pixels')} class="hover:text-primary transition-colors">A4 Paper Dimensions</a>
+        <a href={translatePath('/how-many-pixels-in-an-inch')} class="hover:text-primary transition-colors">Pixels in 1 Inch Guide</a>
+        <a href={translatePath('/how-to-change-pixels-to-inches-in-photoshop')} class="hover:text-primary transition-colors">Photoshop Tutorial</a>
       </div>
 
       {/* Informational Pages */}

@@ -1,0 +1,68 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import SubjectPageContent from '../../components/SubjectPageContent.astro';
+import { SUBJECTS, type SubjectItem } from '../../data/subjects';
+import { languages, defaultLang, type SupportedLanguage } from '../../i18n/ui';
+
+export function getStaticPaths() {
+  const otherLangs = Object.keys(languages).filter((l) => l !== defaultLang);
+  const paths = [];
+
+  for (const lang of otherLangs) {
+    for (const subject of SUBJECTS) {
+      paths.push({
+        params: { lang, subject: subject.slug },
+        props: { subject, lang: lang as SupportedLanguage },
+      });
+    }
+  }
+
+  return paths;
+}
+
+interface Props {
+  subject: SubjectItem;
+  lang: SupportedLanguage;
+}
+
+const { subject, lang } = Astro.props;
+
+// Localized Breadcrumb structured data
+const siteUrl = 'https://inchpixels.com';
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: `${siteUrl}/${lang}`,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: subject.name,
+      item: `${siteUrl}/${lang}/${subject.slug}`,
+    },
+  ],
+};
+---
+
+<Layout
+  lang={lang}
+  title={subject.metaTitle}
+  description={subject.metaDesc}
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <Header />
+
+  <main class="flex-1 w-full pb-16">
+    <SubjectPageContent subject={subject} lang={lang} />
+  </main>
+
+  <Footer lang={lang} />
+</Layout>

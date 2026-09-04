@@ -55,17 +55,29 @@ export interface ConverterLabels {
 
 export interface ConverterIslandProps {
   labels?: ConverterLabels;
+  initialMode?: '2d' | '1d';
+  initialWidth?: number;
+  initialHeight?: number;
+  initialSingle?: number;
+  initialDpi?: number;
 }
 
-export default function ConverterIsland({ labels }: ConverterIslandProps = {}) {
+export default function ConverterIsland({
+  labels,
+  initialMode = '2d',
+  initialWidth = 8.5,
+  initialHeight = 11,
+  initialSingle = 8.5,
+  initialDpi = 300,
+}: ConverterIslandProps = {}) {
   // State initialization
-  const [mode, setMode] = useState<Mode>('2d');
-  const [widthIn, setWidthIn] = useState<number>(8.5);
-  const [heightIn, setHeightIn] = useState<number>(11);
-  const [singleIn, setSingleIn] = useState<number>(8.5);
-  const [dpi, setDpi] = useState<number>(300);
-  const [customDpi, setCustomDpi] = useState<string>('300');
-  const [isCustomDpi, setIsCustomDpi] = useState<boolean>(false);
+  const [mode, setMode] = useState<Mode>(initialMode);
+  const [widthIn, setWidthIn] = useState<number>(initialWidth);
+  const [heightIn, setHeightIn] = useState<number>(initialHeight);
+  const [singleIn, setSingleIn] = useState<number>(initialSingle);
+  const [dpi, setDpi] = useState<number>(initialDpi);
+  const [customDpi, setCustomDpi] = useState<string>(String(initialDpi));
+  const [isCustomDpi, setIsCustomDpi] = useState<boolean>(!STANDARD_DPIS.some((item) => item.value === initialDpi));
   const [lockAspectRatio, setLockAspectRatio] = useState<boolean>(true);
   const [precision, setPrecision] = useState<number>(2);
   const [activeCategory, setActiveCategory] = useState<ActivePresetCategory>('all');

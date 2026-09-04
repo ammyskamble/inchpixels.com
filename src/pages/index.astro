@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import ConverterIsland from '../components/ConverterIsland';
 import StaticReferenceTables from '../components/StaticReferenceTables.astro';
+import SubjectHubSection from '../components/SubjectHubSection.astro';
 import EducationalContent from '../components/EducationalContent.astro';
 import FaqSection from '../components/FaqSection.astro';
 import { useTranslations } from '../i18n/utils';
@@ -72,6 +73,11 @@ const labels = {
     {/* Pre-rendered Static Lookup Tables */}
     <div class="w-full max-w-5xl mx-auto">
       <StaticReferenceTables />
+    </div>
+
+    {/* Dedicated SEO Subject Clusters & Guides Hub */}
+    <div class="w-full max-w-5xl mx-auto">
+      <SubjectHubSection lang={lang} />
     </div>
 
     {/* Educational Content & Guides */}
