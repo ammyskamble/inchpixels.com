@@ -1,0 +1,136 @@
+---
+/**
+ * StaticReferenceTables.astro
+ * Pre-rendered static lookup tables (1-100 inches at 72, 96, and 300 DPI)
+ * Completely static HTML for search engine indexing and zero-JS access.
+ */
+
+interface RowData {
+  inches: number;
+  px72: number;
+  px96: number;
+  px150: number;
+  px300: number;
+  px600: number;
+  cm: number;
+  mm: number;
+}
+
+// Generate rows from 1 to 100 inches
+const rows: RowData[] = [];
+for (let i = 1; i <= 100; i++) {
+  rows.push({
+    inches: i,
+    px72: i * 72,
+    px96: i * 96,
+    px150: i * 150,
+    px300: i * 300,
+    px600: i * 600,
+    cm: Number((i * 2.54).toFixed(2)),
+    mm: Number((i * 25.4).toFixed(1)),
+  });
+}
+---
+
+<section id="reference-tables" class="w-full mt-16 scroll-mt-20">
+  <div class="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
+    <div>
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20 mb-2">
+        <span>Instant Lookup Tables</span>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+        Pre-Rendered Static Conversion Tables (1 to 100 Inches at 72, 96, 150, and 300 DPI)
+      </h2>
+      <p class="text-sm text-muted-foreground mt-1 max-w-2xl">
+        Complete pre-computed inches to pixels lookup reference for printmakers and screen designers across 72, 96, 150, 300, and 600 DPI.
+      </p>
+    </div>
+
+    <!-- Client-side filter / jump input -->
+    <div class="flex items-center gap-2">
+      <div class="relative">
+        <input
+          id="table-search-input"
+          type="number"
+          step="any"
+          min="1"
+          max="100"
+          placeholder="Filter inch (e.g. 10)..."
+          class="px-3 py-2 bg-card border border-border rounded-xl text-xs font-medium text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all w-48 tabular-numbers"
+          aria-label="Filter lookup table by inch value"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Responsive Table Container -->
+  <div class="bg-card border border-border rounded-2xl shadow-sm overflow-hidden">
+    <div class="overflow-x-auto max-h-[560px] overflow-y-auto scrollbar-thin">
+      <table class="w-full text-left text-xs border-collapse" id="conversion-table">
+        <thead class="sticky top-0 z-10 bg-muted/80 backdrop-blur-md border-b border-border text-muted-foreground font-semibold uppercase tracking-wider">
+          <tr>
+            <th scope="col" class="py-3.5 px-4 font-bold text-foreground">Inches (in)</th>
+            <th scope="col" class="py-3.5 px-4 text-cyan-glow font-bold">72 DPI (Web)</th>
+            <th scope="col" class="py-3.5 px-4 text-primary font-bold">96 DPI (Screen)</th>
+            <th scope="col" class="py-3.5 px-4">150 DPI (Draft)</th>
+            <th scope="col" class="py-3.5 px-4 text-success font-bold">300 DPI (Print)</th>
+            <th scope="col" class="py-3.5 px-4">600 DPI (Fine Art)</th>
+            <th scope="col" class="py-3.5 px-4">Metric (cm)</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-border/40 font-mono tabular-numbers text-foreground">
+          {rows.map((row) => (
+            <tr class="hover:bg-muted/30 transition-colors table-row-item" data-inch={row.inches}>
+              <td class="py-2.5 px-4 font-sans font-bold text-foreground">
+                <a
+                  href={`/?mode=1d&val=${row.inches}&dpi=300`}
+                  class="hover:text-primary transition-colors inline-flex items-center gap-1 group"
+                  title={`Open ${row.inches} inches in interactive calculator`}
+                >
+                  <span>{row.inches}"</span>
+                  <span class="text-[10px] text-muted-foreground group-hover:text-primary opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
+                </a>
+              </td>
+              <td class="py-2.5 px-4 text-muted-foreground">{row.px72.toLocaleString()} px</td>
+              <td class="py-2.5 px-4 font-semibold text-primary">{row.px96.toLocaleString()} px</td>
+              <td class="py-2.5 px-4 text-muted-foreground">{row.px150.toLocaleString()} px</td>
+              <td class="py-2.5 px-4 font-bold text-success">{row.px300.toLocaleString()} px</td>
+              <td class="py-2.5 px-4 text-muted-foreground">{row.px600.toLocaleString()} px</td>
+              <td class="py-2.5 px-4 text-muted-foreground">{row.cm} cm</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Table Footer Note -->
+    <div class="px-5 py-3 bg-muted/20 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between text-[11px] text-muted-foreground gap-2">
+      <span>Showing 1 to 100 inches pre-computed for 72, 96, 150, 300, and 600 DPI.</span>
+      <span class="font-mono">Formula: Pixels = Inches × DPI</span>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Simple, lightweight zero-dependency search filter for the table
+  const searchInput = document.getElementById('table-search-input') as HTMLInputElement | null;
+  const tableRows = document.querySelectorAll<HTMLTableRowElement>('.table-row-item');
+
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      const query = (e.target as HTMLInputElement).value.trim();
+      if (!query) {
+        tableRows.forEach((row) => (row.style.display = ''));
+        return;
+      }
+      tableRows.forEach((row) => {
+        const inch = row.getAttribute('data-inch');
+        if (inch && inch.includes(query)) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    });
+  }
+</script>

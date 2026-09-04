@@ -1,0 +1,28 @@
+// @ts-check
+import { defineConfig } from 'astro/config';
+import tailwindcss from '@tailwindcss/vite';
+import react from '@astrojs/react';
+import sitemap from '@astrojs/sitemap';
+
+// https://astro.build/config
+export default defineConfig({
+  site: 'https://inchpixels.com',
+  output: 'static',
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'es', 'ja', 'fr', 'de', 'pt', 'ko', 'it'],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
+  build: {
+    inlineStylesheets: 'always',
+  },
+  vite: {
+    plugins: [tailwindcss()],
+  },
+  integrations: [
+    react(),
+    sitemap(),
+  ],
+});

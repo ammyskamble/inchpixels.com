@@ -1,0 +1,245 @@
+---
+/**
+ * EducationalContent.astro
+ * Semantic Long-Form Content Section (800–1,200 Words, Static HTML)
+ * Optimized for crawlability, on-page SEO keyword density, and technical depth.
+ */
+
+
+const printScreenComparisons = [
+  { name: 'US Letter Document', inches: '8.5" × 11"', ratio: '1:1.29', px96: '816 × 1,056 px', px150: '1,275 × 1,650 px', px300: '2,550 × 3,300 px', mp300: '8.42 MP' },
+  { name: 'A4 International Paper', inches: '8.27" × 11.69"', ratio: '1:1.414 (√2)', px96: '794 × 1,123 px', px150: '1,240 × 1,754 px', px300: '2,480 × 3,508 px', mp300: '8.70 MP' },
+  { name: '4 × 6" Photo Print', inches: '4" × 6"', ratio: '2:3', px96: '384 × 576 px', px150: '600 × 900 px', px300: '1,200 × 1,800 px', mp300: '2.16 MP' },
+  { name: '5 × 7" Framed Photo', inches: '5" × 7"', ratio: '5:7', px96: '480 × 672 px', px150: '750 × 1,050 px', px300: '1,500 × 2,100 px', mp300: '3.15 MP' },
+  { name: '8 × 10" Portrait Print', inches: '8" × 10"', ratio: '4:5', px96: '768 × 960 px', px150: '1,200 × 1,500 px', px300: '2,400 × 3,000 px', mp300: '7.20 MP' },
+  { name: '11 × 17" Tabloid / Ledger', inches: '11" × 17"', ratio: '11:17', px96: '1,056 × 1,632 px', px150: '1,650 × 2,550 px', px300: '3,300 × 5,100 px', mp300: '16.83 MP' },
+  { name: '16 × 20" Art Poster', inches: '16" × 20"', ratio: '4:5', px96: '1,536 × 1,920 px', px150: '2,400 × 3,000 px', px300: '4,800 × 6,000 px', mp300: '28.80 MP' },
+  { name: '24 × 36" Movie Poster', inches: '24" × 36"', ratio: '2:3', px96: '2,304 × 3,456 px', px150: '3,600 × 5,400 px', px300: '7,200 × 10,800 px', mp300: '77.76 MP' },
+];
+---
+
+<section class="w-full mt-20 flex flex-col gap-16 text-foreground">
+  <!-- Article Container for Crawlers and Users -->
+  <article class="prose prose-slate dark:prose-invert max-w-none flex flex-col gap-16">
+
+    <!-- Section 1: How Many Pixels in an Inch? The DPI/PPI Relationship -->
+    <div class="flex flex-col gap-6 bg-card border border-border/80 p-6 sm:p-10 rounded-2xl shadow-sm">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20 self-start">
+        <span>Foundational Resolution Guide</span>
+      </div>
+
+      <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground m-0">
+        How Many Pixels in an Inch? The DPI/PPI Relationship
+      </h2>
+
+      <div class="text-sm sm:text-base leading-relaxed text-muted-foreground flex flex-col gap-4">
+        <p>
+          One of the most frequent questions encountered in digital illustration, frontend engineering, and commercial printmaking is: <em>"How many pixels in an inch?"</em> The core answer is that there is no single fixed number of pixels in an inch. A pixel is a discrete digital sample of color with no inherent physical size, whereas an inch is an absolute physical unit of imperial length (equal to exactly 2.54 centimeters). The bridge connecting inches to pixels is <strong>resolution density</strong>, measured in <strong>DPI (Dots Per Inch)</strong> for printed media and <strong>PPI (Pixels Per Inch)</strong> for electronic displays.
+        </p>
+
+        <p>
+          When converting an <strong>inch to pixel</strong> dimension, your target output determines the pixel count. Graphic designers must calibrate their artwork to specific resolution standards to prevent pixelated, blurry physical prints or needlessly oversized web image files:
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-2 not-prose">
+          <div class="p-4 rounded-xl bg-muted/25 border border-border/60 flex flex-col gap-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-sm text-foreground">96 DPI / PPI</span>
+              <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-primary/10 text-primary font-bold">Modern Web Standard</span>
+            </div>
+            <p class="text-xs text-muted-foreground leading-relaxed">
+              Standardized by the W3C CSS specifications. In CSS stylesheet calculations and browser layout engines, <strong>1 inch is officially defined as exactly 96 pixels</strong> (<code class="text-primary font-mono font-semibold">1in = 96px</code>). Every modern web browser renders responsive layout boxes, SVGs, and typography using this standard ratio.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-muted/25 border border-border/60 flex flex-col gap-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-sm text-foreground">300 DPI</span>
+              <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-success/10 text-success font-bold">Commercial Print Standard</span>
+            </div>
+            <p class="text-xs text-muted-foreground leading-relaxed">
+              The universal industry benchmark for high-quality commercial offset, digital press, and photographic printing. At <strong>300 DPI, 1 inch contains 300 pixels</strong>. This density matches human visual acuity at standard 12-to-15-inch reading distances, ensuring sharp lines and continuous tones without discernible pixelation.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-muted/25 border border-border/60 flex flex-col gap-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-sm text-foreground">72 DPI</span>
+              <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-muted text-muted-foreground font-bold">Legacy Screen Baseline</span>
+            </div>
+            <p class="text-xs text-muted-foreground leading-relaxed">
+              The historic display standard popularized by original 1984 Apple Macintosh monitors, where exactly 72 display pixels corresponded to 72 typographic points (1/72 inch). While high-density Retina and 4K displays have surpassed this physical hardware density, 72 DPI remains a standard reference in legacy graphic archives.
+            </p>
+          </div>
+        </div>
+
+        <p>
+          Understanding this distinction is vital when using an <strong>inches to pixels converter</strong>. If you design a flyer intended for 8.5" × 11" paper at 96 DPI, the resulting graphic will only measure 816 × 1,056 pixels—far too small for a print shop, which requires 2,550 × 3,300 pixels (300 DPI) for crisp, professional production.
+        </p>
+
+        <p>
+          Furthermore, high-DPI smartphone and laptop screens utilize <strong>Device Pixel Ratios (DPR)</strong> (typically 2x or 3x). A CSS dimension of <code class="font-mono text-primary">w-[96px]</code> represents 1 logical CSS inch, but may be rendered using 192 or 288 physical device hardware pixels to deliver ultra-crisp vector shapes and typography.
+        </p>
+      </div>
+    </div>
+
+    <!-- Section 2: Step-by-Step Conversion Formula with Examples -->
+    <div class="flex flex-col gap-6 bg-card border border-border/80 p-6 sm:p-10 rounded-2xl shadow-sm">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20 self-start">
+        <span>Mathematical Principles & Walkthroughs</span>
+      </div>
+
+      <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground m-0">
+        Step-by-Step Conversion Formula with Examples
+      </h2>
+
+      <div class="text-sm sm:text-base leading-relaxed text-muted-foreground flex flex-col gap-6">
+        <p>
+          To <strong>convert inches to pixels</strong> manually or in software code, you employ direct linear multiplication. Because DPI represents the number of pixels packed into each linear inch, multiplying physical inches by target DPI yields the total pixel dimension. Similarly, converting in reverse from <strong>inches to px</strong> or pixels to inches requires simple division.
+        </p>
+
+        <!-- Formula Callout Blocks -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 not-prose">
+          <div class="p-5 rounded-xl bg-muted/30 border border-primary/30 flex flex-col gap-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-primary">Forward Conversion: In to Px</span>
+            <div class="text-lg sm:text-xl font-mono font-bold text-foreground">
+              Pixels = Inches × DPI
+            </div>
+            <span class="text-xs text-muted-foreground">Multiply linear physical inches by resolution density</span>
+          </div>
+
+          <div class="p-5 rounded-xl bg-muted/30 border border-border/80 flex flex-col gap-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-cyan-glow">Reverse Conversion: Px to In</span>
+            <div class="text-lg sm:text-xl font-mono font-bold text-foreground">
+              Inches = Pixels ÷ DPI
+            </div>
+            <span class="text-xs text-muted-foreground">Divide digital pixel dimensions by target resolution</span>
+          </div>
+        </div>
+
+        <p>
+          Here are three detailed, real-world examples demonstrating how to convert <strong>inches to px</strong> across common print, photo, and digital canvas specifications:
+        </p>
+
+        <!-- Detailed Walkthrough 1: 8.5 inches to pixels -->
+        <div class="p-5 rounded-xl bg-muted/20 border border-border/60 flex flex-col gap-3 not-prose">
+          <div class="flex items-center justify-between">
+            <h3 class="text-base font-bold text-foreground m-0">Example 1: Converting 8.5 Inches to Pixels Across Different DPIs</h3>
+            <span class="text-xs font-mono text-primary font-bold">8.5 inches to pixels</span>
+          </div>
+          <p class="text-xs text-muted-foreground leading-relaxed">
+            The width of North American standard paper is 8.5 inches. Here is how <strong>8.5 inches to pixels</strong> transforms across various resolution standards using the formula <code class="font-mono text-foreground font-semibold">Pixels = 8.5 × DPI</code>:
+          </p>
+          <ul class="text-xs font-mono text-foreground space-y-1.5 list-disc pl-5">
+            <li><strong>Commercial Print Quality (300 DPI):</strong> 8.5 in × 300 DPI = <span class="text-primary font-bold">2,550 pixels</span></li>
+            <li><strong>Modern Web Screen (96 DPI):</strong> 8.5 in × 96 DPI = <span class="text-cyan-glow font-bold">816 pixels</span></li>
+            <li><strong>Draft / Newspaper Print (150 DPI):</strong> 8.5 in × 150 DPI = 1,275 pixels</li>
+            <li><strong>Legacy Display Baseline (72 DPI):</strong> 8.5 in × 72 DPI = 612 pixels</li>
+            <li><strong>Fine Art Archival Print (600 DPI):</strong> 8.5 in × 600 DPI = 5,100 pixels</li>
+          </ul>
+        </div>
+
+        <!-- Detailed Walkthrough 2: 8.5 x 11 inches to pixels -->
+        <div class="p-5 rounded-xl bg-muted/20 border border-border/60 flex flex-col gap-3 not-prose">
+          <div class="flex items-center justify-between">
+            <h3 class="text-base font-bold text-foreground m-0">Example 2: US Letter (8.5 x 11 Inches to Pixels)</h3>
+            <span class="text-xs font-mono text-success font-bold">8.5 x 11 inches to pixels</span>
+          </div>
+          <p class="text-xs text-muted-foreground leading-relaxed">
+            When setting up a 2D canvas in Photoshop, Illustrator, Figma, or CSS, calculating <strong>8.5 x 11 inches to pixels</strong> requires evaluating width and height dimensions simultaneously:
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
+            <div class="p-3.5 rounded-lg bg-card border border-border">
+              <span class="font-sans font-bold text-foreground block mb-1">Commercial Printing Press (300 DPI)</span>
+              <div>Width: 8.5 in × 300 DPI = <strong>2,550 px</strong></div>
+              <div>Height: 11.0 in × 300 DPI = <strong>3,300 px</strong></div>
+              <div class="text-muted-foreground mt-1">Resolution: 8,415,000 pixels (~8.42 Megapixels)</div>
+              <div class="text-primary mt-1 font-semibold">Tailwind v4: w-[2550px] h-[3300px]</div>
+            </div>
+            <div class="p-3.5 rounded-lg bg-card border border-border">
+              <span class="font-sans font-bold text-foreground block mb-1">Standard Web Layout (96 DPI)</span>
+              <div>Width: 8.5 in × 96 DPI = <strong>816 px</strong></div>
+              <div>Height: 11.0 in × 96 DPI = <strong>1,056 px</strong></div>
+              <div class="text-muted-foreground mt-1">Resolution: 861,696 pixels (~0.86 Megapixels)</div>
+              <div class="text-cyan-glow mt-1 font-semibold">Tailwind v4: w-[816px] h-[1056px]</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detailed Walkthrough 3: 4x6 inches in pixels at 300 dpi -->
+        <div class="p-5 rounded-xl bg-muted/20 border border-border/60 flex flex-col gap-3 not-prose">
+          <div class="flex items-center justify-between">
+            <h3 class="text-base font-bold text-foreground m-0">Example 3: Photographic Print (4x6 Inches in Pixels at 300 DPI)</h3>
+            <span class="text-xs font-mono text-cyan-glow font-bold">4x6 inches in pixels at 300 dpi</span>
+          </div>
+          <p class="text-xs text-muted-foreground leading-relaxed">
+            The standard postcard snapshot format is 4 × 6 inches with a 2:3 aspect ratio. To prepare digital photographs for physical photo lab printing, calculating <strong>4x6 inches in pixels at 300 dpi</strong> ensures maximum sharpness:
+          </p>
+          <div class="p-3.5 rounded-lg bg-card border border-border text-xs font-mono">
+            <div>Width: 4 in × 300 DPI = <strong class="text-foreground">1,200 px</strong></div>
+            <div>Height: 6 in × 300 DPI = <strong class="text-foreground">1,800 px</strong></div>
+            <div class="text-primary font-bold mt-1.5">Total Image Resolution: 1,200 × 1,800 pixels (2,160,000 pixels / 2.16 MP)</div>
+            <div class="text-muted-foreground mt-1">In landscape orientation: 1,800 × 1,200 px (3:2 aspect ratio)</div>
+          </div>
+        </div>
+
+        <p>
+          Our <strong>inches to pixels converter</strong> automatically applies these equations in real time as you type, letting you freely adjust precision decimals, aspect ratio locks, and custom DPI multipliers.
+        </p>
+      </div>
+    </div>
+
+    <!-- Section 3: Common Print & Screen Dimensions Reference -->
+    <div class="flex flex-col gap-6 bg-card border border-border/80 p-6 sm:p-10 rounded-2xl shadow-sm">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20 self-start">
+        <span>Standard Formats Reference</span>
+      </div>
+
+      <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground m-0">
+        Common Print & Screen Dimensions Reference
+      </h2>
+
+      <p class="text-sm text-muted-foreground m-0 leading-relaxed">
+        Whether you need to <strong>convert inches to pixels</strong> for print setup or convert <strong>in to px</strong> for CSS layouts, this comprehensive comparison chart details standard paper, photographic, and display formats across 96 DPI (Web), 150 DPI (Draft), and 300 DPI (Commercial Print):
+      </p>
+
+      <!-- Reference Comparison Table -->
+      <div class="overflow-x-auto not-prose rounded-xl border border-border">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead class="bg-muted/60 border-b border-border text-muted-foreground font-semibold uppercase tracking-wider">
+            <tr>
+              <th scope="col" class="py-3 px-4 text-foreground font-bold">Format Name</th>
+              <th scope="col" class="py-3 px-4">Inches</th>
+              <th scope="col" class="py-3 px-4">Aspect Ratio</th>
+              <th scope="col" class="py-3 px-4 text-primary font-bold">96 DPI (Web)</th>
+              <th scope="col" class="py-3 px-4">150 DPI (Draft)</th>
+              <th scope="col" class="py-3 px-4 text-success font-bold">300 DPI (Print)</th>
+              <th scope="col" class="py-3 px-4">Megapixels (300DPI)</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-border/40 font-mono tabular-numbers text-foreground">
+            {printScreenComparisons.map((row) => (
+              <tr class="hover:bg-muted/30 transition-colors">
+                <td class="py-2.5 px-4 font-sans font-bold text-foreground">{row.name}</td>
+                <td class="py-2.5 px-4">{row.inches}</td>
+                <td class="py-2.5 px-4 text-muted-foreground">{row.ratio}</td>
+                <td class="py-2.5 px-4 text-primary font-semibold">{row.px96}</td>
+                <td class="py-2.5 px-4 text-muted-foreground">{row.px150}</td>
+                <td class="py-2.5 px-4 text-success font-bold">{row.px300}</td>
+                <td class="py-2.5 px-4 text-muted-foreground">{row.mp300}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="text-xs text-muted-foreground leading-relaxed flex flex-col gap-2">
+        <p>
+          Looking for customized dimensions? You can load any of these presets with one click in the interactive <strong>inches to pixels converter</strong> above, or manually type custom width and height parameters to generate tailored CSS rules, Tailwind CSS v4 class strings (<code class="font-mono text-primary font-semibold">w-[...px] h-[...px]</code>), SVG <code class="font-mono text-foreground">viewBox</code> specifications, or Print CSS <code class="font-mono text-foreground">@page</code> declarations.
+        </p>
+      </div>
+    </div>
+
+
+  </article>
+</section>

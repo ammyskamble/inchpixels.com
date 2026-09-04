@@ -1,0 +1,96 @@
+---
+/**
+ * FaqSection.astro
+ * SEO-friendly FAQ accordion using semantic <details> and <summary> tags,
+ * clean math formula callouts, and step-by-step instructions for Photoshop and Illustrator.
+ */
+import { useTranslations } from '../i18n/utils';
+import type { SupportedLanguage } from '../i18n/ui';
+import { FAQ_DATA } from '../data/faqs';
+
+interface Props {
+  lang?: SupportedLanguage;
+}
+
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id="faq" class="w-full bg-card border border-border/80 p-6 sm:p-10 rounded-2xl shadow-sm scroll-mt-24 mt-12">
+  <div class="flex items-center justify-between gap-3 mb-6">
+    <div class="flex items-center gap-2">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20">
+        <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+        <span>SEO Reference FAQ</span>
+      </span>
+    </div>
+    <span class="text-xs text-muted-foreground font-mono">8 Expert Answers</span>
+  </div>
+
+  <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground mb-3">
+    {t('faq.heading')}
+  </h2>
+  <p class="text-sm text-muted-foreground mb-8 max-w-2xl">
+    Essential guidelines, mathematical formulas, and step-by-step digital design instructions for converting inches to pixels and pixels to inches.
+  </p>
+
+  <div class="divide-y divide-border/60">
+    {FAQ_DATA.map((faq, index) => (
+      <details
+        class="py-4 sm:py-5 group cursor-pointer transition-colors"
+        id={`faq-item-${faq.id}`}
+        open={index === 0}
+      >
+        <summary class="text-base sm:text-lg font-bold text-foreground flex items-center justify-between list-none hover:text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded-lg py-1.5">
+          <span class="flex items-center gap-3 pr-4">
+            <span class="w-6 h-6 rounded-full bg-muted/80 text-muted-foreground group-hover:bg-primary/20 group-hover:text-primary transition-colors text-xs font-mono font-bold flex items-center justify-center flex-shrink-0">
+              {index + 1}
+            </span>
+            <span class="leading-snug">{faq.question}</span>
+          </span>
+          <span class="text-muted-foreground group-open:rotate-180 transition-transform text-xs font-mono flex-shrink-0 p-1 rounded-md bg-muted/40">
+            ▼
+          </span>
+        </summary>
+
+        <div class="mt-4 text-sm leading-relaxed text-muted-foreground pl-9 sm:pl-9 space-y-4">
+          {/* Main Answer Paragraph */}
+          <p class="text-foreground/90 leading-relaxed font-normal">
+            {faq.answer}
+          </p>
+
+          {/* Mathematical Formula Callout */}
+          {faq.formula && (
+            <div class="p-3.5 rounded-xl bg-muted/30 border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+              <span class="text-xs font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
+                <span>📐</span> Formula:
+              </span>
+              <code class="px-3 py-1.5 rounded-lg bg-background border border-border font-mono text-xs sm:text-sm font-bold text-primary tracking-wide tabular-numbers shadow-xs">
+                {faq.formula}
+              </code>
+            </div>
+          )}
+
+          {/* Step-by-Step Instructions (Photoshop / Illustrator) */}
+          {faq.steps && (
+            <div class="mt-3 p-4 rounded-xl bg-muted/20 border border-border/60">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-foreground mb-3 flex items-center gap-1.5">
+                <span>📋</span> Step-by-Step Guide:
+              </h4>
+              <ol class="space-y-2 list-none">
+                {faq.steps.map((step, sIdx) => (
+                  <li class="flex items-start gap-2.5 text-xs sm:text-sm text-foreground/80">
+                    <span class="w-5 h-5 rounded-md bg-primary/10 text-primary font-mono text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
+                      {sIdx + 1}
+                    </span>
+                    <span class="leading-relaxed">{step}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
+        </div>
+      </details>
+    ))}
+  </div>
+</section>

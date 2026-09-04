@@ -1,0 +1,96 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ConverterIsland from '../../components/ConverterIsland';
+import StaticReferenceTables from '../../components/StaticReferenceTables.astro';
+import EducationalContent from '../../components/EducationalContent.astro';
+import FaqSection from '../../components/FaqSection.astro';
+import { languages, type SupportedLanguage } from '../../i18n/ui';
+import { useTranslations } from '../../i18n/utils';
+
+export function getStaticPaths() {
+  return Object.keys(languages)
+    .filter((l) => l !== 'en')
+    .map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: SupportedLanguage };
+const t = useTranslations(lang);
+
+const labels = {
+  inToPx: t('calc.mode.inToPx'),
+  pxToIn: t('calc.mode.pxToIn'),
+  width: t('calc.label.width'),
+  height: t('calc.label.height'),
+  dpi: t('calc.label.dpi'),
+  copyRaw: t('calc.copy.raw'),
+  copyCss: t('calc.copy.css'),
+  copyTailwind: t('calc.copy.tailwind'),
+  copyPrint: t('calc.copy.print'),
+};
+---
+
+<Layout
+  lang={lang}
+  title={t('meta.title')}
+  description={t('meta.desc')}
+>
+  <Header />
+
+  <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 w-full flex flex-col items-center">
+    {/* Hero Section */}
+    <section class="text-center max-w-3xl mx-auto mb-8 sm:mb-12 flex flex-col items-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20 mb-4 animate-in fade-in duration-300">
+        <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+        <span>{t('calc.heading')}</span>
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground leading-[1.15]">
+        {t('calc.heading')}
+      </h1>
+
+      <p class="text-sm sm:text-base text-muted-foreground mt-4 max-w-2xl leading-relaxed">
+        {t('calc.subheading')}
+      </p>
+
+      {/* Feature Badges */}
+      <div class="flex flex-wrap items-center justify-center gap-2 mt-5 text-xs text-muted-foreground font-medium">
+        <span class="px-2.5 py-1 rounded-lg bg-card border border-border/80 shadow-xs">
+          ⚡ {t('calc.mode.inToPx')}
+        </span>
+        <span class="px-2.5 py-1 rounded-lg bg-card border border-border/80 shadow-xs">
+          📐 {t('calc.label.width')} × {t('calc.label.height')}
+        </span>
+        <span class="px-2.5 py-1 rounded-lg bg-card border border-border/80 shadow-xs">
+          🖨️ 72, 96, 150, 300, 600 DPI
+        </span>
+        <span class="px-2.5 py-1 rounded-lg bg-card border border-border/80 shadow-xs">
+          💻 CSS & Tailwind v4
+        </span>
+      </div>
+    </section>
+
+    {/* Reactive Client Island */}
+    <section id="converter" class="w-full max-w-5xl mx-auto scroll-mt-24">
+      <ConverterIsland client:load labels={labels} />
+    </section>
+
+    {/* Pre-rendered Static Lookup Tables */}
+    <div class="w-full max-w-5xl mx-auto">
+      <StaticReferenceTables />
+    </div>
+
+    {/* Educational Content & Guides */}
+    <div id="guides" class="w-full max-w-5xl mx-auto scroll-mt-24">
+      <EducationalContent />
+    </div>
+
+    {/* Dedicated SEO FAQ Section */}
+    <div class="w-full max-w-5xl mx-auto">
+      <FaqSection lang={lang} />
+    </div>
+  </main>
+
+  <Footer lang={lang} />
+</Layout>

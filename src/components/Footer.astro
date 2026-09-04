@@ -1,0 +1,81 @@
+---
+/**
+ * Footer.astro
+ * Responsive glassmorphic footer with quick links, legal/informational links,
+ * standard mathematical formulas, and copyright.
+ */
+import { useTranslatedPath } from '../i18n/utils';
+import type { SupportedLanguage } from '../i18n/ui';
+
+interface Props {
+  lang?: SupportedLanguage;
+}
+
+const { lang = 'en' } = Astro.props;
+const translatePath = useTranslatedPath(lang);
+---
+
+<footer class="w-full mt-24 border-t border-border/70 bg-card/40 backdrop-blur-md">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+    {/* Brand Info */}
+    <div class="flex flex-col gap-2 max-w-sm">
+      <a href={translatePath('/')} class="flex items-center gap-2 group w-fit">
+        <div class="w-6 h-6 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-mono text-xs font-bold shadow-xs group-hover:scale-105 transition-transform">
+          IP
+        </div>
+        <span class="text-sm font-extrabold text-foreground tracking-tight group-hover:text-primary transition-colors">
+          InchPixels<span class="text-primary">.com</span>
+        </span>
+      </a>
+      <p class="text-xs text-muted-foreground leading-relaxed">
+        High-precision inches-to-pixels and pixels-to-inches calculation engine built for UI designers, printmakers, and developers. Fast, zero-tracking, and free.
+      </p>
+    </div>
+
+    {/* Center Formula Summary */}
+    <div class="flex flex-col gap-1 text-xs font-mono text-muted-foreground bg-muted/30 p-3.5 rounded-xl border border-border/60">
+      <div class="text-[10px] font-sans font-bold uppercase text-foreground">Mathematical Formulas</div>
+      <div>Pixels = Inches × DPI</div>
+      <div>Inches = Pixels ÷ DPI</div>
+      <div>1 CSS Inch = 96 CSS Pixels (W3C Standard)</div>
+    </div>
+
+    {/* Footer Navigation Columns */}
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-6 text-xs text-muted-foreground">
+      {/* Quick Converter Links */}
+      <div class="flex flex-col gap-2">
+        <span class="font-bold text-foreground">Tools</span>
+        <a href={translatePath('/')} class="hover:text-primary transition-colors">1D & 2D Converter</a>
+        <a href={`${translatePath('/')}#faq`} class="hover:text-primary transition-colors">FAQ & Guides</a>
+        <a href="/?mode=2d&w=8.5&h=11&dpi=300" class="hover:text-primary transition-colors">US Letter (300 DPI)</a>
+        <a href="/?mode=2d&w=4&h=6&dpi=300" class="hover:text-primary transition-colors">4 × 6" Photo (300 DPI)</a>
+      </div>
+
+      {/* Informational Pages */}
+      <div class="flex flex-col gap-2">
+        <span class="font-bold text-foreground">Information</span>
+        <a href={translatePath('/about-us')} class="hover:text-primary transition-colors">About Us</a>
+        <a href={translatePath('/contact-us')} class="hover:text-primary transition-colors">Contact Us</a>
+        <a href="mailto:support@inchpixels.com" class="hover:text-primary transition-colors">Email Support</a>
+      </div>
+
+      {/* Legal Pages */}
+      <div class="flex flex-col gap-2">
+        <span class="font-bold text-foreground">Legal</span>
+        <a href={translatePath('/privacy-policy')} class="hover:text-primary transition-colors">Privacy Policy</a>
+        <a href={translatePath('/terms-and-conditions')} class="hover:text-primary transition-colors">Terms & Conditions</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 border-t border-border/40 flex flex-col sm:flex-row items-center justify-between text-[11px] text-muted-foreground gap-2">
+    <span>© {new Date().getFullYear()} InchPixels.com. All rights reserved. Zero cookies, privacy-first.</span>
+    <div class="flex items-center gap-4">
+      <a href={translatePath('/privacy-policy')} class="hover:underline">Privacy</a>
+      <span>•</span>
+      <a href={translatePath('/terms-and-conditions')} class="hover:underline">Terms</a>
+      <span>•</span>
+      <a href={translatePath('/contact-us')} class="hover:underline">Contact</a>
+    </div>
+  </div>
+</footer>

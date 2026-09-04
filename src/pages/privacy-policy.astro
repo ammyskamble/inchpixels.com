@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+import LanguagePicker from '../components/LanguagePicker.astro';
+import Footer from '../components/Footer.astro';
+import PrivacyPolicyContent from '../components/info/PrivacyPolicyContent.astro';
+
+const lang = 'en';
+---
+
+<Layout
+  lang={lang}
+  title="Privacy Policy | InchPixels"
+  description="Read the InchPixels privacy policy. We respect your digital privacy with 100% client-side calculations and zero tracking cookies."
+>
+  <header class="p-4 flex justify-end max-w-7xl mx-auto w-full">
+    <LanguagePicker currentLang={lang} />
+  </header>
+
+  <main class="flex-1 w-full">
+    <PrivacyPolicyContent lang={lang} />
+  </main>
+
+  <Footer lang={lang} />
+</Layout>

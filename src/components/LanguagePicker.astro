@@ -1,0 +1,157 @@
+---
+import { languages, type SupportedLanguage } from '../i18n/ui';
+import { useTranslatedPath } from '../i18n/utils';
+
+interface Props {
+  currentLang: SupportedLanguage;
+}
+
+const { currentLang } = Astro.props;
+const translatePath = useTranslatedPath(currentLang);
+
+// Normalize path to root equivalent so language switching preserves the current page
+const pathname = Astro.url.pathname;
+const cleanPath = pathname.replace(/^\/(es|ja|fr|de|pt|ko|it)(\/|$)/, '/') || '/';
+---
+
+<div class="relative inline-block text-left" data-lang-picker>
+  {/* Trigger Button */}
+  <button
+    type="button"
+    class="lang-picker-btn flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-xl border border-border bg-card/70 hover:bg-muted text-foreground transition-all shadow-2xs focus:outline-none focus:ring-2 focus:ring-primary/40 cursor-pointer select-none"
+    aria-haspopup="true"
+    aria-expanded="false"
+    aria-label="Select language"
+  >
+    {/* Globe Icon */}
+    <svg class="w-4 h-4 text-muted-foreground flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+      />
+    </svg>
+
+    {/* Current Language Label */}
+    <span class="font-medium tracking-tight">{languages[currentLang]}</span>
+
+    {/* Chevron Down Icon */}
+    <svg
+      class="lang-picker-chevron w-3.5 h-3.5 text-muted-foreground transition-transform duration-200 flex-shrink-0"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+    </svg>
+  </button>
+
+  {/* Dropdown Floating Popover */}
+  <div
+    class="lang-picker-menu absolute right-0 mt-2 w-44 rounded-xl border border-border bg-card/95 backdrop-blur-md shadow-xl py-1.5 z-50 hidden transition-all"
+    role="menu"
+    aria-orientation="vertical"
+  >
+    <div class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground border-b border-border/50 mb-1 flex items-center justify-between">
+      <span>Language</span>
+      <span class="font-mono text-[9px] opacity-70">8 locales</span>
+    </div>
+
+    <div class="flex flex-col gap-0.5">
+      {Object.entries(languages).map(([lang, label]) => {
+        const isActive = lang === currentLang;
+        return (
+          <a
+            href={translatePath(cleanPath, lang as SupportedLanguage)}
+            role="menuitem"
+            class={`flex items-center justify-between px-3 py-1.5 text-xs rounded-lg mx-1 transition-colors ${
+              isActive
+                ? 'bg-primary/15 text-primary font-bold'
+                : 'text-foreground/80 hover:text-foreground hover:bg-muted font-medium'
+            }`}
+            hreflang={lang}
+            aria-current={isActive ? 'page' : undefined}
+          >
+            <span class="flex items-center gap-2">
+              <span class="font-mono uppercase text-[10px] opacity-60 w-5">{lang}</span>
+              <span>{label}</span>
+            </span>
+            {isActive && (
+              <svg class="w-3.5 h-3.5 text-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+              </svg>
+            )}
+          </a>
+        );
+      })}
+    </div>
+  </div>
+</div>
+
+<script>
+  function initLanguagePickers() {
+    const pickers = document.querySelectorAll<HTMLElement>('[data-lang-picker]');
+
+    pickers.forEach((picker) => {
+      const btn = picker.querySelector<HTMLButtonElement>('.lang-picker-btn');
+      const menu = picker.querySelector<HTMLElement>('.lang-picker-menu');
+      const chevron = picker.querySelector<HTMLElement>('.lang-picker-chevron');
+
+      if (!btn || !menu) return;
+
+      let hoverTimeout: number | undefined;
+
+      function openMenu() {
+        if (hoverTimeout) clearTimeout(hoverTimeout);
+        menu?.classList.remove('hidden');
+        btn?.setAttribute('aria-expanded', 'true');
+        chevron?.classList.add('rotate-180');
+      }
+
+      function closeMenu() {
+        if (hoverTimeout) clearTimeout(hoverTimeout);
+        menu?.classList.add('hidden');
+        btn?.setAttribute('aria-expanded', 'false');
+        chevron?.classList.remove('rotate-180');
+      }
+
+      function toggleMenu(e: MouseEvent) {
+        e.stopPropagation();
+        if (menu?.classList.contains('hidden')) {
+          openMenu();
+        } else {
+          closeMenu();
+        }
+      }
+
+      // Click trigger
+      btn.addEventListener('click', toggleMenu);
+
+      // Hover triggers with brief delay to avoid accidental flicker
+      picker.addEventListener('mouseenter', openMenu);
+      picker.addEventListener('mouseleave', () => {
+        hoverTimeout = window.setTimeout(closeMenu, 200);
+      });
+
+      // Escape key to dismiss
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !menu.classList.contains('hidden')) {
+          closeMenu();
+          btn.focus();
+        }
+      });
+
+      // Click outside to dismiss
+      document.addEventListener('click', (e) => {
+        if (!picker.contains(e.target as Node)) {
+          closeMenu();
+        }
+      });
+    });
+  }
+
+  // Run on initial load and client transitions
+  initLanguagePickers();
+  document.addEventListener('astro:page-load', initLanguagePickers);
+</script>
