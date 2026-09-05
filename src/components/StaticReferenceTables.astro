@@ -67,7 +67,7 @@ for (let i = 1; i <= 100; i++) {
   <div class="bg-card border border-border rounded-2xl shadow-sm overflow-hidden">
     <div class="overflow-x-auto max-h-[560px] overflow-y-auto scrollbar-thin">
       <table class="w-full text-left text-xs border-collapse" id="conversion-table">
-        <thead class="sticky top-0 z-10 bg-muted/80 backdrop-blur-md border-b border-border text-muted-foreground font-semibold uppercase tracking-wider">
+        <thead class="sticky top-0 z-10 bg-card/95 backdrop-blur-md border-b border-border text-muted-foreground font-semibold uppercase tracking-wider shadow-xs">
           <tr>
             <th scope="col" class="py-3.5 px-4 font-bold text-foreground">Inches (in)</th>
             <th scope="col" class="py-3.5 px-4 text-cyan-glow font-bold">72 DPI (Web)</th>
@@ -80,7 +80,7 @@ for (let i = 1; i <= 100; i++) {
         </thead>
         <tbody class="divide-y divide-border/40 font-mono tabular-numbers text-foreground">
           {rows.map((row) => (
-            <tr class="hover:bg-muted/30 transition-colors table-row-item" data-inch={row.inches}>
+            <tr class="even:bg-muted/25 hover:bg-muted/50 dark:even:bg-white/[0.02] dark:hover:bg-muted/40 transition-colors table-row-item" data-inch={row.inches}>
               <td class="py-2.5 px-4 font-sans font-bold text-foreground">
                 <a
                   href={`/?mode=1d&val=${row.inches}&dpi=300`}

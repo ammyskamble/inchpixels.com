@@ -13,15 +13,15 @@ We utilize the `oklch` perceptual color model for consistent perceived lightness
 
 | Token | Light Mode Value | Dark Mode Value | Usage |
 |---|---|---|---|
-| `--background` | `oklch(0.99 0.002 250)` | `oklch(0.12 0.015 260)` | Main application canvas |
+| `--background` | `oklch(0.978 0.005 250)` | `oklch(0.12 0.015 260)` | Main application canvas |
 | `--foreground` | `oklch(0.18 0.02 260)` | `oklch(0.98 0.005 250)` | Primary body typography |
-| `--card` | `oklch(1 0 0)` | `oklch(0.16 0.018 260)` | Elevated surfaces and tool cards |
+| `--card` | `oklch(1 0 0)` | `oklch(0.155 0.018 260)` | Elevated surfaces and tool cards |
 | `--card-foreground` | `oklch(0.18 0.02 260)` | `oklch(0.98 0.005 250)` | Text inside cards |
-| `--muted` | `oklch(0.95 0.005 250)` | `oklch(0.22 0.02 260)` | Inactive pills, subtle tags |
-| `--muted-foreground` | `oklch(0.48 0.03 260)` | `oklch(0.70 0.02 260)` | Secondary labels, descriptions |
-| `--border` | `oklch(0.90 0.01 250)` | `oklch(0.24 0.02 260)` | Card and section borders |
-| `--input` | `oklch(0.92 0.01 250)` | `oklch(0.24 0.02 260)` | Form input borders |
-| `--ring` | `oklch(0.60 0.20 255)` | `oklch(0.68 0.20 250)` | Focus states and active outlines |
+| `--muted` | `oklch(0.94 0.008 250)` | `oklch(0.19 0.02 260)` | Inactive pills, subtle tags, input wells |
+| `--muted-foreground` | `oklch(0.46 0.03 260)` | `oklch(0.68 0.02 260)` | Secondary labels, descriptions |
+| `--border` | `oklch(0.89 0.012 250)` | `oklch(0.24 0.02 260)` | Card and section borders |
+| `--input` | `oklch(0.89 0.012 250)` | `oklch(0.24 0.02 260)` | Form input borders |
+| `--ring` | `oklch(0.52 0.22 260)` | `oklch(0.65 0.22 255)` | Focus states and active outlines |
 
 ### 1.2 Brand Accents (Electric Indigo & Cyan)
 

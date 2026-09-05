@@ -141,10 +141,13 @@ const structuredDataGraph = {
 
     <slot name="head" />
   </head>
-  <body class="bg-background text-foreground bg-surface text-on-surface antialiased min-h-screen flex flex-col selection:bg-primary/20 selection:text-primary">
+  <body class="bg-background text-foreground antialiased min-h-screen flex flex-col selection:bg-primary/20 selection:text-primary transition-colors duration-200">
     <div class="min-h-screen flex flex-col relative overflow-x-hidden">
-      <!-- Subtle Ambient Glow Accent -->
-      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-gradient-to-b from-primary/10 via-cyan-glow/5 to-transparent blur-3xl pointer-events-none -z-10"></div>
+      <!-- Subtle Technical Blueprint Dot Grid with Smooth Radial Mask -->
+      <div class="absolute inset-0 bg-grid-pattern opacity-40 dark:opacity-20 [mask-image:radial-gradient(ellipse_80%_60%_at_50%_15%,#000_50%,transparent_100%)] pointer-events-none -z-20"></div>
+
+      <!-- Smooth Ambient Radial Glow Accent (Extended smoothly past calculator) -->
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-[680px] bg-[radial-gradient(ellipse_75%_55%_at_50%_-5%,oklch(0.52_0.22_260_/_14%),transparent_70%)] dark:bg-[radial-gradient(ellipse_75%_55%_at_50%_-5%,oklch(0.65_0.22_255_/_16%),transparent_70%)] blur-2xl pointer-events-none -z-10"></div>
       
       <slot />
     </div>
