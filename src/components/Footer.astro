@@ -6,6 +6,7 @@
  */
 import { useTranslatedPath } from '../i18n/utils';
 import type { SupportedLanguage } from '../i18n/ui';
+import LogoIcon from './LogoIcon.astro';
 
 interface Props {
   lang?: SupportedLanguage;
@@ -20,8 +21,8 @@ const translatePath = useTranslatedPath(lang);
     {/* Brand Info */}
     <div class="flex flex-col gap-2 max-w-sm">
       <a href={translatePath('/')} class="flex items-center gap-2 group w-fit">
-        <div class="w-6 h-6 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-mono text-xs font-bold shadow-xs group-hover:scale-105 transition-transform">
-          IP
+        <div class="w-7 h-7 rounded-lg overflow-hidden shadow-xs group-hover:scale-105 transition-transform flex-shrink-0">
+          <LogoIcon class="w-full h-full" />
         </div>
         <span class="text-sm font-extrabold text-foreground tracking-tight group-hover:text-primary transition-colors">
           InchPixels<span class="text-primary">.com</span>

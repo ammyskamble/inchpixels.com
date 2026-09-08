@@ -4,6 +4,7 @@
  * Glassmorphic navigation bar with logo, anchors, language picker, and theme switcher.
  */
 import LanguagePicker from './LanguagePicker.astro';
+import LogoIcon from './LogoIcon.astro';
 import { getLangFromUrl, useTranslations } from '../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
@@ -14,8 +15,8 @@ const t = useTranslations(lang);
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
     {/* Brand Logo */}
     <a href={lang === 'en' ? '/' : `/${lang}/`} class="flex items-center gap-2.5 group">
-      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-cyan-glow flex items-center justify-center text-primary-foreground shadow-md shadow-primary/20 group-hover:scale-105 transition-transform">
-        <span class="font-mono font-black text-sm tracking-tighter">IN/PX</span>
+      <div class="w-9 h-9 rounded-xl shadow-md shadow-primary/20 group-hover:scale-105 transition-transform flex-shrink-0">
+        <LogoIcon class="w-full h-full" />
       </div>
       <div class="flex flex-col">
         <span class="text-base font-extrabold tracking-tight text-foreground flex items-center gap-1">
