@@ -1,0 +1,375 @@
+---
+/**
+ * ScrollToTop.astro
+ * High-performance, accessible bottom-right scroll-to-top button
+ * with circular SVG progress ring and dynamic percentage tooltip readout.
+ */
+---
+
+<aside
+  id="scroll-to-top-container"
+  class="stt-container"
+>
+  <!-- Dynamic live scroll percentage pill tooltip -->
+  <div
+    id="stt-pill"
+    class="stt-pill"
+    aria-hidden="true"
+  >
+    <span id="stt-pct-text">0%</span>
+    <span class="stt-pill-label">Top</span>
+  </div>
+
+  <!-- Primary interactive button -->
+  <button
+    id="scroll-to-top-btn"
+    type="button"
+    class="stt-btn"
+    aria-label="Scroll to top of page (0% scrolled)"
+    title="Scroll to top"
+  >
+    <!-- SVG Circular Progress Ring -->
+    <svg class="stt-svg" viewBox="0 0 48 48" aria-hidden="true">
+      <defs>
+        <linearGradient id="stt-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="var(--primary, #6366f1)" />
+          <stop offset="100%" stop-color="var(--cyan-glow, #06b6d4)" />
+        </linearGradient>
+      </defs>
+      <!-- Base Disc for contrast & dark mode -->
+      <circle class="stt-base-disc" cx="24" cy="24" r="21" />
+      <!-- Track Arc -->
+      <circle class="stt-track" cx="24" cy="24" r="19" />
+      <!-- Dynamic Progress Arc -->
+      <circle
+        id="stt-arc"
+        class="stt-arc"
+        cx="24"
+        cy="24"
+        r="19"
+        stroke-dasharray="119.38"
+        stroke-dashoffset="119.38"
+      />
+    </svg>
+
+    <!-- Up Arrow Icon -->
+    <span class="stt-icon-wrapper" aria-hidden="true">
+      <svg
+        class="stt-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M12 19V5M5 12l7-7 7 7" />
+      </svg>
+    </span>
+  </button>
+</aside>
+
+<style is:inline>
+  /* ─── Floating Container (Fixed Bottom-Right Corner) ─────────── */
+  .stt-container {
+    position: fixed;
+    bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+    right: calc(1.5rem + env(safe-area-inset-right, 0px));
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(16px) scale(0.9);
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0.3s;
+  }
+
+  .stt-container.stt-visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: translateY(0) scale(1) !important;
+  }
+
+  /* ─── Dynamic Live Scroll Percentage Pill ────────────────────── */
+  .stt-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    background: var(--card, #ffffff);
+    color: var(--foreground, #1e293b);
+    border: 1px solid var(--border, #e2e8f0);
+    box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+    pointer-events: none;
+    user-select: none;
+    opacity: 0;
+    transform: translateX(8px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    white-space: nowrap;
+  }
+
+  :where(.dark) .stt-pill {
+    background: var(--card, #1a1d2e);
+    color: var(--foreground, #f8fafc);
+    border-color: var(--border, #2d3149);
+    box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.4);
+  }
+
+  .stt-pill-label {
+    font-size: 0.68rem;
+    font-weight: 500;
+    color: var(--muted-foreground, #64748b);
+    border-left: 1px solid var(--border, #e2e8f0);
+    padding-left: 0.35rem;
+    margin-left: 0.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  :where(.dark) .stt-pill-label {
+    border-left-color: var(--border, #2d3149);
+    color: var(--muted-foreground, #94a3b8);
+  }
+
+  /* Show pill while active scrolling or on hover */
+  .stt-container.stt-scrolling .stt-pill,
+  .stt-container:hover .stt-pill {
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+  }
+
+  /* ─── Circular Action Button ──────────────────────────────────── */
+  .stt-btn {
+    position: relative;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 9999px;
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 14px -1px rgba(0, 0, 0, 0.1), 0 2px 6px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    outline: none;
+    touch-action: manipulation;
+  }
+
+  :where(.dark) .stt-btn {
+    box-shadow: 0 4px 16px -1px rgba(0, 0, 0, 0.4), 0 2px 6px -1px rgba(0, 0, 0, 0.2);
+  }
+
+  .stt-btn:focus-visible {
+    outline: 2px solid var(--primary, #6366f1);
+    outline-offset: 2px;
+  }
+
+  .stt-btn:hover {
+    transform: translateY(-2px) scale(1.06);
+    box-shadow: 0 10px 25px -3px rgba(99, 102, 241, 0.35), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  :where(.dark) .stt-btn:hover {
+    box-shadow: 0 10px 25px -3px rgba(99, 102, 241, 0.45), 0 4px 10px -2px rgba(0, 0, 0, 0.4);
+  }
+
+  .stt-btn:active {
+    transform: translateY(0) scale(0.95);
+  }
+
+  /* ─── SVG Elements & Progress Arc ────────────────────────────── */
+  .stt-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    transform: rotate(-90deg); /* Start progress at 12 o'clock */
+  }
+
+  .stt-base-disc {
+    fill: var(--card, #ffffff);
+    stroke: var(--border, #e2e8f0);
+    stroke-width: 1;
+    transition: fill 0.2s ease, stroke 0.2s ease;
+  }
+
+  :where(.dark) .stt-base-disc {
+    fill: var(--card, #1a1d2e);
+    stroke: var(--border, #2d3149);
+  }
+
+  .stt-btn:hover .stt-base-disc {
+    stroke: var(--primary, #6366f1);
+  }
+
+  .stt-track {
+    fill: none;
+    stroke: var(--border, #e2e8f0);
+    stroke-width: 3;
+    opacity: 0.5;
+  }
+
+  :where(.dark) .stt-track {
+    stroke: var(--border, #333852);
+    opacity: 0.6;
+  }
+
+  .stt-arc {
+    fill: none;
+    stroke: url(#stt-grad);
+    stroke-width: 3;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.08s linear;
+  }
+
+  /* ─── Arrow Icon ─────────────────────────────────────────────── */
+  .stt-icon-wrapper {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--foreground, #334155);
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
+  :where(.dark) .stt-icon-wrapper {
+    color: var(--foreground, #e2e8f0);
+  }
+
+  .stt-icon {
+    width: 1.15rem;
+    height: 1.15rem;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .stt-btn:hover .stt-icon-wrapper {
+    color: var(--primary, #6366f1);
+  }
+
+  .stt-btn:hover .stt-icon {
+    transform: translateY(-2px);
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .stt-container,
+    .stt-pill,
+    .stt-btn,
+    .stt-arc,
+    .stt-icon {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function initScrollToTopScript() {
+    function init() {
+      const container = document.getElementById('scroll-to-top-container');
+      const btn       = document.getElementById('scroll-to-top-btn');
+      const arc       = document.getElementById('stt-arc');
+      const pctText   = document.getElementById('stt-pct-text');
+
+      if (!container || !btn || !arc || !pctText) return;
+
+      // Circumference = 2 * Math.PI * 19 ≈ 119.3805
+      const RADIUS = 19;
+      const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
+      const SHOW_THRESHOLD = 180; // px scrolled before appearing
+
+      let hidePillTimer = null;
+      let isTicking = false;
+
+      function updateProgress() {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
+        const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight || 0;
+        const clientHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+        const maxScroll = scrollHeight - clientHeight;
+
+        const pct = maxScroll > 0 ? Math.min(Math.max(scrollTop / maxScroll, 0), 1) : 0;
+        const pctInt = Math.round(pct * 100);
+
+        // Show / hide button container
+        if (scrollTop > SHOW_THRESHOLD) {
+          container.classList.add('stt-visible');
+        } else {
+          container.classList.remove('stt-visible');
+          container.classList.remove('stt-scrolling');
+        }
+
+        // Update circular SVG progress
+        const offset = CIRCUMFERENCE * (1 - pct);
+        arc.style.strokeDashoffset = offset.toFixed(2);
+
+        // Update percentage text & aria accessibility label
+        pctText.textContent = pctInt + '%';
+        btn.setAttribute('aria-label', 'Scroll to top of page (' + pctInt + '% scrolled)');
+
+        // Briefly show percentage pill during active scrolling
+        if (scrollTop > SHOW_THRESHOLD) {
+          container.classList.add('stt-scrolling');
+          if (hidePillTimer) clearTimeout(hidePillTimer);
+          hidePillTimer = setTimeout(function() {
+            container.classList.remove('stt-scrolling');
+          }, 1200);
+        }
+      }
+
+      function onScroll() {
+        if (!isTicking) {
+          window.requestAnimationFrame(function() {
+            updateProgress();
+            isTicking = false;
+          });
+          isTicking = true;
+        }
+      }
+
+      function scrollToTop() {
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({
+          top: 0,
+          behavior: prefersReduced ? 'auto' : 'smooth'
+        });
+      }
+
+      // Scroll & resize listeners
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', updateProgress, { passive: true });
+
+      // Click to scroll up
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        scrollToTop();
+      });
+
+      // Initial check
+      updateProgress();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+
+    window.addEventListener('load', init);
+    document.addEventListener('astro:page-load', init);
+  })();
+</script>

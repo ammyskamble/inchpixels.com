@@ -187,3 +187,48 @@ html.theme-transitioning #theme-toggle-btn,
 html.theme-transitioning #theme-toggle-btn * {
   transition: transform 250ms ease, opacity 200ms ease, background-color 200ms ease, border-color 200ms ease !important;
 }
+
+/* ========================================================
+   SCROLL TO TOP WITH PROGRESS COMPONENT STYLES
+   ======================================================== */
+
+.stt-container {
+  bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+  right: calc(1.5rem + env(safe-area-inset-right, 0px));
+}
+
+.stt-container.stt-visible {
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
+  pointer-events: auto !important;
+}
+
+.stt-container.stt-scrolling .stt-pill,
+.stt-container:hover .stt-pill {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+}
+
+.stt-btn:hover {
+  border-color: var(--primary) !important;
+  box-shadow: 0 10px 25px -3px rgba(99, 102, 241, 0.35), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+:where(.dark) .stt-btn:hover {
+  box-shadow: 0 10px 25px -3px rgba(99, 102, 241, 0.45), 0 4px 10px -2px rgba(0, 0, 0, 0.4) !important;
+}
+
+.stt-btn:hover .stt-icon-wrapper svg {
+  color: var(--primary) !important;
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stt-container,
+  .stt-pill,
+  .stt-btn,
+  .stt-arc,
+  .stt-icon-wrapper svg {
+    transition: none !important;
+  }
+}
