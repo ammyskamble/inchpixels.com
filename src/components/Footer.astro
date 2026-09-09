@@ -67,7 +67,9 @@ const translatePath = useTranslatedPath(lang);
         <span class="font-bold text-foreground">Information</span>
         <a href={translatePath('/about-us')} class="hover:text-primary transition-colors">About Us</a>
         <a href={translatePath('/contact-us')} class="hover:text-primary transition-colors">Contact Us</a>
+        <Fragment set:html="<!--email_off-->" />
         <a href="mailto:support@inchpixels.com" class="hover:text-primary transition-colors">Email Support</a>
+        <Fragment set:html="<!--/email_off-->" />
       </div>
 
       {/* Legal Pages */}

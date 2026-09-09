@@ -94,6 +94,7 @@ const translatePath = useTranslatedPath(lang);
         If you have any questions, clarifications, or concerns regarding this Privacy Policy, please reach out directly:
       </p>
       <div class="pt-2">
+        <Fragment set:html="<!--email_off-->" />
         <a
           href="mailto:privacy@inchpixels.com"
           class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors shadow-xs"
@@ -101,6 +102,7 @@ const translatePath = useTranslatedPath(lang);
           <span>✉️</span>
           <span>privacy@inchpixels.com</span>
         </a>
+        <Fragment set:html="<!--/email_off-->" />
       </div>
     </section>
   </div>

@@ -78,25 +78,16 @@ for (let i = 1; i <= 100; i++) {
             <th scope="col" class="py-3.5 px-4">Metric (cm)</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-border/40 font-mono tabular-numbers text-foreground">
+        <tbody class="divide-y divide-border/40 font-mono tabular-numbers" id="conversion-tbody">
           {rows.map((row) => (
-            <tr class="even:bg-muted/25 hover:bg-muted/50 dark:even:bg-white/[0.02] dark:hover:bg-muted/40 transition-colors table-row-item" data-inch={row.inches}>
-              <td class="py-2.5 px-4 font-sans font-bold text-foreground">
-                <a
-                  href={`/?mode=1d&val=${row.inches}&dpi=300`}
-                  class="hover:text-primary transition-colors inline-flex items-center gap-1 group"
-                  title={`Open ${row.inches} inches in interactive calculator`}
-                >
-                  <span>{row.inches}"</span>
-                  <span class="text-[10px] text-muted-foreground group-hover:text-primary opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
-                </a>
-              </td>
-              <td class="py-2.5 px-4 text-muted-foreground">{row.px72.toLocaleString()} px</td>
-              <td class="py-2.5 px-4 font-semibold text-primary">{row.px96.toLocaleString()} px</td>
-              <td class="py-2.5 px-4 text-muted-foreground">{row.px150.toLocaleString()} px</td>
-              <td class="py-2.5 px-4 font-bold text-success">{row.px300.toLocaleString()} px</td>
-              <td class="py-2.5 px-4 text-muted-foreground">{row.px600.toLocaleString()} px</td>
-              <td class="py-2.5 px-4 text-muted-foreground">{row.cm} cm</td>
+            <tr class="table-row-item" data-inch={row.inches}>
+              <td><a href={`/?mode=1d&val=${row.inches}&dpi=300`}>{row.inches}"</a></td>
+              <td>{row.px72.toLocaleString()} px</td>
+              <td class="col-dpi-96">{row.px96.toLocaleString()} px</td>
+              <td>{row.px150.toLocaleString()} px</td>
+              <td class="col-dpi-300">{row.px300.toLocaleString()} px</td>
+              <td>{row.px600.toLocaleString()} px</td>
+              <td>{row.cm} cm</td>
             </tr>
           ))}
         </tbody>
@@ -134,3 +125,58 @@ for (let i = 1; i <= 100; i++) {
     });
   }
 </script>
+
+<style is:global>
+  #conversion-tbody tr {
+    transition: background-color 150ms ease;
+  }
+  #conversion-tbody tr:nth-child(even) {
+    background-color: color-mix(in srgb, var(--color-muted, currentColor) 25%, transparent);
+  }
+  #conversion-tbody tr:hover {
+    background-color: color-mix(in srgb, var(--color-muted, currentColor) 50%, transparent);
+  }
+  .dark #conversion-tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.02);
+  }
+  .dark #conversion-tbody tr:hover {
+    background-color: color-mix(in srgb, var(--color-muted, currentColor) 40%, transparent);
+  }
+  #conversion-tbody td {
+    padding: 0.625rem 1rem;
+    color: var(--color-muted-foreground);
+  }
+  #conversion-tbody td:first-child {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    color: var(--color-foreground);
+  }
+  #conversion-tbody td a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: color 150ms ease;
+  }
+  #conversion-tbody td a:hover {
+    color: var(--color-primary);
+  }
+  #conversion-tbody td a::after {
+    content: "↗";
+    font-size: 10px;
+    opacity: 0;
+    transition: opacity 150ms ease, color 150ms ease;
+    color: var(--color-muted-foreground);
+  }
+  #conversion-tbody td a:hover::after {
+    opacity: 1;
+    color: var(--color-primary);
+  }
+  #conversion-tbody .col-dpi-96 {
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+  #conversion-tbody .col-dpi-300 {
+    font-weight: 700;
+    color: var(--color-success);
+  }
+</style>

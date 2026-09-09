@@ -8,9 +8,10 @@ interface Props {
   lang: SupportedLanguage;
   title: string;
   description: string;
+  noindex?: boolean;
 }
 
-const { lang, title, description } = Astro.props;
+const { lang, title, description, noindex = false } = Astro.props;
 const siteUrl = 'https://inchpixels.com';
 
 // Normalize path to root equivalent (removes current /lang/ prefix if present)
@@ -69,6 +70,7 @@ const structuredDataGraph = {
 <html lang={lang}>
   <head>
     <!-- Google tag (gtag.js) -->
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RTDHDD2SY4"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
@@ -82,19 +84,22 @@ const structuredDataGraph = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalUrl} />
     <link rel="sitemap" href="/sitemap-index.xml" />
-
-    <!-- SEO: hreflang tags for all 8 supported languages -->
-    {Object.keys(languages).map((locale) => (
-      <link
-        rel="alternate"
-        hreflang={locale}
-        href={getLocalizedUrl(locale)}
-      />
-    ))}
-    <!-- Fallback default -->
-    <link rel="alternate" hreflang="x-default" href={xDefaultUrl} />
+    {noindex ? (
+      <meta name="robots" content="noindex, nofollow" />
+    ) : (
+      <>
+        <link rel="canonical" href={canonicalUrl} />
+        {Object.keys(languages).map((locale) => (
+          <link
+            rel="alternate"
+            hreflang={locale}
+            href={getLocalizedUrl(locale)}
+          />
+        ))}
+        <link rel="alternate" hreflang="x-default" href={xDefaultUrl} />
+      </>
+    )}
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -135,13 +140,23 @@ const structuredDataGraph = {
       })();
     </script>
 
-    <!-- Google Fonts Preconnect & Styles -->
+    <!-- Google Fonts Preconnect, DNS-Prefetch & Non-blocking Asynchronous Stylesheet -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
       rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      />
+    </noscript>
 
     <!-- Favicon & Web App Manifest -->
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
@@ -151,8 +166,10 @@ const structuredDataGraph = {
     <meta name="apple-mobile-web-app-title" content="InchPixlet" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Structured Data JSON-LD -->
-    <script type="application/ld+json" set:html={JSON.stringify(structuredDataGraph)} />
+    <!-- Structured Data JSON-LD (suppressed on noindex/error pages) -->
+    {!noindex && (
+      <script type="application/ld+json" set:html={JSON.stringify(structuredDataGraph)} />
+    )}
 
     <slot name="head" />
   </head>

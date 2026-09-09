@@ -145,12 +145,14 @@ const translatePath = useTranslatedPath(lang);
           Prefer using your default email client? Drop us a line directly anytime:
         </p>
         <div>
+          <Fragment set:html="<!--email_off-->" />
           <a
             href="mailto:support@inchpixels.com"
             class="font-mono text-xs font-bold text-primary hover:underline break-all"
           >
             support@inchpixels.com
           </a>
+          <Fragment set:html="<!--/email_off-->" />
         </div>
       </div>
 

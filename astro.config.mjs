@@ -16,7 +16,7 @@ export default defineConfig({
     },
   },
   build: {
-    inlineStylesheets: 'always',
+    inlineStylesheets: 'auto',
   },
   vite: {
     plugins: [tailwindcss()],
