@@ -1,0 +1,224 @@
+---
+title: "How to Convert Scanned Documents to Exact Digital Dimensions"
+description: "A complete guide to scanning physical documents at the right DPI, calculating precise pixel dimensions for any paper size, and delivering archival-quality or web-ready digital files. Covers scanners, OCR, paper standards, and archival specifications."
+publishDate: 2026-09-20
+author: "InchPixels Team"
+cluster: how-to
+tags: ["scanning", "DPI", "document digitization", "OCR", "archival", "PDF", "A4", "letter size"]
+readingTime: 9
+faqs:
+  - q: "What DPI should I scan documents at?"
+    a: "It depends on the use case. For simple reference copies (email, basic archiving): 200 DPI. For text documents requiring OCR (searchable PDF, data extraction): 300 DPI minimum, 400 DPI recommended. For fine-text archival (legal documents, manuscripts): 400–600 DPI. For photographs embedded in documents: 400–600 DPI. For archival of handwritten manuscripts with very fine detail: 600 DPI."
+  - q: "How many pixels is an A4 page at 300 DPI?"
+    a: "An A4 sheet measures 210 × 297 mm (8.27 × 11.69 inches). At 300 DPI: 8.27 × 300 = 2481 pixels wide, 11.69 × 300 = 3507 pixels tall. So an A4 scan at 300 DPI produces an image of approximately 2481 × 3507 pixels."
+  - q: "What is the difference between 200 DPI and 300 DPI for scanning?"
+    a: "At 200 DPI, standard 12pt body text is readable but fine details (small footnotes, thin chart lines) may lose clarity. At 300 DPI, standard text is captured sharply and OCR accuracy improves significantly. The file size at 300 DPI is approximately 2.25× larger than at 200 DPI (since you're capturing 1.5× as many pixels in each dimension). For any professional or archival purpose, always scan at 300 DPI minimum."
+  - q: "Can I scan at a lower DPI and upscale later?"
+    a: "No. Upscaling a 200 DPI scan to appear as 300 DPI does not add any real detail — it just makes the existing pixels larger through interpolation, resulting in a blurry image. The detail capture happens at the moment of scanning. If you need 300 DPI quality, you must scan at 300 DPI. Upscaling never recovers information that wasn't captured."
+  - q: "What format should I save scanned documents in?"
+    a: "For archival storage: TIFF (lossless, preserves all scan data). For searchable PDFs: PDF/A with embedded OCR text (use Acrobat Pro, ABBYY FineReader, or open-source Tesseract). For sharing/email: JPEG at 85% quality or PDF. For web display: JPEG or WebP. Never use lossy JPEG compression for archival copies — JPEG artefacts accumulate each time you re-save."
+  - q: "What is PDF/A and why should I use it for archiving?"
+    a: "PDF/A is an ISO standard (ISO 19005) designed for long-term archival of PDF documents. Unlike regular PDF, PDF/A requires all fonts and colour profiles to be embedded, prohibits encryption and password protection, and restricts dynamic content (JavaScript, multimedia). It ensures the document can be reliably rendered 50 years from now, regardless of what software exists then. Use PDF/A-1b for most archival work."
+---
+
+import ConversionTable from '../../components/blog/ConversionTable.astro';
+import CalloutBox from '../../components/blog/CalloutBox.astro';
+
+## The Core Challenge of Scanning
+
+Scanning bridges two worlds: the physical — paper, photographs, handwriting — and the digital. The bridge must be crossed carefully, because information can only travel in one direction. A scan with insufficient resolution cannot be "fixed" later. Fine text becomes unreadable smear, photograph grain gets lost, and archival value is permanently degraded.
+
+This guide gives you the exact pixel counts, DPI settings, and file format choices you need to digitise documents correctly — the first time.
+
+---
+
+## Part 1: Understanding How Scanners Work
+
+A flatbed scanner uses a **charge-coupled device (CCD)** or **contact image sensor (CIS)** — a row of light-sensitive elements — that travels across the document. As it moves, it samples the reflectance of the paper at regular intervals.
+
+The **DPI setting** controls how many samples are taken per inch. At 300 DPI, the scanner takes 300 measurements in each horizontal inch and moves 300 times per vertical inch. This produces a grid of 300 × 300 = 90,000 pixels per square inch.
+
+The higher the DPI, the more detail is captured — and the larger the resulting file.
+
+### Optical vs. interpolated DPI
+
+This is a critical distinction that scanner manufacturers frequently obscure in marketing:
+
+**Optical DPI** is the true hardware resolution — the actual number of light-sensing elements per inch in the CCD strip. This is the real resolution of the scan.
+
+**Interpolated DPI** is software-generated: the scanner captures at its optical resolution and then upscales the result using interpolation algorithms (the same blurry process described in the pixel scaling guide). A scanner advertised at "9600 DPI" likely has an optical resolution of 1200–2400 DPI.
+
+**Always scan at or below the scanner's optical DPI.** Any DPI setting above the optical maximum is just software upscaling — it adds file size without adding real detail.
+
+<CalloutBox type="warning" title="Check Your Scanner's Actual Optical DPI">
+  Find the technical specifications in your scanner's manual or the manufacturer's website. Look for "optical resolution" specifically — not the maximum advertised DPI. Most flatbed scanners used in offices have optical resolutions of 600–1200 DPI. Beyond that, you're paying for interpolation.
+</CalloutBox>
+
+---
+
+## Part 2: DPI Settings for Every Use Case
+
+### Quick reference
+
+| Use Case | Recommended DPI | Notes |
+|---|---|---|
+| Quick reference copy (read-only) | 150–200 DPI | Readable on screen, small file |
+| Standard office archiving | 300 DPI | Good balance of quality and size |
+| OCR and text extraction | 300–400 DPI | Higher = better OCR accuracy |
+| Handwritten documents | 400–600 DPI | Fine script needs higher density |
+| Photographs (in documents) | 400–600 DPI | Captures halftone detail |
+| Government / legal archival | 300–400 DPI | ISO 19005 / FADGI standards |
+| Rare manuscripts, artwork | 600 DPI | Maximum practical flatbed resolution |
+| Microfilm / microfiche | 400–600 DPI | Very fine original requires high density |
+
+### Why OCR needs 300 DPI minimum
+
+Optical Character Recognition (OCR) software analyses the shapes of individual characters. Below 200 DPI, the pixels forming letter curves and strokes blur together — "m" can be confused with "rn", "6" with "b", punctuation becomes indistinct. At 300 DPI, each character is resolved with enough pixels that OCR accuracy rates (for clean, printed text) exceed 99%.
+
+At 400 DPI, even poor-quality photocopies and faded documents become reliably readable by OCR software.
+
+---
+
+## Part 3: Exact Pixel Dimensions for Every Standard Paper Size
+
+Use this reference table to calculate your final pixel dimensions before scanning. This helps you verify your scanner output and ensure you're getting exactly what you need.
+
+<ConversionTable
+  caption="Standard paper sizes → exact pixel dimensions at scanning DPI settings"
+  rows={[
+    { label: "Wallet / 2×3\"",      inches: "2 × 3",       px150: "300×450",   px300: "600×900",   px600: "1200×1800"  },
+    { label: "Business Card",       inches: "3.5 × 2",     px150: "525×300",   px300: "1050×600",  px600: "2100×1200"  },
+    { label: "A5 / Half-Letter",    inches: "5.83 × 8.27", px150: "874×1241",  px300: "1748×2481", px600: "3496×4962"  },
+    { label: "US Letter (8.5×11)",  inches: "8.5 × 11",    px150: "1275×1650", px300: "2550×3300", px600: "5100×6600"  },
+    { label: "A4 (210×297mm)",      inches: "8.27 × 11.69",px150: "1241×1754", px300: "2481×3508", px600: "4962×7016"  },
+    { label: "US Legal (8.5×14)",   inches: "8.5 × 14",    px150: "1275×2100", px300: "2550×4200", px600: "5100×8400"  },
+    { label: "A3 (297×420mm)",      inches: "11.69 × 16.54",px150: "1754×2481",px300: "3508×4962", px600: "7016×9924"  },
+    { label: "Tabloid / B (11×17)", inches: "11 × 17",     px150: "1650×2550", px300: "3300×5100", px600: "6600×10200" },
+  ]}
+/>
+
+---
+
+## Part 4: The Scanning Workflow — Step by Step
+
+### Before you scan
+
+**1. Clean the glass.**
+Scanner glass accumulates dust, fingerprints, and fibres that appear as spots in your scans. Wipe with a lint-free cloth (microfibre, not paper towel) and a small amount of glass cleaner. Let it dry completely.
+
+**2. Flatten the document.**
+Curved or bent pages create shadows and focus loss at the edges. Use the document feeder for multi-page flat documents, but scan books and bent documents on the flatbed, pressing gently on the lid.
+
+**3. Remove staples and paper clips.**
+They scratch the glass and can damage the CCD when the lid presses down.
+
+**4. Check document orientation.**
+Place the document face-down, aligned to the corner registration marks on the scanner bed. Consistent alignment means consistent digital output.
+
+### Configuring the scanner
+
+**Mode:** Colour for colour documents and photographs. Grayscale for black-and-white text documents (smaller file size, slightly sharper text rendering). Black-and-white (1-bit) only for simple forms and line drawings.
+
+**DPI:** Per the reference table above. Set the optical DPI for your use case.
+
+**File format during scanning:** Set your scanner to output TIFF for archival, or JPEG for casual reference copies. Never scan directly to JPEG if you plan to edit and re-save — each save cycle degrades JPEG quality.
+
+**Preview and crop:** Use the preview function to set the exact scan area. Cropping tightly removes scanner bed edges and reduces file size.
+
+### Post-scan processing
+
+**Deskew:** Most scanning software includes automatic deskew — it corrects for the slight angle introduced when placing a document imperfectly. Apply this to every scan.
+
+**White balance / brightness:** If pages appear yellowish or grey, adjust brightness and contrast to bring the background to near-white. This dramatically improves OCR accuracy and reading comfort.
+
+**Despeckle:** Removes random noise dots from the scan. Apply conservatively — heavy despeckle can damage fine text.
+
+---
+
+## Part 5: File Format Guide for Scanned Documents
+
+| Format | Compression | Best for | Notes |
+|---|---|---|---|
+| TIFF | Lossless | Archival masters | Large files, preserves all scan data |
+| PDF/A | Varies | Legal/gov archiving | ISO standard for long-term archival |
+| JPEG | Lossy | Email, casual sharing | Use quality 85–95; never re-save repeatedly |
+| PNG | Lossless | Screenshots, forms | Large for photos; ideal for B&W line art |
+| WebP | Lossy/Lossless | Web publication of scans | Modern, efficient; JPEG fallback recommended |
+| JBIG2 | Lossless (B&W) | B&W text documents in PDF | Highly efficient for text-only scans |
+
+### TIFF vs. PDF for archiving
+
+**TIFF** stores raw pixel data. It's the rawest, most flexible archival format. Each page is a separate file (or use multi-page TIFF). Works with every image editing tool. No special software needed to render.
+
+**PDF/A** stores the scan as an embedded image, plus optionally a layer of OCR text (making it searchable). It's the preferred format for document management systems and legal archiving because it bundles pages, metadata, and text search in one file.
+
+For most workflows: **scan to TIFF as your master**, then create a PDF/A from the TIFF for distribution and long-term storage.
+
+<CalloutBox type="tip" title="Creating Searchable PDF from a TIFF Scan">
+  1. Scan to TIFF at 300–400 DPI
+  2. Open in Adobe Acrobat → Tools → Recognize Text (OCR)
+  3. Save as PDF/A-1b
+
+  Free alternative: **Tesseract OCR** (command line) or **NAPS2** (GUI, Windows) can convert TIFF to searchable PDF without Acrobat.
+</CalloutBox>
+
+---
+
+## Part 6: Archival Standards — What Professional Institutions Use
+
+If you're digitising documents for institutional purposes, government compliance, or long-term preservation, these standards apply:
+
+### FADGI (Federal Agencies Digital Guidelines Initiative)
+The US Federal standard for digitising cultural heritage materials.
+
+| Content Type | Minimum DPI |
+|---|---|
+| Handwritten text | 400 DPI |
+| Printed text | 300–400 DPI |
+| Photographs (reflective) | 400 DPI at short dimension |
+| Maps and large-format | 400 DPI |
+
+### ISO 19005 (PDF/A)
+The international standard for archival PDF. Requires:
+- All fonts embedded
+- No encryption or passwords
+- No JavaScript or dynamic elements
+- Colour profiles embedded (ICC)
+
+### British Library / Library of Congress standards
+Generally align with FADGI: 300–400 DPI for text, 400 DPI for photographs, TIFF masters with PDF/A derivatives.
+
+---
+
+## Part 7: Special Scanning Challenges
+
+### Bound books
+
+Flatbed scanners struggle with bound books — the pages curve away from the glass near the spine, creating blurry edges and shadow gradients. Options:
+
+1. **Book scanners** (overhead or V-cradle design) — designed for this purpose
+2. **Scan in two halves** and merge in Photoshop (deskew + Content-Aware Fill for shadow removal)
+3. **Camera scanning** — a DSLR or phone with a flat-lay setup and good lighting can outperform flatbed scanners for books
+
+### Glossy photographs
+
+Flatbed scans of glossy photos often show **newton rings** — interference patterns between the glass and the photo surface. Solutions:
+- Slightly elevate the photo off the glass using thin spacers at the corners (a few paper layers)
+- Use a film scanner if the photo is a negative/slide
+
+### Old/fragile documents
+
+Never press down hard on fragile documents. If a document is too fragile for the scanner lid, use a book scanner or camera rig.
+
+Use cotton gloves when handling original documents — oils from skin can cause long-term damage to paper.
+
+---
+
+## Key Takeaways
+
+- **Scan at 300 DPI** for standard text archiving and OCR; **400–600 DPI** for fine detail and photographs.
+- Optical DPI is the real resolution of your scanner. Interpolated DPI is just software upscaling — ignore it.
+- An A4 page at 300 DPI = **2481 × 3507 pixels**. A US Letter at 300 DPI = **2550 × 3300 pixels**.
+- Save archival masters as **TIFF** (lossless). Distribute as **PDF/A** with embedded OCR text.
+- Never upscale a low-DPI scan expecting higher quality — the detail must be captured at scan time.
+- Post-scan: always apply deskew, check white balance, and verify text is legible before discarding originals.

@@ -1,0 +1,259 @@
+---
+title: "How to Set Up a Print-Ready Canvas in Adobe Photoshop: Bleed, DPI & CMYK"
+description: "A complete step-by-step guide for setting up a professional print-ready canvas in Adobe Photoshop. Covers document resolution (300 DPI), CMYK vs RGB colour profiles, bleed lines, safe zones, and how to export a press-quality PDF."
+publishDate: 2026-09-16
+author: "InchPixels Team"
+cluster: how-to
+tags: ["Photoshop", "print design", "CMYK", "bleed", "300 DPI", "print-ready", "PDF export"]
+readingTime: 12
+faqs:
+  - q: "What resolution should I use in Photoshop for print?"
+    a: "The professional standard is 300 PPI (pixels per inch) at the final intended print size. For very large prints viewed from a distance (banners, posters), 150 PPI can be acceptable. Never go below 150 PPI for professional print output. Set this in Photoshop when creating the new document: File → New → set Resolution to 300 Pixels/Inch."
+  - q: "What is bleed in print design?"
+    a: "Bleed is a margin of extra artwork — typically 3mm (0.125 inches) on every edge — that extends beyond the final trim size. Printers cut printed sheets slightly imprecisely (±1–2mm). Without bleed, this cutting imprecision can leave a thin white strip of unprinted paper at the edge of your finished piece. Bleed ensures the artwork fills all the way to the trim edge even if the cut is slightly off."
+  - q: "Should I design in CMYK or RGB in Photoshop?"
+    a: "Design in CMYK if your final output is a commercial offset or digital print. Printers use four ink channels (Cyan, Magenta, Yellow, Key/Black), and working in CMYK ensures that colours you see in Photoshop are reproducible in print. Use RGB for web, social media, and screen output. Important: some Photoshop effects and filters are only available in RGB mode — if needed, design in RGB and convert to CMYK at the end, checking for colour shifts."
+  - q: "What is the safe zone in print design?"
+    a: "The safe zone (also called live area) is an inset margin — typically 5mm (0.2 inches) from each trim edge — where all important text and graphics should live. Because cutting can shift slightly, anything too close to the trim line might get cut off. Logos, headlines, and key information must always stay within the safe zone."
+  - q: "How do I export a print-ready PDF from Photoshop?"
+    a: "Go to File → Save a Copy → choose Photoshop PDF. In the export dialog, select the PDF/X-1a or PDF/X-4 preset — these are industry-standard formats accepted by virtually all professional printers. Make sure 'Preserve Photoshop Editing Capabilities' is unchecked for the smallest file size that printers can handle efficiently. Always ask your print provider for their specific PDF specification if unsure."
+  - q: "What is the difference between PDF/X-1a and PDF/X-4?"
+    a: "PDF/X-1a is an older, simpler standard that only allows CMYK and spot colours, requires all fonts to be embedded, and does not support transparency. It is accepted by almost all printers and is the safest choice if you're unsure. PDF/X-4 is a newer standard that supports transparency natively and can include RGB or LAB colours (the printer's workflow converts them). PDF/X-4 is preferred for modern digital print workflows."
+---
+
+import ConversionTable from '../../components/blog/ConversionTable.astro';
+import CalloutBox from '../../components/blog/CalloutBox.astro';
+
+## Before You Open Photoshop
+
+The most common print design mistake happens before a single pixel is placed: starting with the wrong document settings. Fixing resolution or colour mode midway through a complex design is painful. These settings must be correct from the very first click.
+
+This guide walks you through the complete setup process — from creating the document to exporting the final PDF your printer will accept without rejecting.
+
+---
+
+## Step 1: Know Your Specs Before Creating the Document
+
+Before opening Photoshop, you need four numbers:
+
+1. **Final trim size** — the exact dimensions of the finished piece after cutting
+2. **Bleed amount** — typically 3mm (0.125") per side, sometimes 5mm (0.196") for large format
+3. **Resolution** — 300 PPI for standard print
+4. **Colour mode** — CMYK for professional printing
+
+**Common print sizes with bleed added:**
+
+<ConversionTable
+  caption="Standard print sizes + bleed at 300 DPI — document pixel dimensions"
+  rows={[
+    { label: "Business Card (with 3mm bleed)",  inches: "3.75 × 2.25",  px300: "1125×675"  },
+    { label: "A6 Flyer (with 3mm bleed)",       inches: "4.72 × 6.93",  px300: "1417×2079" },
+    { label: "DL Envelope (with 3mm bleed)",    inches: "4.37 × 8.62",  px300: "1311×2587" },
+    { label: "A5 Leaflet (with 3mm bleed)",     inches: "5.98 × 8.50",  px300: "1795×2551" },
+    { label: "A4 Document (with 3mm bleed)",    inches: "8.74 × 12.13", px300: "2622×3638" },
+    { label: "Letter (with 0.125\" bleed)",     inches: "8.75 × 11.25", px300: "2625×3375" },
+    { label: "Square Poster 12×12 (with bleed)",inches: "12.25 × 12.25",px300: "3675×3675" },
+    { label: "18×24\" Poster (with bleed)",     inches: "18.25 × 24.25",px300: "5475×7275" },
+  ]}
+  showDpi={[300]}
+/>
+
+> Always create your document at the **bleed-included** dimensions. You'll set up guides later to mark the trim line.
+
+---
+
+## Step 2: Create the New Document Correctly
+
+Open Photoshop and go to **File → New** (Cmd/Ctrl+N).
+
+In the New Document dialog, set the following — in this exact order:
+
+### Document Name
+Give it a descriptive name: `business-card-final-print` not just `untitled-1`. You'll thank yourself in six months.
+
+### Width and Height
+Enter your final trim size **plus bleed** on each side.
+
+For a standard business card (3.5 × 2 inches) with 3mm bleed:
+- 3mm = 0.118 inches, rounded to 0.125 inches (1/8")
+- Total: 3.5 + 0.25 = **3.75 inches** wide
+- Total: 2.0 + 0.25 = **2.25 inches** tall
+
+### Resolution
+Set to **300 Pixels/Inch**. Do not use 72 or 96 — those are screen resolutions.
+
+For large format (banners, posters viewed from 3+ feet): 150 PPI is acceptable.
+
+### Colour Mode
+**CMYK Color, 8-bit** for standard professional printing.
+
+Exception: if you're designing for an online printer that specifically requests RGB (some digital print services do), use RGB. Always check the printer's spec sheet.
+
+### Background Contents
+White — unless your design has a full-bleed coloured background, in which case you'll paint it anyway.
+
+<CalloutBox type="tip" title="Use Photoshop's Print Document Preset">
+  In newer versions of Photoshop, click "Print" in the preset tabs at the top of the New Document dialog. Photoshop shows you pre-configured settings for common print sizes (US Letter, A4, etc.) at 300 DPI in CMYK. These are a great starting point.
+</CalloutBox>
+
+---
+
+## Step 3: Set Up Bleed and Safe Zone Guides
+
+Your document is now sized to include bleed. Now you need visual guides to show where the bleed ends and where the safe zone begins.
+
+Go to **View → Guides → New Guide Layout**.
+
+In the dialog:
+
+**For a business card (3.75 × 2.25" document, bleed = 0.125", safe zone = 0.25" from trim):**
+
+- Set guides at 0.125" from each edge (this marks the trim line — the bleed boundary)
+- Set guides at 0.375" from each edge (trim line + safe zone margin)
+
+Alternatively, go to **Edit → Preferences → Guides, Grid & Slices** and use the **Rulers** + manual guide dragging:
+
+1. Press `Cmd/Ctrl+R` to show rulers
+2. Click and drag from the ruler onto the canvas to place a guide
+3. Double-click any guide to enter its exact position numerically
+
+Your canvas now has three zones:
+- **Beyond the outer guides** = bleed area (artwork must fill this)
+- **Between outer and inner guides** = caution zone (avoid placing critical elements here)
+- **Inside the inner guides** = safe zone (all text, logos, and key elements must stay here)
+
+---
+
+## Step 4: Understanding Colour Mode — CMYK vs RGB
+
+This is the most technically important choice in print design, and the one most beginners get wrong.
+
+### Why print uses CMYK
+
+Monitors *emit* light. They create colour by mixing Red, Green, and Blue light sources (additive colour mixing). White is all three at maximum. Black is all off.
+
+Printers *absorb* light. Ink on paper reflects some wavelengths and absorbs others (subtractive colour mixing). The four CMYK inks — Cyan, Magenta, Yellow, and Black (Key) — are chosen because they absorb specific colour ranges efficiently. Mixed in varying percentages, they can reproduce a wide range of colours.
+
+**The core problem:** The RGB colour gamut (the range of colours a monitor can show) is larger than the CMYK gamut (the range of colours a printer can reproduce). Vivid electric blues, neon greens, and bright oranges that look stunning on screen often print as muddy, muted versions of themselves.
+
+### How to handle colour conversion
+
+**Option A (Recommended):** Design in CMYK from the start.
+
+You see CMYK colours throughout and what you see is (approximately) what you'll print. Some Photoshop features (certain filters, blending modes) are disabled in CMYK — this is a minor trade-off.
+
+**Option B:** Design in RGB, convert at the end.
+
+Go to **Image → Mode → CMYK Color** before export. Photoshop will ask if you want to merge/flatten — say yes. After conversion, **carefully review every colour** in your design. Use the **Gamut Warning** (View → Gamut Warning) to highlight any colours that fall outside the printable CMYK range. Adjust those colours manually.
+
+<CalloutBox type="warning" title="RGB-to-CMYK Colour Shift Warning">
+  Bright purples, neon greens, electric blues, and vivid oranges are notorious for looking radically different after CMYK conversion. Pure RGB red (255, 0, 0) converts to approximately C:0 M:100 Y:100 K:0 — which is a bright orange-red, not a pure red, in CMYK. Always proof your colours before committing to a large print run.
+</CalloutBox>
+
+### Spot colours
+
+Some designs call for exact brand colours that must match perfectly — no variation. For these, professional offset printers use **spot colours** (Pantone, also called PMS colours). Spot colours are pre-mixed inks, not CMYK blends, so they reproduce consistently across any press.
+
+In Photoshop: open the Channels panel, create a **Spot Color** channel, and assign it a Pantone swatch. This is an advanced workflow typically used for high-volume brand printing.
+
+---
+
+## Step 5: Build Your Design with Print in Mind
+
+With the document properly set up, here are the key rules for everything you place on the canvas:
+
+**Rule 1: Extend background colours and images to the bleed edge**
+
+Any artwork that touches the edge of the final piece must extend all the way to the bleed boundary (the outer guides). If your business card has a dark blue background, that blue must extend 0.125" beyond the trim line on every side.
+
+**Rule 2: Keep text and logos inside the safe zone**
+
+All critical content — your name, phone number, logo — must stay at least 5mm (0.2") from the trim line. Some printers recommend 3mm minimum, but 5mm is safer.
+
+**Rule 3: Use spot healing carefully**
+
+Photoshop's Content-Aware Fill and Healing Brush work in CMYK mode, but they can produce colour shifts at the conversion boundary. Always check after applying.
+
+**Rule 4: Work in 16-bit for image editing, 8-bit for final export**
+
+If your design includes extensive photo editing (colour grading, retouching), work in 16-bit for more gradation depth. Convert to 8-bit before export (Image → Mode → 8 Bits/Channel) — most printers only accept 8-bit files, and 16-bit files are enormous.
+
+---
+
+## Step 6: Preparing Fonts for Print
+
+Fonts are a common source of print failures. Two rules:
+
+**Never send editable text to a print provider.** They may not have your fonts installed, causing substitution and completely wrong layouts.
+
+In Photoshop, you have two options:
+1. **Rasterize all text layers** (Layer → Rasterize → Type) — converts text to pixels. Simple but irreversible.
+2. **Flatten the entire image before export** (Layer → Flatten Image) — merges everything to a single pixel layer.
+
+For PDF export (the professional approach), fonts are embedded automatically in the PDF — you don't need to rasterize.
+
+---
+
+## Step 7: Exporting the Print-Ready PDF
+
+This is the final step. Go to **File → Save a Copy** and choose **Photoshop PDF** as the format.
+
+In the PDF export dialog:
+
+### Adobe PDF Preset
+Select **PDF/X-1a:2001** — this is the universal safe choice for offset and digital printing. It:
+- Converts all colours to CMYK
+- Embeds all fonts
+- Flattens all transparency
+- Produces a file virtually every printer can open
+
+If your printer specifically requests PDF/X-4, use that instead — it supports transparency natively.
+
+### Compression settings
+For **Colour Images**: JPEG compression at Maximum quality (quality 10–12), or ZIP for lossless.
+For **Grayscale Images**: Same settings.
+
+Avoid heavy JPEG compression (below quality 8) for print — the compression artefacts become visible in print.
+
+### Marks and Bleeds
+
+✅ Check **Crop Marks** — printers use these to know exactly where to cut
+✅ Check **Bleed Marks**
+In Bleed section: enter your bleed amount (**0.125"** or **3mm** on all sides)
+
+### Output
+Colour Conversion: **Convert to Destination (Preserve Numbers)**
+Destination: **Coated FOGRA39** (the standard European offset print profile) or **U.S. Web Coated (SWOP) v2** (North America standard). Ask your printer which to use.
+
+Click **Save PDF**. Your file is ready.
+
+<CalloutBox type="tip" title="Always Request a Digital Proof">
+  Before approving any print run, ask your printer for a **digital soft proof** (a PDF with colour simulation) or a **hard proof** (a physical printed sample). The cost of a proof is trivial compared to the cost of reprinting an entire run because of a colour error you could have caught.
+</CalloutBox>
+
+---
+
+## Complete Pre-Flight Checklist
+
+Before submitting any print file, verify each item:
+
+- ✅ Document resolution: 300 PPI (or 150 PPI for large format)
+- ✅ Colour mode: CMYK
+- ✅ Document includes bleed (3mm / 0.125" per side)
+- ✅ All critical content inside safe zone (5mm from trim edge)
+- ✅ Backgrounds extend to bleed boundary
+- ✅ All fonts rasterized or embedded in PDF
+- ✅ Export format: PDF/X-1a or PDF/X-4
+- ✅ Crop marks included in export
+- ✅ Bleed value set in PDF export dialog
+- ✅ File reviewed at 100% zoom for any pixelation or artefacts
+
+---
+
+## Key Takeaways
+
+- Create your Photoshop document at **trim size + bleed** from the very beginning
+- Use **300 PPI** and **CMYK colour mode** for professional print
+- **Bleed** (3mm/0.125") prevents white edges after cutting. **Safe zone** (5mm) prevents content from being cut off
+- Vivid RGB colours — especially electric blues, purples, and neons — often shift dramatically when converted to CMYK. Always proof
+- Export as **PDF/X-1a** with crop marks and bleed marks enabled

@@ -1,0 +1,57 @@
+---
+/**
+ * CalloutBox.astro
+ * Highlighted callout blocks for key facts, tips, warnings inside articles.
+ */
+
+interface Props {
+  type?: 'info' | 'tip' | 'warning' | 'formula';
+  title?: string;
+}
+
+const { type = 'info', title } = Astro.props;
+
+const styles = {
+  info: {
+    border: 'border-primary/30',
+    bg: 'bg-primary/5',
+    icon: '💡',
+    titleColor: 'text-primary',
+    defaultTitle: 'Key Concept',
+  },
+  tip: {
+    border: 'border-success/30',
+    bg: 'bg-success/5',
+    icon: '✅',
+    titleColor: 'text-success',
+    defaultTitle: 'Pro Tip',
+  },
+  warning: {
+    border: 'border-destructive/30',
+    bg: 'bg-destructive/5',
+    icon: '⚠️',
+    titleColor: 'text-destructive',
+    defaultTitle: 'Watch Out',
+  },
+  formula: {
+    border: 'border-cyan-glow/30',
+    bg: 'bg-cyan-glow/5',
+    icon: '📐',
+    titleColor: 'text-cyan-glow',
+    defaultTitle: 'The Formula',
+  },
+};
+
+const s = styles[type];
+const displayTitle = title ?? s.defaultTitle;
+---
+
+<div class={`not-prose my-6 rounded-xl border ${s.border} ${s.bg} px-5 py-4`}>
+  <p class={`flex items-center gap-2 font-bold text-sm mb-2 ${s.titleColor}`}>
+    <span>{s.icon}</span>
+    {displayTitle}
+  </p>
+  <div class="text-sm text-muted-foreground leading-relaxed [&_strong]:text-foreground [&_strong]:font-semibold [&_code]:font-mono [&_code]:text-primary [&_code]:bg-muted [&_code]:border [&_code]:border-border [&_code]:rounded [&_code]:px-1 [&_code]:text-xs">
+    <slot />
+  </div>
+</div>

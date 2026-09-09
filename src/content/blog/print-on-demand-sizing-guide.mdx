@@ -1,0 +1,258 @@
+---
+title: "The Ultimate Print-on-Demand Sizing Guide: Pixels, Inches & DPI for Custom Merch"
+description: "Stop getting blurry rejection emails from Printful, Printify, and Redbubble. This complete guide tells you exactly how many pixels your artwork needs for every product — t-shirts, stickers, mugs, posters, phone cases, and more — at professional 300 DPI print quality."
+publishDate: 2026-09-22
+author: "InchPixels Team"
+cluster: industry
+tags: ["print on demand", "Printful", "Printify", "Redbubble", "t-shirt design", "pixels", "DPI", "custom merch", "POD"]
+readingTime: 14
+faqs:
+  - q: "Why does my design look blurry when printed on a t-shirt?"
+    a: "Your design file doesn't have enough pixels for the print size. POD platforms require high-resolution artwork — typically 300 DPI at the full intended print size. If your PNG is only 500×500 pixels and you're trying to print it at 10×10 inches, that's only 50 DPI — way below the minimum. The printer interpolates (invents) pixels to fill the space, resulting in a blurry, soft print. Always create artwork at the required pixel dimensions from the start."
+  - q: "What resolution do POD platforms require?"
+    a: "Most POD platforms (Printful, Printify, Redbubble, Merch by Amazon, Zazzle) require a minimum of 150 DPI at print size, with 300 DPI being the recommended standard for sharp output. For direct-to-garment (DTG) printing on apparel, the standard print area is typically 12–14 inches wide, requiring 3600–4200 pixels of width at 300 DPI."
+  - q: "Should I design my POD artwork in CMYK or RGB?"
+    a: "Design in RGB for most POD platforms — especially for digital printing (DTG, sublimation, and inkjet-based systems). Most POD platforms accept RGB files and handle the colour conversion internally. However, if you're working with a professional offset printer or screen printing shop, they may require CMYK. When in doubt, ask your platform or print provider for their colour space specification."
+  - q: "What is DTG printing?"
+    a: "DTG stands for Direct-to-Garment. It's a digital printing method that prints designs directly onto fabric using inkjet-style printheads. DTG is ideal for small runs and photographic designs with many colours. It requires pre-treated fabric for good ink adhesion, especially on darker garments. Quality depends heavily on the machine, ink quality, and fabric composition (100% cotton gives the best results)."
+  - q: "Can I sell the same artwork on multiple POD platforms?"
+    a: "Generally yes, if the platform's terms of service allow it (most do). However, each platform has slightly different size requirements and print areas. You may need to crop or resize your artwork slightly for each platform. Create a master file at the largest required dimensions and then export platform-specific versions from it."
+  - q: "What file format should I upload to POD platforms?"
+    a: "PNG with a transparent background is the standard format for most POD products (apparel, mugs, phone cases). It preserves transparency, so your design can be placed cleanly on any coloured product without a white box around it. For flat-colour backgrounds and posters, JPEG at maximum quality is acceptable. Never upload low-quality compressed files — the loss is visible in print."
+---
+
+import ConversionTable from '../../components/blog/ConversionTable.astro';
+import CalloutBox from '../../components/blog/CalloutBox.astro';
+
+## The Problem Every POD Seller Hits First
+
+You spend hours designing the perfect t-shirt graphic, upload it to Printful, order a sample — and when it arrives, the print is blurry, soft, or visibly pixelated. Or worse, the platform rejects the file with a "low resolution" warning before you can even check out.
+
+This happens because most designers don't know — and no one clearly tells them — how many pixels a physical print size actually requires.
+
+This guide changes that. Every common POD product, every platform's print area, and every required pixel dimension — in one place.
+
+---
+
+## Part 1: The Math Behind POD Resolution
+
+Every print-on-demand product has a **print area** — the maximum physical size your design can cover, measured in inches. Your artwork must have enough pixels to fill that area at the required DPI.
+
+<CalloutBox type="formula" title="The POD Resolution Formula">
+  **Required Pixels = Print Area (inches) × DPI**
+
+  Example: A 12 × 16 inch t-shirt print area at 300 DPI requires:
+
+  Width: 12 × 300 = **3,600 pixels**
+
+  Height: 16 × 300 = **4,800 pixels**
+
+  Your artwork file must be at least 3,600 × 4,800 pixels at 300 DPI.
+</CalloutBox>
+
+### Minimum vs. recommended DPI
+
+Most POD platforms list a **minimum** DPI (often 150) and a **recommended** DPI (usually 300). What does this mean in practice?
+
+At 150 DPI, prints are acceptable when viewed from normal distances (arm's length for t-shirts, 2–3 feet for posters). Fine details, thin lines, and small text will look slightly soft.
+
+At 300 DPI, prints are sharp at close inspection. Fine details are crisp. Text is legible at small sizes. This is the industry standard for quality POD output and what serious sellers should always target.
+
+---
+
+## Part 2: Apparel — T-Shirts, Hoodies, Tote Bags
+
+### Direct-to-Garment (DTG) print areas
+
+DTG is the standard printing method for most Printful and Printify t-shirt products.
+
+<ConversionTable
+  caption="T-shirt and apparel DTG print areas → required pixel dimensions at 300 DPI"
+  rows={[
+    { label: "Standard T-Shirt (Front)",       inches: "12 × 16",  px300: "3600×4800"  },
+    { label: "Standard T-Shirt (Back)",        inches: "12 × 16",  px300: "3600×4800"  },
+    { label: "Premium T-Shirt (Printful)",     inches: "14 × 16",  px300: "4200×4800"  },
+    { label: "Youth T-Shirt (Front)",          inches: "10 × 12",  px300: "3000×3600"  },
+    { label: "Hoodie (Front Pocket)",          inches: "5 × 5",    px300: "1500×1500"  },
+    { label: "Hoodie (Full Front)",            inches: "12 × 16",  px300: "3600×4800"  },
+    { label: "Tote Bag",                       inches: "12 × 12",  px300: "3600×3600"  },
+    { label: "Baseball Cap (Front)",           inches: "3.5 × 2.5",px300: "1050×750"   },
+    { label: "All-Over Print Shirt (front)",   inches: "18 × 24",  px300: "5400×7200"  },
+  ]}
+  showDpi={[300]}
+/>
+
+<CalloutBox type="tip" title="Centre Your T-Shirt Design">
+  POD platforms centre your design within the print area by default. Don't fill the entire print area edge-to-edge — leave breathing room. A design that's 10×12 inches centred in a 12×16 print area looks more balanced than one that touches all edges.
+</CalloutBox>
+
+### All-Over Print (AOP) / Sublimation products
+
+All-over print shirts, leggings, and accessories use sublimation — the entire garment surface is printed. These require much larger files.
+
+| Product | Print Area (approx.) | Pixels at 150 DPI | Pixels at 300 DPI |
+|---|---|---|---|
+| AOP T-Shirt (full wrap) | 18 × 24" | 2700×3600 | 5400×7200 |
+| AOP Leggings | 18 × 36" | 2700×5400 | 5400×10800 |
+| AOP Hoodie | 24 × 30" | 3600×4500 | 7200×9000 |
+| Sublimation Mug (11oz) | 8.5 × 3.8" | 1275×570 | 2550×1140 |
+| Sublimation Mug (15oz) | 9.6 × 4.5" | 1440×675 | 2880×1350 |
+
+For AOP products, 150 DPI is generally acceptable (the fabric texture limits perceived sharpness, and these products are often viewed from a distance). However, 300 DPI gives you maximum flexibility.
+
+---
+
+## Part 3: Stickers and Labels
+
+Stickers are often printed at 300–600 DPI because they're frequently inspected closely (product labelling, laptop stickers, packaging).
+
+<ConversionTable
+  caption="Common sticker sizes → pixel dimensions at 300 DPI"
+  rows={[
+    { label: "Small Round Sticker (2\")",       inches: "2 × 2",    px300: "600×600"    },
+    { label: "Medium Round Sticker (3\")",      inches: "3 × 3",    px300: "900×900"    },
+    { label: "Large Round Sticker (4\")",       inches: "4 × 4",    px300: "1200×1200"  },
+    { label: "Small Die-Cut (3×3\")",           inches: "3 × 3",    px300: "900×900"    },
+    { label: "Rectangle Sticker (4×6\")",       inches: "4 × 6",    px300: "1200×1800"  },
+    { label: "Bumper Sticker (3×11\")",         inches: "3 × 11",   px300: "900×3300"   },
+    { label: "A6 Sheet Sticker",               inches: "4.1 × 5.8", px300: "1230×1740"  },
+    { label: "Kiss-cut Sheet (8.5×11\")",       inches: "8.5 × 11", px300: "2550×3300"  },
+  ]}
+  showDpi={[300]}
+/>
+
+<CalloutBox type="warning" title="Stickers Need Bleed Too">
+  Die-cut and kiss-cut stickers require bleed — typically 0.125" (3mm) per side — just like any other print product. If your sticker has a coloured background or border that extends to the edge, that colour must extend into the bleed area. Include bleed in your file dimensions and mark the safe zone clearly.
+</CalloutBox>
+
+---
+
+## Part 4: Posters and Wall Art
+
+Posters are one of the most demanding POD products — they're large, inspected up close, and hang permanently. Resolution matters more here than almost any other product.
+
+<ConversionTable
+  caption="Standard poster sizes → pixel dimensions at print DPI settings"
+  rows={[
+    { label: "Mini Poster (8×10\")",     inches: "8 × 10",   px150: "1200×1500", px300: "2400×3000"  },
+    { label: "Small Poster (11×14\")",   inches: "11 × 14",  px150: "1650×2100", px300: "3300×4200"  },
+    { label: "Medium Poster (12×18\")",  inches: "12 × 18",  px150: "1800×2700", px300: "3600×5400"  },
+    { label: "Standard Poster (18×24\")",inches: "18 × 24",  px150: "2700×3600", px300: "5400×7200"  },
+    { label: "Large Poster (24×36\")",   inches: "24 × 36",  px150: "3600×5400", px300: "7200×10800" },
+    { label: "XL Poster (27×40\")",      inches: "27 × 40",  px150: "4050×6000", px300: "8100×12000" },
+    { label: "Square Print (12×12\")",   inches: "12 × 12",  px150: "1800×1800", px300: "3600×3600"  },
+    { label: "Square Print (20×20\")",   inches: "20 × 20",  px150: "3000×3000", px300: "6000×6000"  },
+  ]}
+/>
+
+For posters, 150 DPI is the minimum. 300 DPI is recommended for any poster that will be viewed at arm's length. For extra-large posters (36" and above) viewed from several feet away, 150 DPI is perfectly acceptable.
+
+---
+
+## Part 5: Phone Cases and Accessories
+
+Phone cases come in standard sizes per device model. Most platforms print a template that matches each case model's exact dimensions.
+
+| Product | Print Area (approx.) | Pixels at 300 DPI |
+|---|---|---|
+| iPhone 16 Case | 2.55 × 5.15" | 765×1545 |
+| iPhone 16 Pro Max Case | 2.96 × 6.14" | 888×1842 |
+| Samsung Galaxy S24 Case | 2.96 × 6.2" | 888×1860 |
+| Slim Phone Case (generic) | 2.5 × 5" | 750×1500 |
+| Tough / MagSafe Case | 3 × 5.5" | 900×1650 |
+
+Always download the platform's provided template (usually a PSD or PNG guide file) for each case model. Templates show the exact print area, camera cutouts, button positions, and safe zones — using them prevents designs from overlapping hardware elements.
+
+---
+
+## Part 6: Platform-Specific Notes
+
+### Printful
+
+- Recommended: **300 DPI at print size**
+- Accepted formats: PNG, JPEG, SVG (for simple designs)
+- Colour space: RGB
+- DTG print area: 12 × 16" for standard t-shirts (3600 × 4800 px at 300 DPI)
+- Templates: Available for every product in their design tool and as downloadable PSD files
+- Tip: Printful's Mockup Generator shows a realistic preview — use it to proof colours and placement before ordering
+
+### Printify
+
+- Recommended: **300 DPI**, minimum 150 DPI
+- Accepted formats: PNG (recommended), JPEG
+- Colour space: RGB
+- Note: Printify is a marketplace of different print providers, each with slightly different specs. Always check the specific provider's requirements for each product.
+- Tip: Some Printify providers offer 14×18" print areas — larger than Printful's standard
+
+### Redbubble
+
+- Minimum: **2048px on the shortest side**
+- Recommended: specific dimensions per product category (download their guide)
+- Accepted formats: PNG (transparent), JPEG
+- Colour space: RGB
+- Unique feature: One design file is used across all products — Redbubble scales and positions it per product type
+- Tip: For best results across all products, upload at 7632 × 6480 px (their maximum recommended canvas size)
+
+### Merch by Amazon
+
+- Recommended: **300 DPI at print size**
+- Standard t-shirt print area: 4500 × 5400 px (15 × 18" at 300 DPI)
+- Accepted format: PNG with transparent background only
+- Colour space: RGB
+- Tip: Amazon's print area is larger than most competitors — design at full 4500 × 5400 px to avoid stretching
+
+### Zazzle
+
+- Minimum: **150 DPI**, recommended 300 DPI
+- Accepted formats: PNG, JPEG, PDF, AI, EPS
+- Colour space: RGB or CMYK
+- Unique feature: Zazzle supports vector PDF uploads (AI, EPS converted to PDF) — allowing infinitely scalable designs
+
+---
+
+## Part 7: Workflow for Creating POD-Ready Artwork
+
+### Step 1: Research the product specifications first
+
+Before opening your design software, look up the exact print area and DPI requirements for your specific product on your chosen platform. Download their template file if available.
+
+### Step 2: Create your canvas at the correct dimensions
+
+In Photoshop: **File → New** → enter width and height in pixels at the required DPI (e.g., 3600 × 4800 px at 300 PPI for a standard t-shirt front).
+
+In Illustrator: Create an artboard at the correct inch dimensions, then ensure you export at 300 DPI (in Export for Screens or Export As → PNG → 300 DPI).
+
+### Step 3: Use vector elements for text and logos
+
+Vector shapes and text in your design will export crisp at any resolution. If you place a raster photo as part of the design, ensure that photo is at sufficient resolution for its placement size.
+
+### Step 4: Export as PNG with transparency
+
+For apparel: transparent PNG so your design sits cleanly on any shirt colour.
+For posters: JPEG at maximum quality (no transparency needed for a full-bleed background).
+
+### Step 5: Use the platform mockup generator
+
+Always preview your design on the platform's product mockup before ordering a sample. Check:
+- Is the design the right size (not too small, not bleeding off the edges)?
+- Are the colours accurate?
+- Is text legible at the rendered size?
+
+### Step 6: Order one sample before bulk production
+
+Always order a physical sample before making your product publicly available. Screen colours and printed colours can differ significantly — especially blacks (which can print as dark grey) and vibrant colours (which may be muted by DTG inks on dark fabrics).
+
+<CalloutBox type="tip" title="Design for the Worst Case">
+  When designing for multiple POD platforms simultaneously, design at the largest required canvas and for the most demanding product first. You can always reduce a large image. You can never scale up a small one without losing quality.
+</CalloutBox>
+
+---
+
+## Key Takeaways
+
+- POD requires **300 DPI at the full print area size** for sharp professional results. 150 DPI is the minimum for acceptable quality.
+- A standard DTG t-shirt print area (12 × 16") requires at least **3600 × 4800 pixels** at 300 DPI.
+- Upload **PNG with transparent background** for apparel; JPEG is fine for posters.
+- Always use RGB colour mode for POD platforms.
+- Download the platform's template for each product — it saves hours of repositioning and guess-work.
+- Order a physical sample before going live. What looks perfect on screen can look different in print.

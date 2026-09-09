@@ -1,0 +1,74 @@
+---
+/**
+ * ConversionTable.astro
+ * Renders a responsive reference table mapping inches → pixels at multiple DPIs.
+ * Pass rows as: { label, inches, px72?, px96?, px150?, px300?, px600? }
+ */
+
+interface Row {
+  label: string;
+  inches: string;
+  px72?: number | string;
+  px96?: number | string;
+  px150?: number | string;
+  px300?: number | string;
+  px600?: number | string;
+}
+
+interface Props {
+  caption: string;
+  rows: Row[];
+  /** Which DPI columns to show — defaults to all five */
+  showDpi?: (72 | 96 | 150 | 300 | 600)[];
+}
+
+const { caption, rows, showDpi = [72, 96, 150, 300, 600] } = Astro.props;
+
+const dpiMeta: Record<number, { label: string; sub: string }> = {
+  72:  { label: '72 DPI',  sub: 'Low-res web' },
+  96:  { label: '96 DPI',  sub: 'CSS / Screen' },
+  150: { label: '150 DPI', sub: 'Draft print' },
+  300: { label: '300 DPI', sub: 'Print-ready' },
+  600: { label: '600 DPI', sub: 'High-detail' },
+};
+---
+
+<div class="not-prose my-8 overflow-x-auto rounded-xl border border-border bg-card shadow-sm">
+  <table class="w-full text-sm border-collapse min-w-[520px]">
+    <caption class="px-4 py-3 text-left font-bold text-foreground text-sm border-b border-border bg-muted/30">
+      {caption}
+    </caption>
+    <thead>
+      <tr class="border-b border-border bg-muted/50">
+        <th class="px-4 py-3 text-left font-semibold text-muted-foreground text-xs uppercase tracking-wider">
+          Size / Subject
+        </th>
+        <th class="px-4 py-3 text-center font-semibold text-muted-foreground text-xs uppercase tracking-wider">
+          Inches
+        </th>
+        {showDpi.map((dpi) => (
+          <th class="px-4 py-3 text-right font-semibold text-muted-foreground text-xs uppercase tracking-wider">
+            <span class="block">{dpiMeta[dpi].label}</span>
+            <span class="font-normal text-[10px] opacity-70 normal-case">{dpiMeta[dpi].sub}</span>
+          </th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((row, i) => (
+        <tr class={`border-b border-border/60 transition-colors hover:bg-muted/20 ${i % 2 === 0 ? '' : 'bg-muted/10'}`}>
+          <td class="px-4 py-3 font-semibold text-foreground">{row.label}</td>
+          <td class="px-4 py-3 text-center font-mono text-muted-foreground">{row.inches}</td>
+          {showDpi.includes(72)  && <td class="px-4 py-3 text-right font-mono text-sm">{row.px72  ?? '—'}</td>}
+          {showDpi.includes(96)  && <td class="px-4 py-3 text-right font-mono text-sm">{row.px96  ?? '—'}</td>}
+          {showDpi.includes(150) && <td class="px-4 py-3 text-right font-mono text-sm text-primary font-semibold">{row.px150 ?? '—'}</td>}
+          {showDpi.includes(300) && <td class="px-4 py-3 text-right font-mono text-sm text-success font-semibold">{row.px300 ?? '—'}</td>}
+          {showDpi.includes(600) && <td class="px-4 py-3 text-right font-mono text-sm">{row.px600 ?? '—'}</td>}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  <p class="px-4 py-2 text-[11px] text-muted-foreground border-t border-border/50">
+    Formula: Pixels = Inches × DPI. 300 DPI is the professional print standard.
+  </p>
+</div>
