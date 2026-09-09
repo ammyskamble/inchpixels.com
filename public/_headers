@@ -1,12 +1,6 @@
-# Disallow indexing on Cloudflare pages.dev domain and preview URLs
-https://inchpixels.pages.dev/*
-  X-Robots-Tag: noindex, nofollow
+# Note: https://inchpixels.pages.dev/* is 301-redirected via middleware for GSC domain migration.
+# Do not add X-Robots-Tag: noindex to inchpixels.pages.dev as Google requires indexable 301s for Change of Address.
 
 https://*.inchpixels.pages.dev/*
   X-Robots-Tag: noindex, nofollow
 
-https://:project.pages.dev/*
-  X-Robots-Tag: noindex, nofollow
-
-https://:version.:project.pages.dev/*
-  X-Robots-Tag: noindex, nofollow
