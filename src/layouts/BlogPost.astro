@@ -7,6 +7,7 @@
 import Layout from './Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import ScrollToTop from '../components/ScrollToTop.astro';
 import type { SupportedLanguage } from '../i18n/ui';
 import { getHreflangLinks } from '../i18n/utils';
 
@@ -464,6 +465,9 @@ const displayDate = (updatedDate ?? publishDate).toLocaleDateString('en-US', {
 
       <Footer lang={lang} />
     </div>
+
+    <!-- Quick Scroll-to-Top with live scroll progress indicator -->
+    <ScrollToTop />
 
     <script>
       function initThemeToggle() {
