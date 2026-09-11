@@ -71,7 +71,7 @@ export const ui = {
   },
   ja: {
     'meta.title': 'インチからピクセルへの変換計算機 | 瞬時に in を px に変換 (DPI / PPI)',
-    'meta.desc': 'DPI/PPIを指定してインチをピクセル（inからpx）に瞬時に変換。2Dキャンバスサイズ、印刷プリセット、CSSコード出力に対応。',
+    'meta.desc': 'インチをピクセル（inからpx）へ瞬時に変換できる無料計算機。DPI/PPIを指定した2Dキャンバス、印刷サイズ、CSSコードを確認できます。',
     'calc.heading': 'インチ・ピクセル変換ツール',
     'calc.subheading': '解像度（DPI/PPI）に応じたデジタル寸法と印刷サイズをリアルタイム計算。',
     'calc.mode.inToPx': 'インチ → ピクセル',
@@ -183,7 +183,7 @@ export const ui = {
   },
   ko: {
     'meta.title': '인치 픽셀 변환기 | Inch to Px 실시간 계산기 (DPI / PPI)',
-    'meta.desc': 'DPI/PPI 해상도에 맞춰 인치를 픽셀(in to px)로 즉시 변환합니다. 인쇄 규격 및 웹 CSS 코드 제공.',
+    'meta.desc': '인치를 픽셀(in to px)로 즉시 변환하는 무료 계산기입니다. DPI/PPI별 2D 캔버스 크기, 인쇄 규격과 웹 CSS 코드를 확인하세요.',
     'calc.heading': '인치-픽셀 변환 계산기',
     'calc.subheading': '인쇄 해상도와 화면 픽셀 규격을 실시간으로 변환하세요.',
     'calc.mode.inToPx': '인치 → 픽셀',

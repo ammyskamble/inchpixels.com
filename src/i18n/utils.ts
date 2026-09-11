@@ -1,5 +1,7 @@
 import { ui, defaultLang, languages, type SupportedLanguage } from './ui';
 
+const siteUrl = 'https://inchpixels.com';
+
 export function getLangFromUrl(url: URL): SupportedLanguage {
   const [, lang] = url.pathname.split('/');
   if (lang in ui) return lang as SupportedLanguage;
@@ -14,8 +16,14 @@ export function useTranslations(lang: SupportedLanguage) {
 
 export function useTranslatedPath(lang: SupportedLanguage) {
   return function translatePath(path: string, l: SupportedLanguage = lang): string {
-    const cleanPath = path.startsWith('/') ? path : `/${path}`;
-    return l === defaultLang ? cleanPath : `/${l}${cleanPath}`;
+    const match = path.match(/^([^?#]*)([?#].*)?$/);
+    const rawPath = match?.[1] || '/';
+    const suffix = match?.[2] || '';
+    const withLeadingSlash = rawPath.startsWith('/') ? rawPath : `/${rawPath}`;
+    const cleanPath = withLeadingSlash === '/'
+      ? '/'
+      : `${withLeadingSlash.replace(/\/+$/, '')}/`;
+    return `${siteUrl}${l === defaultLang ? '' : `/${l}`}${cleanPath}${suffix}`;
   };
 }
 

@@ -81,7 +81,7 @@ for (let i = 1; i <= 100; i++) {
         <tbody class="divide-y divide-border/40 font-mono tabular-numbers" id="conversion-tbody">
           {rows.map((row) => (
             <tr class="table-row-item" data-inch={row.inches}>
-              <td><a href={`/?mode=1d&val=${row.inches}&dpi=300`}>{row.inches}"</a></td>
+              <td><a href={`https://inchpixels.com/?mode=1d&val=${row.inches}&dpi=300`}>{row.inches}"</a></td>
               <td>{row.px72.toLocaleString()} px</td>
               <td class="col-dpi-96">{row.px96.toLocaleString()} px</td>
               <td>{row.px150.toLocaleString()} px</td>

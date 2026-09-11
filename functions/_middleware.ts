@@ -1,6 +1,18 @@
 export const onRequest = async (context: { request: Request; next: () => Promise<Response> }) => {
   try {
     const url = new URL(context.request.url);
+    const robotsTxt = `User-agent: *
+Allow: /
+
+# Disallow error and internal pages from crawler index
+Disallow: /404
+Disallow: /500
+Disallow: /*/404/
+Disallow: /*/500/
+
+# Canonical sitemap
+Sitemap: https://inchpixels.com/sitemap-index.xml
+`;
 
     // 1. Directly return Google site verification with 200 OK (bypasses Cloudflare Pages 308 redirect)
     if (url.pathname.startsWith('/google69cf40e0a99bf7e3') || (url.pathname.startsWith('/google') && url.pathname.endsWith('.html'))) {
@@ -13,14 +25,14 @@ export const onRequest = async (context: { request: Request; next: () => Promise
       });
     }
 
-    // 2. Serve robots.txt directly on pages.dev with 200 OK without cross-domain redirect.
-    // Googlebot / GSC Change of Address requires direct robots.txt access to validate the site move.
+    // 2. Serve the complete robots policy directly so crawlers do not depend on
+    // static-file routing or a host redirect when validating the domain move.
     if (url.pathname === '/robots.txt') {
-      return new Response('User-agent: *\nAllow: /\n', {
+      return new Response(robotsTxt, {
         status: 200,
         headers: {
           'Content-Type': 'text/plain; charset=utf-8',
-          'Cache-Control': 'public, max-age=3600',
+          'Cache-Control': 'public, max-age=3600, s-maxage=3600',
         },
       });
     }
@@ -37,8 +49,8 @@ export const onRequest = async (context: { request: Request; next: () => Promise
       return Response.redirect('https://inchpixels.com/', 301);
     }
 
-    // 5. 301 Redirect all pages.dev requests to inchpixels.com
-    if (url.hostname.endsWith('.pages.dev')) {
+    // 5. 301 Redirect alternate hosts to the canonical domain.
+    if (url.hostname === 'www.inchpixels.com' || url.hostname.endsWith('.pages.dev')) {
       url.hostname = 'inchpixels.com';
       url.protocol = 'https:';
 
