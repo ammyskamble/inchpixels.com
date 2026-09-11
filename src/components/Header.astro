@@ -10,6 +10,16 @@ import { getLangFromUrl, useTranslatedPath, useTranslations } from '../i18n/util
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
+
+const pathname = Astro.url.pathname;
+const isHomePage = pathname === '/' || /^\/(es|ja|fr|de|pt|ko|it)\/?$/.test(pathname);
+const isBlog = pathname.startsWith('/blog');
+
+const calcUrl = isHomePage ? '#converter' : `${translatePath('/')}#converter`;
+const subjectsUrl = isHomePage ? '#subjects' : `${translatePath('/')}#subjects`;
+const tablesUrl = isHomePage ? '#reference-tables' : `${translatePath('/')}#reference-tables`;
+const guidesUrl = isHomePage ? '#guides' : `${translatePath('/')}#guides`;
+const faqUrl = isHomePage ? '#faq' : `${translatePath('/')}#faq`;
 ---
 
 <header class="sticky top-0 z-40 w-full backdrop-blur-md bg-background/80 border-b border-border/70 transition-colors">
@@ -31,12 +41,12 @@ const translatePath = useTranslatedPath(lang);
 
     {/* Center Navigation Links */}
     <nav class="hidden md:flex items-center gap-6 text-xs font-semibold text-muted-foreground">
-      <a href="#converter" class="hover:text-foreground transition-colors">Calculator</a>
-      <a href="#subjects" class="hover:text-foreground transition-colors">Subjects</a>
-      <a href="#reference-tables" class="hover:text-foreground transition-colors">Tables</a>
-      <a href="#guides" class="hover:text-foreground transition-colors">Guide</a>
-      <a href="https://inchpixels.com/blog/" class="hover:text-foreground transition-colors text-primary">Blog</a>
-      <a href="#faq" class="hover:text-foreground transition-colors">{t('faq.heading')}</a>
+      <a href={calcUrl} class="hover:text-foreground transition-colors">Calculator</a>
+      <a href={subjectsUrl} class="hover:text-foreground transition-colors">Subjects</a>
+      <a href={tablesUrl} class="hover:text-foreground transition-colors">Tables</a>
+      <a href={guidesUrl} class="hover:text-foreground transition-colors">Guide</a>
+      <a href="https://inchpixels.com/blog/" class={`hover:text-foreground transition-colors ${isBlog ? 'text-primary font-bold' : ''}`}>Blog</a>
+      <a href={faqUrl} class="hover:text-foreground transition-colors">{t('faq.heading')}</a>
     </nav>
 
     {/* Right Header Actions */}
