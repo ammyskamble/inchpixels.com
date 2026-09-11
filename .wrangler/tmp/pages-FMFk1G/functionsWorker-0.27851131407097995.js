@@ -932,6 +932,18 @@ globalThis.process = process_default;
 var onRequest = /* @__PURE__ */ __name(async (context2) => {
   try {
     const url = new URL(context2.request.url);
+    const robotsTxt = `User-agent: *
+Allow: /
+
+# Disallow error and internal pages from crawler index
+Disallow: /404
+Disallow: /500
+Disallow: /*/404/
+Disallow: /*/500/
+
+# Canonical sitemap
+Sitemap: https://inchpixels.com/sitemap-index.xml
+`;
     if (url.pathname.startsWith("/google69cf40e0a99bf7e3") || url.pathname.startsWith("/google") && url.pathname.endsWith(".html")) {
       return new Response("google-site-verification: google69cf40e0a99bf7e3.html\n", {
         status: 200,
@@ -942,11 +954,11 @@ var onRequest = /* @__PURE__ */ __name(async (context2) => {
       });
     }
     if (url.pathname === "/robots.txt") {
-      return new Response("User-agent: *\nAllow: /\n", {
+      return new Response(robotsTxt, {
         status: 200,
         headers: {
           "Content-Type": "text/plain; charset=utf-8",
-          "Cache-Control": "public, max-age=3600"
+          "Cache-Control": "public, max-age=3600, s-maxage=3600"
         }
       });
     }
@@ -956,7 +968,7 @@ var onRequest = /* @__PURE__ */ __name(async (context2) => {
     if (url.pathname === "/500" || url.pathname === "/500/" || url.pathname === "/500.html" || /\/(es|ja|fr|de|pt|ko|it)\/500\/?$/.test(url.pathname)) {
       return Response.redirect("https://inchpixels.com/", 301);
     }
-    if (url.hostname.endsWith(".pages.dev")) {
+    if (url.hostname === "www.inchpixels.com" || url.hostname.endsWith(".pages.dev")) {
       url.hostname = "inchpixels.com";
       url.protocol = "https:";
       const lastSegment = url.pathname.split("/").pop() || "";
@@ -972,7 +984,7 @@ var onRequest = /* @__PURE__ */ __name(async (context2) => {
   }
 }, "onRequest");
 
-// ../.wrangler/tmp/pages-2KodrK/functionsRoutes-0.15341251811602652.mjs
+// ../.wrangler/tmp/pages-FMFk1G/functionsRoutes-0.3769795293770555.mjs
 var routes = [
   {
     routePath: "/",

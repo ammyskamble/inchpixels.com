@@ -930,38 +930,61 @@ globalThis.process = process_default;
 
 // _middleware.ts
 var onRequest = /* @__PURE__ */ __name(async (context2) => {
-  const url = new URL(context2.request.url);
-  if (url.pathname.startsWith("/google69cf40e0a99bf7e3") || url.pathname.startsWith("/google") && url.pathname.endsWith(".html")) {
-    return new Response("google-site-verification: google69cf40e0a99bf7e3.html\n", {
-      status: 200,
-      headers: {
-        "Content-Type": "text/html; charset=utf-8",
-        "Cache-Control": "public, max-age=3600"
-      }
-    });
-  }
-  if (url.pathname === "/robots.txt") {
-    return new Response("User-agent: *\nAllow: /\n", {
-      status: 200,
-      headers: {
-        "Content-Type": "text/plain; charset=utf-8",
-        "Cache-Control": "public, max-age=3600"
-      }
-    });
-  }
-  if (url.hostname.endsWith(".pages.dev")) {
-    url.hostname = "inchpixels.com";
-    url.protocol = "https:";
-    const lastSegment = url.pathname.split("/").pop() || "";
-    if (!url.pathname.endsWith("/") && !lastSegment.includes(".")) {
-      url.pathname = `${url.pathname}/`;
+  try {
+    const url = new URL(context2.request.url);
+    const robotsTxt = `User-agent: *
+Allow: /
+
+# Disallow error and internal pages from crawler index
+Disallow: /404
+Disallow: /500
+Disallow: /*/404/
+Disallow: /*/500/
+
+# Canonical sitemap
+Sitemap: https://inchpixels.com/sitemap-index.xml
+`;
+    if (url.pathname.startsWith("/google69cf40e0a99bf7e3") || url.pathname.startsWith("/google") && url.pathname.endsWith(".html")) {
+      return new Response("google-site-verification: google69cf40e0a99bf7e3.html\n", {
+        status: 200,
+        headers: {
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "public, max-age=3600"
+        }
+      });
     }
-    return Response.redirect(url.toString(), 301);
+    if (url.pathname === "/robots.txt") {
+      return new Response(robotsTxt, {
+        status: 200,
+        headers: {
+          "Content-Type": "text/plain; charset=utf-8",
+          "Cache-Control": "public, max-age=3600, s-maxage=3600"
+        }
+      });
+    }
+    if (url.pathname.startsWith("/cdn-cgi/l/email-protection")) {
+      return Response.redirect("https://inchpixels.com/contact-us/", 301);
+    }
+    if (url.pathname === "/500" || url.pathname === "/500/" || url.pathname === "/500.html" || /\/(es|ja|fr|de|pt|ko|it)\/500\/?$/.test(url.pathname)) {
+      return Response.redirect("https://inchpixels.com/", 301);
+    }
+    if (url.hostname === "www.inchpixels.com" || url.hostname.endsWith(".pages.dev")) {
+      url.hostname = "inchpixels.com";
+      url.protocol = "https:";
+      const lastSegment = url.pathname.split("/").pop() || "";
+      if (!url.pathname.endsWith("/") && !lastSegment.includes(".")) {
+        url.pathname = `${url.pathname}/`;
+      }
+      return Response.redirect(url.toString(), 301);
+    }
+    return await context2.next();
+  } catch (err) {
+    console.error("Cloudflare Pages middleware error:", err);
+    return await context2.next();
   }
-  return context2.next();
 }, "onRequest");
 
-// ../.wrangler/tmp/pages-biJN9Z/functionsRoutes-0.40759818303638795.mjs
+// ../.wrangler/tmp/pages-b4EleG/functionsRoutes-0.5931719931628282.mjs
 var routes = [
   {
     routePath: "/",

@@ -70,15 +70,28 @@ const structuredDataGraph = {
 <!doctype html>
 <html lang={lang}>
   <head>
-    <!-- Google tag (gtag.js) -->
+    <!-- Google tag (gtag.js), loaded after the page becomes idle -->
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RTDHDD2SY4"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-RTDHDD2SY4');
+
+      const loadAnalytics = () => {
+        if (document.querySelector('script[data-gtag]')) return;
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-RTDHDD2SY4';
+        script.dataset.gtag = 'true';
+        document.head.appendChild(script);
+      };
+
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(loadAnalytics, { timeout: 3000 });
+      } else {
+        window.setTimeout(loadAnalytics, 1500);
+      }
     </script>
 
     <meta charset="UTF-8" />
