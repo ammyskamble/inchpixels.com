@@ -17,13 +17,17 @@ export function useTranslations(lang: SupportedLanguage) {
 export function useTranslatedPath(lang: SupportedLanguage) {
   return function translatePath(path: string, l: SupportedLanguage = lang): string {
     const match = path.match(/^([^?#]*)([?#].*)?$/);
-    const rawPath = match?.[1] || '/';
+    let rawPath = match?.[1] || '/';
     const suffix = match?.[2] || '';
+    
+    // Strip any existing language prefix from rawPath to prevent duplicate prefixes
+    rawPath = rawPath.replace(/^\/(es|ja|fr|de|pt|ko|it)(\/|$)/, '/') || '/';
+
     const withLeadingSlash = rawPath.startsWith('/') ? rawPath : `/${rawPath}`;
     const cleanPath = withLeadingSlash === '/'
       ? '/'
       : `${withLeadingSlash.replace(/\/+$/, '')}/`;
-    return `${siteUrl}${l === defaultLang ? '' : `/${l}`}${cleanPath}${suffix}`;
+    return `${l === defaultLang ? '' : `/${l}`}${cleanPath}${suffix}`;
   };
 }
 

@@ -10,6 +10,11 @@ import mdx from '@astrojs/mdx';
 export default defineConfig({
   site: 'https://inchpixels.com',
   output: 'static',
+  trailingSlash: 'always',
+  server: {
+    host: true,
+    port: 4321,
+  },
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'es', 'ja', 'fr', 'de', 'pt', 'ko', 'it'],

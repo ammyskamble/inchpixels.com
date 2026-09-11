@@ -16,6 +16,57 @@ const printScreenComparisons = [
   { name: '16 × 20" Art Poster', inches: '16" × 20"', ratio: '4:5', px96: '1,536 × 1,920 px', px150: '2,400 × 3,000 px', px300: '4,800 × 6,000 px', mp300: '28.80 MP' },
   { name: '24 × 36" Movie Poster', inches: '24" × 36"', ratio: '2:3', px96: '2,304 × 3,456 px', px150: '3,600 × 5,400 px', px300: '7,200 × 10,800 px', mp300: '77.76 MP' },
 ];
+
+const featuredArticles = [
+  {
+    title: 'DPI vs. PPI in Graphic Design: Complete Technical Breakdown',
+    description: 'Learn the real mathematical and physical differences between print dots and digital pixels.',
+    href: '/blog/dpi-vs-ppi-graphic-design/',
+    tag: 'Foundational',
+  },
+  {
+    title: 'How Digital Screens Render Physical Inches: The CSS 96px Standard',
+    description: 'Understand the W3C reference pixel, CSS inch specs, and Device Pixel Ratio (DPR).',
+    href: '/blog/how-screens-render-physical-inches/',
+    tag: 'Web & CSS',
+  },
+  {
+    title: 'Setting Up a Print-Ready Canvas in Adobe Photoshop: Bleed, DPI & CMYK',
+    description: 'Step-by-step prepress workflow for configuring canvas dimensions, bleed, and color profiles.',
+    href: '/blog/print-ready-canvas-photoshop-guide/',
+    tag: 'Prepress',
+  },
+  {
+    title: 'Standard Photographic Print Sizes & Pixel Requirements',
+    description: 'Exact pixel dimensions and megapixel tables for standard photo prints at 150, 300, and 600 DPI.',
+    href: '/blog/photographic-print-sizes-pixel-requirements/',
+    tag: 'Photography',
+  },
+  {
+    title: 'The Ultimate Print-on-Demand Sizing Guide: Pixels, Inches & DPI',
+    description: 'Exact pixel requirements for t-shirts, posters, mugs, and merch on Printful and Redbubble.',
+    href: '/blog/print-on-demand-sizing-guide/',
+    tag: 'E-commerce',
+  },
+  {
+    title: 'Why Image Quality Drops When You Scale Up Pixels',
+    description: 'Raster interpolation vs vector curves: why pixelation happens and how to avoid quality loss.',
+    href: '/blog/why-image-quality-drops-scaling-pixels/',
+    tag: 'Imaging',
+  },
+  {
+    title: 'Configuring Responsive CSS Images for High-Density Retina Displays',
+    description: 'Best practices for srcset, sizes, and pixel-density image switching for sharp screens.',
+    href: '/blog/responsive-css-images-high-density-retina/',
+    tag: 'Frontend',
+  },
+  {
+    title: 'Convert Scanned Documents to Exact Digital Dimensions',
+    description: 'Scan at the right DPI, calculate pixel dimensions, and prepare digital archives.',
+    href: '/blog/convert-scanned-documents-exact-digital-dimensions/',
+    tag: 'Archival',
+  },
+];
 ---
 
 <section class="w-full mt-20 flex flex-col gap-16 text-foreground">
@@ -34,7 +85,7 @@ const printScreenComparisons = [
 
       <div class="text-sm sm:text-base leading-relaxed text-muted-foreground flex flex-col gap-4">
         <p>
-          One of the most frequent questions encountered in digital illustration, frontend engineering, and commercial printmaking is: <em>"How many pixels in an inch?"</em> The core answer is that there is no single fixed number of pixels in an inch. A pixel is a discrete digital sample of color with no inherent physical size, whereas an inch is an absolute physical unit of imperial length (equal to exactly 2.54 centimeters). The bridge connecting inches to pixels is <strong>resolution density</strong>, measured in <strong>DPI (Dots Per Inch)</strong> for printed media and <strong>PPI (Pixels Per Inch)</strong> for electronic displays.
+          One of the most frequent questions encountered in digital illustration, frontend engineering, and commercial printmaking is: <em>"How many pixels in an inch?"</em> The core answer is that there is no single fixed number of pixels in an inch. A pixel is a discrete digital sample of color with no inherent physical size, whereas an inch is an absolute physical unit of imperial length (equal to exactly 2.54 centimeters). The bridge connecting inches to pixels is <strong>resolution density</strong>, measured in <strong>DPI (Dots Per Inch)</strong> for printed media and <strong>PPI (Pixels Per Inch)</strong> for electronic displays (detailed in our <a href="/blog/dpi-vs-ppi-graphic-design/" class="text-primary font-semibold hover:underline">DPI vs. PPI technical guide</a>).
         </p>
 
         <p>
@@ -78,7 +129,7 @@ const printScreenComparisons = [
         </p>
 
         <p>
-          Furthermore, high-DPI smartphone and laptop screens utilize <strong>Device Pixel Ratios (DPR)</strong> (typically 2x or 3x). A CSS dimension of <code class="font-mono text-primary">w-[96px]</code> represents 1 logical CSS inch, but may be rendered using 192 or 288 physical device hardware pixels to deliver ultra-crisp vector shapes and typography.
+          Furthermore, high-DPI smartphone and laptop screens utilize <strong>Device Pixel Ratios (DPR)</strong> (typically 2x or 3x). A CSS dimension of <code class="font-mono text-primary">w-[96px]</code> represents 1 logical CSS inch, but may be rendered using 192 or 288 physical device hardware pixels to deliver ultra-crisp vector shapes and typography. Learn how to optimize for this in our guide on <a href="/blog/responsive-css-images-high-density-retina/" class="text-primary font-semibold hover:underline">responsive CSS images for Retina screens</a> and our deep-dive on <a href="/blog/how-screens-render-physical-inches/" class="text-primary font-semibold hover:underline">how digital screens render physical inches</a>.
         </p>
       </div>
     </div>
@@ -184,7 +235,7 @@ const printScreenComparisons = [
         </div>
 
         <p>
-          Our <strong>inches to pixels converter</strong> automatically applies these equations in real time as you type, letting you freely adjust precision decimals, aspect ratio locks, and custom DPI multipliers.
+          Our <strong>inches to pixels converter</strong> automatically applies these equations in real time as you type, letting you freely adjust precision decimals, aspect ratio locks, and custom DPI multipliers. When preparing print collateral, follow our workflow on <a href="/blog/print-ready-canvas-photoshop-guide/" class="text-primary font-semibold hover:underline">setting up a print-ready canvas in Photoshop</a> and learn <a href="/blog/why-image-quality-drops-scaling-pixels/" class="text-primary font-semibold hover:underline">why image quality drops when you scale up pixels</a>.
         </p>
       </div>
     </div>
@@ -237,6 +288,54 @@ const printScreenComparisons = [
         <p>
           Looking for customized dimensions? You can load any of these presets with one click in the interactive <strong>inches to pixels converter</strong> above, or manually type custom width and height parameters to generate tailored CSS rules, Tailwind CSS v4 class strings (<code class="font-mono text-primary font-semibold">w-[...px] h-[...px]</code>), SVG <code class="font-mono text-foreground">viewBox</code> specifications, or Print CSS <code class="font-mono text-foreground">@page</code> declarations.
         </p>
+        <p>
+          For custom merchandise, photos, and digital scanning, review our <a href="/blog/print-on-demand-sizing-guide/" class="text-primary font-semibold hover:underline">print-on-demand sizing guide</a>, our <a href="/blog/photographic-print-sizes-pixel-requirements/" class="text-primary font-semibold hover:underline">photographic print sizes reference</a>, or our guide to <a href="/blog/convert-scanned-documents-exact-digital-dimensions/" class="text-primary font-semibold hover:underline">converting scanned documents to digital dimensions</a>.
+        </p>
+      </div>
+    </div>
+
+    <!-- Section 4: Featured Technical Guides & Deep Dives -->
+    <div class="flex flex-col gap-6 bg-card border border-border/80 p-6 sm:p-10 rounded-2xl shadow-sm">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20 mb-2">
+            <span>Knowledge Base & Articles</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground m-0">
+            Featured Design Guides & Technical Deep Dives
+          </h2>
+          <p class="text-sm text-muted-foreground mt-1 max-w-2xl">
+            In-depth engineering tutorials on screen rendering, prepress file preparation, Retina graphics, and print-on-demand resolution standards.
+          </p>
+        </div>
+        <a href="/blog/" class="text-xs font-bold text-primary hover:underline whitespace-nowrap self-start sm:self-auto">
+          View all articles →
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 not-prose mt-2">
+        {featuredArticles.map((article) => (
+          <a
+            href={article.href}
+            class="p-4 rounded-xl bg-muted/20 border border-border/80 hover:border-primary/50 hover:bg-muted/40 hover:shadow-md transition-all flex flex-col justify-between gap-3 group"
+          >
+            <div class="flex flex-col gap-1.5">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-primary">
+                {article.tag}
+              </span>
+              <h3 class="text-sm font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2 m-0">
+                {article.title}
+              </h3>
+              <p class="text-xs text-muted-foreground line-clamp-2 m-0 leading-relaxed">
+                {article.description}
+              </p>
+            </div>
+            <span class="text-xs font-semibold text-primary inline-flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+              <span>Read article</span>
+              <span>→</span>
+            </span>
+          </a>
+        ))}
       </div>
     </div>
 

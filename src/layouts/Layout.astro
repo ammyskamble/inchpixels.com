@@ -35,16 +35,16 @@ const {
 } = Astro.props;
 const siteUrl = 'https://inchpixels.com';
 
-// Normalize path to root equivalent (removes current /lang/ prefix if present)
+// Normalize path to root equivalent (removes current /lang/ prefix if present) and guarantee trailing slash
 const pathname = Astro.url.pathname;
-const cleanPath = pathname.replace(/^\/(es|ja|fr|de|pt|ko|it)(\/|$)/, '/') || '/';
+const rawClean = pathname.replace(/^\/(es|ja|fr|de|pt|ko|it)(\/|$)/, '/') || '/';
+const normalizedSubpath = rawClean === '/' ? '/' : `/${rawClean.replace(/^\/+|\/+$/g, '')}/`;
 
 function getLocalizedUrl(targetLocale: string): string {
   if (targetLocale === defaultLang) {
-    return `${siteUrl}${cleanPath === '/' ? '' : cleanPath}`;
+    return normalizedSubpath === '/' ? `${siteUrl}/` : `${siteUrl}${normalizedSubpath}`;
   }
-  const suffix = cleanPath === '/' ? '' : cleanPath;
-  return `${siteUrl}/${targetLocale}${suffix}`;
+  return `${siteUrl}/${targetLocale}${normalizedSubpath === '/' ? '/' : normalizedSubpath}`;
 }
 
 const canonicalUrl = getLocalizedUrl(lang);

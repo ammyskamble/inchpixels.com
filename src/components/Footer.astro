@@ -47,27 +47,27 @@ const translatePath = useTranslatedPath(lang);
       <div class="flex flex-col gap-2">
         <span class="font-bold text-foreground">Tools</span>
         <a href={translatePath('/')} class="hover:text-primary transition-colors">1D & 2D Converter</a>
-        <a href="https://inchpixels.com/blog/" class="hover:text-primary transition-colors font-semibold text-primary">Learn & Blog</a>
+        <a href="/blog/" class="hover:text-primary transition-colors font-semibold text-primary">Learn & Blog</a>
         <a href={`${translatePath('/')}#subjects`} class="hover:text-primary transition-colors">Subject Hub</a>
         <a href={`${translatePath('/')}#faq`} class="hover:text-primary transition-colors">FAQ & Guides</a>
-        <a href={translatePath('/8-5-inches-to-pixels')} class="hover:text-primary transition-colors">8.5" Linear Scale</a>
+        <a href={translatePath('/8-5-inches-to-pixels/')} class="hover:text-primary transition-colors">8.5" Linear Scale</a>
       </div>
 
       {/* Popular Subjects */}
       <div class="flex flex-col gap-2">
         <span class="font-bold text-foreground">Subjects</span>
-        <a href={translatePath('/8-5-x-11-inches-to-pixels')} class="hover:text-primary transition-colors">8.5 × 11" to Pixels</a>
-        <a href={translatePath('/4x6-inches-in-pixels-at-300-dpi')} class="hover:text-primary transition-colors">4 × 6" at 300 DPI</a>
-        <a href={translatePath('/a4-inches-to-pixels')} class="hover:text-primary transition-colors">A4 Paper Dimensions</a>
-        <a href={translatePath('/how-many-pixels-in-an-inch')} class="hover:text-primary transition-colors">Pixels in 1 Inch Guide</a>
-        <a href={translatePath('/how-to-change-pixels-to-inches-in-photoshop')} class="hover:text-primary transition-colors">Photoshop Tutorial</a>
+        <a href={translatePath('/8-5-x-11-inches-to-pixels/')} class="hover:text-primary transition-colors">8.5 × 11" to Pixels</a>
+        <a href={translatePath('/4x6-inches-in-pixels-at-300-dpi/')} class="hover:text-primary transition-colors">4 × 6" at 300 DPI</a>
+        <a href={translatePath('/a4-inches-to-pixels/')} class="hover:text-primary transition-colors">A4 Paper Dimensions</a>
+        <a href={translatePath('/how-many-pixels-in-an-inch/')} class="hover:text-primary transition-colors">Pixels in 1 Inch Guide</a>
+        <a href={translatePath('/how-to-change-pixels-to-inches-in-photoshop/')} class="hover:text-primary transition-colors">Photoshop Tutorial</a>
       </div>
 
       {/* Informational Pages */}
       <div class="flex flex-col gap-2">
         <span class="font-bold text-foreground">Information</span>
-        <a href={translatePath('/about-us')} class="hover:text-primary transition-colors">About Us</a>
-        <a href={translatePath('/contact-us')} class="hover:text-primary transition-colors">Contact Us</a>
+        <a href={translatePath('/about-us/')} class="hover:text-primary transition-colors">About Us</a>
+        <a href={translatePath('/contact-us/')} class="hover:text-primary transition-colors">Contact Us</a>
         <Fragment set:html="<!--email_off-->" />
         <a href="mailto:support@inchpixels.com" class="hover:text-primary transition-colors">Email Support</a>
         <Fragment set:html="<!--/email_off-->" />
@@ -76,8 +76,8 @@ const translatePath = useTranslatedPath(lang);
       {/* Legal Pages */}
       <div class="flex flex-col gap-2">
         <span class="font-bold text-foreground">Legal</span>
-        <a href={translatePath('/privacy-policy')} class="hover:text-primary transition-colors">Privacy Policy</a>
-        <a href={translatePath('/terms-and-conditions')} class="hover:text-primary transition-colors">Terms & Conditions</a>
+        <a href={translatePath('/privacy-policy/')} class="hover:text-primary transition-colors">Privacy Policy</a>
+        <a href={translatePath('/terms-and-conditions/')} class="hover:text-primary transition-colors">Terms & Conditions</a>
       </div>
     </div>
   </div>
@@ -85,11 +85,11 @@ const translatePath = useTranslatedPath(lang);
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 border-t border-border/40 flex flex-col sm:flex-row items-center justify-between text-[11px] text-muted-foreground gap-2">
     <span>© {new Date().getFullYear()} InchPixels.com. All rights reserved. Zero cookies, privacy-first.</span>
     <div class="flex items-center gap-4">
-      <a href={translatePath('/privacy-policy')} class="hover:underline">Privacy</a>
+      <a href={translatePath('/privacy-policy/')} class="hover:underline">Privacy</a>
       <span>•</span>
-      <a href={translatePath('/terms-and-conditions')} class="hover:underline">Terms</a>
+      <a href={translatePath('/terms-and-conditions/')} class="hover:underline">Terms</a>
       <span>•</span>
-      <a href={translatePath('/contact-us')} class="hover:underline">Contact</a>
+      <a href={translatePath('/contact-us/')} class="hover:underline">Contact</a>
     </div>
   </div>
 </footer>

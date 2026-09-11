@@ -8,6 +8,7 @@ import Layout from './Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import type { SupportedLanguage } from '../i18n/ui';
+import { getCollection } from 'astro:content';
 
 interface FAQ {
   q: string;
@@ -40,8 +41,16 @@ const {
 } = Astro.props;
 
 const siteUrl = 'https://inchpixels.com';
-const canonicalUrl = `${siteUrl}${Astro.url.pathname}`;
+const pathname = Astro.url.pathname;
+const normalizedPath = pathname.endsWith('/') ? pathname : `${pathname}/`;
+const canonicalUrl = `${siteUrl}${normalizedPath}`;
 const ogImageUrl = `${siteUrl}/og-image.svg`;
+
+const allBlogPosts = await getCollection('blog');
+const currentSlug = normalizedPath.replace(/^\/blog\//, '').replace(/\/$/, '');
+const relatedBlogPosts = allBlogPosts
+  .filter((p) => p.id !== currentSlug)
+  .slice(0, 3);
 
 const formattedPublish = publishDate.toISOString();
 const formattedUpdated = (updatedDate ?? publishDate).toISOString();
@@ -96,7 +105,7 @@ const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` },
     { '@type': 'ListItem', position: 2, name: 'Blog', item: `${siteUrl}/blog/` },
     { '@type': 'ListItem', position: 3, name: title, item: canonicalUrl },
   ],
@@ -200,14 +209,44 @@ const displayDate = (updatedDate ?? publishDate).toLocaleDateString('en-US', {
       </a>
     </div>
 
-    <!-- More Articles -->
-    <div class="mt-12 pt-8 border-t border-border/60">
-      <p class="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4">Continue Reading</p>
-      <a href="https://inchpixels.com/blog/" class="inline-flex items-center gap-2 text-sm text-primary font-medium hover:opacity-75 transition-opacity">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-        View all guides & articles
-      </a>
-    </div>
+    <!-- Related Articles -->
+    {relatedBlogPosts.length > 0 && (
+      <div class="mt-16 pt-10 border-t border-border/70">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-primary">Explore More</span>
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-foreground m-0">Related Guides & Deep Dives</h2>
+          </div>
+          <a href="/blog/" class="text-xs font-semibold text-primary hover:underline">
+            All Articles →
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {relatedBlogPosts.map((rel) => (
+            <a
+              href={`/blog/${rel.id}/`}
+              class="p-4 rounded-xl bg-card border border-border/80 hover:border-primary/50 hover:shadow-md transition-all flex flex-col justify-between gap-3 group"
+            >
+              <div class="flex flex-col gap-1.5">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-primary">
+                  {rel.data.cluster || 'Guide'}
+                </span>
+                <h3 class="text-sm font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2 m-0">
+                  {rel.data.title}
+                </h3>
+                <p class="text-xs text-muted-foreground line-clamp-2 m-0">
+                  {rel.data.description}
+                </p>
+              </div>
+              <span class="text-xs text-primary font-medium inline-flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                Read guide →
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
   </main>
 
   <Footer lang={lang} />

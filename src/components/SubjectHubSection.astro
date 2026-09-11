@@ -50,7 +50,7 @@ const guideSubjects = SUBJECTS.filter((s) => s.category === 'guide');
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {dimensionSubjects.map((subject) => (
         <a
-          href={translatePath(`/${subject.slug}`)}
+          href={translatePath(`/${subject.slug}/`)}
           class="p-5 rounded-2xl bg-card border border-border/80 hover:border-primary/50 hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col justify-between gap-4 group"
         >
           <div class="flex flex-col gap-2">
@@ -96,7 +96,7 @@ const guideSubjects = SUBJECTS.filter((s) => s.category === 'guide');
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {guideSubjects.map((subject) => (
         <a
-          href={translatePath(`/${subject.slug}`)}
+          href={translatePath(`/${subject.slug}/`)}
           class="p-5 rounded-2xl bg-card border border-border/80 hover:border-primary/50 hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col justify-between gap-4 group"
         >
           <div class="flex flex-col gap-2">
