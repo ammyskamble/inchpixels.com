@@ -339,9 +339,10 @@ const faqUrl = isHomePage ? '#faq' : `${homePath}#faq`;
         }
       });
 
-      // Close menu if resized above mobile breakpoint (768px)
-      window.addEventListener('resize', () => {
-        if (window.innerWidth >= 768 && !mobileMenu.classList.contains('hidden')) {
+      // Close menu if viewport expands above mobile breakpoint (768px)
+      const mql = window.matchMedia('(min-width: 768px)');
+      mql.addEventListener('change', (e) => {
+        if (e.matches && !mobileMenu.classList.contains('hidden')) {
           closeMobileMenu();
         }
       });

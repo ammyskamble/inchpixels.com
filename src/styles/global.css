@@ -157,10 +157,10 @@
 }
 
 /* ========================================================
-   THEME SWITCH TRANSITIONS & ANIMATIONS
+   THEME SWITCH TRANSITIONS & ANIMATIONS (HIGH-PERFORMANCE)
    ======================================================== */
 
-/* Smooth surface, color, and opacity interpolation during theme toggle without layout thrashing */
+/* Targeted surface, color, and border interpolation without universal wildcard thrashing */
 html.theme-transitioning,
 html.theme-transitioning body,
 html.theme-transitioning header,
@@ -168,25 +168,20 @@ html.theme-transitioning main,
 html.theme-transitioning footer,
 html.theme-transitioning section,
 html.theme-transitioning nav,
-html.theme-transitioning [class*="bg-"],
-html.theme-transitioning [class*="border-"],
-html.theme-transitioning [class*="text-"],
-html.theme-transitioning [class*="opacity-"],
-html.theme-transitioning [class*="shadow-"] {
-  transition: background-color 250ms ease,
-              border-color 250ms ease,
-              color 250ms ease,
-              fill 250ms ease,
-              stroke 250ms ease,
-              opacity 250ms ease,
-              box-shadow 250ms ease !important;
+html.theme-transitioning .bg-card,
+html.theme-transitioning .bg-muted,
+html.theme-transitioning .bg-background,
+html.theme-transitioning .border-border {
+  transition: background-color 200ms ease,
+              border-color 200ms ease,
+              color 200ms ease !important;
   transition-delay: 0s !important;
 }
 
-/* Ensure theme toggle button and its icons preserve fluid transform animations */
+/* Ensure theme toggle button preserves fluid transform */
 html.theme-transitioning #theme-toggle-btn,
 html.theme-transitioning #theme-toggle-btn * {
-  transition: transform 250ms ease, opacity 200ms ease, background-color 200ms ease, border-color 200ms ease !important;
+  transition: transform 200ms ease, opacity 200ms ease !important;
 }
 
 /* ========================================================

@@ -83,9 +83,11 @@
     opacity: 0;
     visibility: hidden;
     transform: translateY(16px) scale(0.9);
-    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                visibility 0.3s;
+    contain: layout paint;
+    will-change: transform, opacity;
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0.25s;
   }
 
   .stt-container.stt-visible {
@@ -113,7 +115,7 @@
     user-select: none;
     opacity: 0;
     transform: translateX(8px);
-    transition: opacity 0.25s ease, transform 0.25s ease;
+    transition: opacity 0.2s ease, transform 0.2s ease;
     white-space: nowrap;
   }
 
@@ -160,49 +162,47 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 14px -1px rgba(0, 0, 0, 0.1), 0 2px 6px -1px rgba(0, 0, 0, 0.06);
-    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-                box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     outline: none;
-    touch-action: manipulation;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.2s ease;
+    box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.12),
+                0 2px 6px -1px rgba(0, 0, 0, 0.06);
+    -webkit-tap-highlight-color: transparent;
   }
 
   :where(.dark) .stt-btn {
-    box-shadow: 0 4px 16px -1px rgba(0, 0, 0, 0.4), 0 2px 6px -1px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 18px -2px rgba(0, 0, 0, 0.5),
+                0 2px 8px -1px rgba(0, 0, 0, 0.3);
+  }
+
+  .stt-btn:hover {
+    transform: translateY(-2px) scale(1.04);
+  }
+
+  .stt-btn:active {
+    transform: translateY(0) scale(0.96);
   }
 
   .stt-btn:focus-visible {
     outline: 2px solid var(--primary, #6366f1);
-    outline-offset: 2px;
+    outline-offset: 3px;
   }
 
-  .stt-btn:hover {
-    transform: translateY(-2px) scale(1.06);
-    box-shadow: 0 10px 25px -3px rgba(99, 102, 241, 0.35), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  }
-
-  :where(.dark) .stt-btn:hover {
-    box-shadow: 0 10px 25px -3px rgba(99, 102, 241, 0.45), 0 4px 10px -2px rgba(0, 0, 0, 0.4);
-  }
-
-  .stt-btn:active {
-    transform: translateY(0) scale(0.95);
-  }
-
-  /* ─── SVG Elements & Progress Arc ────────────────────────────── */
+  /* ─── SVG Progress Ring ────────────────────────────────────────── */
   .stt-svg {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none;
-    transform: rotate(-90deg); /* Start progress at 12 o'clock */
+    transform: rotate(-90deg);
+    border-radius: 9999px;
+    overflow: visible;
   }
 
   .stt-base-disc {
     fill: var(--card, #ffffff);
     stroke: var(--border, #e2e8f0);
-    stroke-width: 1;
+    stroke-width: 1.5;
     transition: fill 0.2s ease, stroke 0.2s ease;
   }
 
@@ -211,20 +211,14 @@
     stroke: var(--border, #2d3149);
   }
 
-  .stt-btn:hover .stt-base-disc {
-    stroke: var(--primary, #6366f1);
-  }
-
   .stt-track {
     fill: none;
-    stroke: var(--border, #e2e8f0);
+    stroke: var(--muted, #f1f5f9);
     stroke-width: 3;
-    opacity: 0.5;
   }
 
   :where(.dark) .stt-track {
-    stroke: var(--border, #333852);
-    opacity: 0.6;
+    stroke: var(--muted, #252840);
   }
 
   .stt-arc {
@@ -232,41 +226,35 @@
     stroke: url(#stt-grad);
     stroke-width: 3;
     stroke-linecap: round;
-    transition: stroke-dashoffset 0.08s linear;
+    transition: stroke-dashoffset 0.1s linear;
   }
 
-  /* ─── Arrow Icon ─────────────────────────────────────────────── */
+  /* ─── Up Arrow Icon ────────────────────────────────────────────── */
   .stt-icon-wrapper {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 1.25rem;
-    height: 1.25rem;
-    color: var(--foreground, #334155);
-    transition: transform 0.2s ease, color 0.2s ease;
-  }
-
-  :where(.dark) .stt-icon-wrapper {
-    color: var(--foreground, #e2e8f0);
+    pointer-events: none;
   }
 
   .stt-icon {
-    width: 1.15rem;
-    height: 1.15rem;
-    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--foreground, #1e293b);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
   }
 
-  .stt-btn:hover .stt-icon-wrapper {
-    color: var(--primary, #6366f1);
+  :where(.dark) .stt-icon {
+    color: var(--foreground, #f8fafc);
   }
 
   .stt-btn:hover .stt-icon {
     transform: translateY(-2px);
+    color: var(--primary, #6366f1);
   }
 
-  /* Respect reduced motion */
   @media (prefers-reduced-motion: reduce) {
     .stt-container,
     .stt-pill,
@@ -280,7 +268,10 @@
 
 <script is:inline>
   (function initScrollToTopScript() {
-    function init() {
+    if (window.__stt_initialized) return;
+    window.__stt_initialized = true;
+
+    function setup() {
       const container = document.getElementById('scroll-to-top-container');
       const btn       = document.getElementById('scroll-to-top-btn');
       const arc       = document.getElementById('stt-arc');
@@ -288,46 +279,58 @@
 
       if (!container || !btn || !arc || !pctText) return;
 
-      // Circumference = 2 * Math.PI * 19 ≈ 119.3805
       const RADIUS = 19;
       const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
-      const SHOW_THRESHOLD = 180; // px scrolled before appearing
+      const SHOW_THRESHOLD = 180;
 
       let hidePillTimer = null;
       let isTicking = false;
+      let maxScroll = 0;
+      let lastPctInt = -1;
+      let isVisible = false;
+
+      function measureHeights() {
+        const scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight || 0);
+        const clientHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+        maxScroll = Math.max(scrollHeight - clientHeight, 1);
+      }
 
       function updateProgress() {
         const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
-        const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight || 0;
-        const clientHeight = window.innerHeight || document.documentElement.clientHeight || 0;
-        const maxScroll = scrollHeight - clientHeight;
 
-        const pct = maxScroll > 0 ? Math.min(Math.max(scrollTop / maxScroll, 0), 1) : 0;
-        const pctInt = Math.round(pct * 100);
-
-        // Show / hide button container
-        if (scrollTop > SHOW_THRESHOLD) {
-          container.classList.add('stt-visible');
-        } else {
-          container.classList.remove('stt-visible');
-          container.classList.remove('stt-scrolling');
+        if (scrollTop <= SHOW_THRESHOLD) {
+          if (isVisible) {
+            container.classList.remove('stt-visible');
+            container.classList.remove('stt-scrolling');
+            isVisible = false;
+          }
+          return;
         }
 
-        // Update circular SVG progress
-        const offset = CIRCUMFERENCE * (1 - pct);
-        arc.style.strokeDashoffset = offset.toFixed(2);
+        if (!isVisible) {
+          container.classList.add('stt-visible');
+          isVisible = true;
+        }
 
-        // Update percentage text & aria accessibility label
-        pctText.textContent = pctInt + '%';
-        btn.setAttribute('aria-label', 'Scroll to top of page (' + pctInt + '% scrolled)');
+        if (!maxScroll) measureHeights();
+        const pct = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
+        const pctInt = Math.round(pct * 100);
 
-        // Briefly show percentage pill during active scrolling
-        if (scrollTop > SHOW_THRESHOLD) {
-          container.classList.add('stt-scrolling');
+        if (pctInt !== lastPctInt) {
+          lastPctInt = pctInt;
+          const offset = CIRCUMFERENCE * (1 - pct);
+          arc.style.strokeDashoffset = offset.toFixed(1);
+          pctText.textContent = pctInt + '%';
+        }
+
+        if (isVisible) {
+          if (!container.classList.contains('stt-scrolling')) {
+            container.classList.add('stt-scrolling');
+          }
           if (hidePillTimer) clearTimeout(hidePillTimer);
           hidePillTimer = setTimeout(function() {
             container.classList.remove('stt-scrolling');
-          }, 1200);
+          }, 900);
         }
       }
 
@@ -341,6 +344,11 @@
         }
       }
 
+      function onResize() {
+        measureHeights();
+        onScroll();
+      }
+
       function scrollToTop() {
         const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         window.scrollTo({
@@ -349,27 +357,19 @@
         });
       }
 
-      // Scroll & resize listeners
       window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', updateProgress, { passive: true });
+      window.addEventListener('resize', onResize, { passive: true });
 
-      // Click to scroll up
       btn.addEventListener('click', function(e) {
         e.preventDefault();
         scrollToTop();
       });
-
-      // Initial check
-      updateProgress();
     }
 
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', init);
+      document.addEventListener('DOMContentLoaded', setup, { once: true });
     } else {
-      init();
+      setup();
     }
-
-    window.addEventListener('load', init);
-    document.addEventListener('astro:page-load', init);
   })();
 </script>

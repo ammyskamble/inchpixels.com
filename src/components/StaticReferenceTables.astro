@@ -77,7 +77,7 @@ for (let i = 1; i <= 100; i++) {
   <div class="bg-card border border-border rounded-2xl shadow-sm overflow-hidden">
     <div class="overflow-x-auto max-h-[560px] overflow-y-auto scrollbar-thin">
       <table class="w-full text-left text-xs border-collapse" id="conversion-table">
-        <thead class="sticky top-0 z-10 bg-card/95 backdrop-blur-md border-b border-border text-muted-foreground font-semibold uppercase tracking-wider shadow-xs">
+        <thead class="sticky top-0 z-10 bg-card border-b border-border text-muted-foreground font-semibold uppercase tracking-wider shadow-xs">
           <tr>
             <th scope="col" class="py-3.5 px-4 font-bold text-foreground">Inches (in)</th>
             <th scope="col" class="py-3.5 px-4 text-cyan-glow font-bold">72 DPI (Web)</th>
@@ -113,33 +113,36 @@ for (let i = 1; i <= 100; i++) {
 </section>
 
 <script>
-  // Simple, lightweight zero-dependency search filter for the table
+  // High-performance zero-dependency search filter for the table
   const searchInput = document.getElementById('table-search-input') as HTMLInputElement | null;
   const tableRows = document.querySelectorAll<HTMLTableRowElement>('.table-row-item');
 
-  if (searchInput) {
+  if (searchInput && tableRows.length > 0) {
+    const rowCache = Array.from(tableRows).map((row) => ({
+      el: row,
+      inch: row.getAttribute('data-inch') || '',
+    }));
+
+    let filterRaf: number | null = null;
+
     searchInput.addEventListener('input', (e) => {
+      if (filterRaf) cancelAnimationFrame(filterRaf);
       const query = (e.target as HTMLInputElement).value.trim();
-      if (!query) {
-        tableRows.forEach((row) => (row.style.display = ''));
-        return;
-      }
-      tableRows.forEach((row) => {
-        const inch = row.getAttribute('data-inch');
-        if (inch && inch.includes(query)) {
-          row.style.display = '';
-        } else {
-          row.style.display = 'none';
+
+      filterRaf = requestAnimationFrame(() => {
+        if (!query) {
+          rowCache.forEach(({ el }) => (el.style.display = ''));
+          return;
         }
+        rowCache.forEach(({ el, inch }) => {
+          el.style.display = inch.includes(query) ? '' : 'none';
+        });
       });
     });
   }
 </script>
 
 <style is:global>
-  #conversion-tbody tr {
-    transition: background-color 150ms ease;
-  }
   #conversion-tbody tr:nth-child(even) {
     background-color: color-mix(in srgb, var(--color-muted, currentColor) 25%, transparent);
   }

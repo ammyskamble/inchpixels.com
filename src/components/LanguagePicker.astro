@@ -98,10 +98,15 @@ function getHref(langKey: SupportedLanguage) {
 </div>
 
 <script>
+  let docListenersAttached = false;
+
   function initLanguagePickers() {
     const pickers = document.querySelectorAll<HTMLElement>('[data-lang-picker]');
 
     pickers.forEach((picker) => {
+      if (picker.dataset.pickerInitialized === 'true') return;
+      picker.dataset.pickerInitialized = 'true';
+
       const btn = picker.querySelector<HTMLButtonElement>('.lang-picker-btn');
       const menu = picker.querySelector<HTMLElement>('.lang-picker-menu');
       const chevron = picker.querySelector<HTMLElement>('.lang-picker-chevron');
@@ -141,22 +146,44 @@ function getHref(langKey: SupportedLanguage) {
       picker.addEventListener('mouseleave', () => {
         hoverTimeout = window.setTimeout(closeMenu, 200);
       });
+    });
 
-      // Escape key to dismiss
+    if (!docListenersAttached) {
+      docListenersAttached = true;
+
+      // Escape key to dismiss any open menu
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !menu.classList.contains('hidden')) {
-          closeMenu();
-          btn.focus();
+        if (e.key === 'Escape') {
+          document.querySelectorAll<HTMLElement>('[data-lang-picker]').forEach((picker) => {
+            const btn = picker.querySelector<HTMLButtonElement>('.lang-picker-btn');
+            const menu = picker.querySelector<HTMLElement>('.lang-picker-menu');
+            const chevron = picker.querySelector<HTMLElement>('.lang-picker-chevron');
+            if (menu && !menu.classList.contains('hidden')) {
+              menu.classList.add('hidden');
+              btn?.setAttribute('aria-expanded', 'false');
+              chevron?.classList.remove('rotate-180');
+              btn?.focus();
+            }
+          });
         }
       });
 
       // Click outside to dismiss
       document.addEventListener('click', (e) => {
-        if (!picker.contains(e.target as Node)) {
-          closeMenu();
-        }
+        document.querySelectorAll<HTMLElement>('[data-lang-picker]').forEach((picker) => {
+          if (!picker.contains(e.target as Node)) {
+            const btn = picker.querySelector<HTMLButtonElement>('.lang-picker-btn');
+            const menu = picker.querySelector<HTMLElement>('.lang-picker-menu');
+            const chevron = picker.querySelector<HTMLElement>('.lang-picker-chevron');
+            if (menu && !menu.classList.contains('hidden')) {
+              menu.classList.add('hidden');
+              btn?.setAttribute('aria-expanded', 'false');
+              chevron?.classList.remove('rotate-180');
+            }
+          }
+        });
       });
-    });
+    }
   }
 
   // Run on initial load and client transitions

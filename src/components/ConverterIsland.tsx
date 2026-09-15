@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import {
   Copy,
   Check,
@@ -126,21 +126,33 @@ export default function ConverterIsland({
     if (!isNaN(val) && val > 0) setSingleIn(val);
   }, []);
 
-  // Update URL parameters when values change
+  // Update URL parameters when values change (debounced to avoid browser IPC thrashing while typing)
+  const urlDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const updateUrl = useCallback(
-    (newMode: Mode, newW: number, newH: number, newSingle: number, newDpi: number) => {
+    (newMode: Mode, newW: number, newH: number, newSingle: number, newDpi: number, immediate = false) => {
       if (typeof window === 'undefined') return;
-      const params = new URLSearchParams();
-      params.set('mode', newMode);
-      params.set('dpi', String(newDpi));
-      if (newMode === '2d') {
-        params.set('w', String(newW));
-        params.set('h', String(newH));
+      if (urlDebounceRef.current) clearTimeout(urlDebounceRef.current);
+
+      const apply = () => {
+        const params = new URLSearchParams();
+        params.set('mode', newMode);
+        params.set('dpi', String(newDpi));
+        if (newMode === '2d') {
+          params.set('w', String(newW));
+          params.set('h', String(newH));
+        } else {
+          params.set('val', String(newSingle));
+        }
+        const newUrl = `${window.location.pathname}?${params.toString()}`;
+        window.history.replaceState({}, '', newUrl);
+      };
+
+      if (immediate) {
+        apply();
       } else {
-        params.set('val', String(newSingle));
+        urlDebounceRef.current = setTimeout(apply, 350);
       }
-      const newUrl = `${window.location.pathname}?${params.toString()}`;
-      window.history.replaceState({}, '', newUrl);
     },
     []
   );
@@ -155,7 +167,7 @@ export default function ConverterIsland({
       newH = Number((val * oldRatio).toFixed(3));
       setHeightIn(newH);
     }
-    updateUrl(mode, val, newH, singleIn, dpi);
+    updateUrl(mode, val, newH, singleIn, dpi, false);
     setAriaAnnouncement(`Width set to ${val} inches, equals ${inchesToPixels(val, dpi)} pixels`);
   };
 
@@ -169,7 +181,7 @@ export default function ConverterIsland({
       newH = Number((newInches * oldRatio).toFixed(3));
       setHeightIn(newH);
     }
-    updateUrl(mode, newInches, newH, singleIn, dpi);
+    updateUrl(mode, newInches, newH, singleIn, dpi, false);
     setAriaAnnouncement(`Width set to ${pxVal} pixels, equals ${newInches} inches`);
   };
 
@@ -182,7 +194,7 @@ export default function ConverterIsland({
       newW = Number((val * oldRatio).toFixed(3));
       setWidthIn(newW);
     }
-    updateUrl(mode, newW, val, singleIn, dpi);
+    updateUrl(mode, newW, val, singleIn, dpi, false);
     setAriaAnnouncement(`Height set to ${val} inches, equals ${inchesToPixels(val, dpi)} pixels`);
   };
 
@@ -196,7 +208,7 @@ export default function ConverterIsland({
       newW = Number((newInches * oldRatio).toFixed(3));
       setWidthIn(newW);
     }
-    updateUrl(mode, newW, newInches, singleIn, dpi);
+    updateUrl(mode, newW, newInches, singleIn, dpi, false);
     setAriaAnnouncement(`Height set to ${pxVal} pixels, equals ${newInches} inches`);
   };
 
@@ -204,7 +216,7 @@ export default function ConverterIsland({
   const handleSingleInChange = (val: number) => {
     if (isNaN(val) || val <= 0) return;
     setSingleIn(val);
-    updateUrl(mode, widthIn, heightIn, val, dpi);
+    updateUrl(mode, widthIn, heightIn, val, dpi, false);
     setAriaAnnouncement(`${val} inches equals ${inchesToPixels(val, dpi)} pixels`);
   };
 
@@ -212,7 +224,7 @@ export default function ConverterIsland({
     if (isNaN(pxVal) || pxVal <= 0) return;
     const inVal = pixelsToInches(pxVal, dpi, 3);
     setSingleIn(inVal);
-    updateUrl(mode, widthIn, heightIn, inVal, dpi);
+    updateUrl(mode, widthIn, heightIn, inVal, dpi, false);
     setAriaAnnouncement(`${pxVal} pixels equals ${inVal} inches`);
   };
 
@@ -221,7 +233,7 @@ export default function ConverterIsland({
     setDpi(newDpi);
     setCustomDpi(String(newDpi));
     setIsCustomDpi(false);
-    updateUrl(mode, widthIn, heightIn, singleIn, newDpi);
+    updateUrl(mode, widthIn, heightIn, singleIn, newDpi, true);
     setAriaAnnouncement(`Resolution set to ${newDpi} DPI`);
   };
 
@@ -231,7 +243,7 @@ export default function ConverterIsland({
     if (!isNaN(parsed) && parsed > 0 && parsed <= 9600) {
       setDpi(parsed);
       setIsCustomDpi(true);
-      updateUrl(mode, widthIn, heightIn, singleIn, parsed);
+      updateUrl(mode, widthIn, heightIn, singleIn, parsed, false);
     }
   };
 
@@ -241,7 +253,7 @@ export default function ConverterIsland({
     const newH = widthIn;
     setWidthIn(newW);
     setHeightIn(newH);
-    updateUrl(mode, newW, newH, singleIn, dpi);
+    updateUrl(mode, newW, newH, singleIn, dpi, true);
     setAriaAnnouncement(`Swapped dimensions to ${newW} by ${newH} inches`);
   };
 
@@ -253,7 +265,7 @@ export default function ConverterIsland({
     setCustomDpi(String(preset.defaultDpi));
     setIsCustomDpi(false);
     setMode('2d');
-    updateUrl('2d', preset.widthIn, preset.heightIn, singleIn, preset.defaultDpi);
+    updateUrl('2d', preset.widthIn, preset.heightIn, singleIn, preset.defaultDpi, true);
     showToast(`Loaded ${preset.name} (${preset.widthIn} × ${preset.heightIn}" @ ${preset.defaultDpi} DPI)`);
   };
 
@@ -302,7 +314,7 @@ export default function ConverterIsland({
       )}
 
       {/* Main Converter Card */}
-      <div className="bg-card/90 backdrop-blur-xl border border-border/70 rounded-2xl shadow-xl overflow-hidden">
+      <div className="bg-card md:bg-card/95 md:backdrop-blur-md border border-border/70 rounded-2xl shadow-xl overflow-hidden">
         {/* Converter Header & Mode Switcher */}
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between border-b border-border/60 px-5 py-4 gap-3 bg-muted/20">
           {/* 1D vs 2D Toggle */}
@@ -311,7 +323,7 @@ export default function ConverterIsland({
               type="button"
               onClick={() => {
                 setMode('2d');
-                updateUrl('2d', widthIn, heightIn, singleIn, dpi);
+                updateUrl('2d', widthIn, heightIn, singleIn, dpi, true);
               }}
               className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 mode === '2d'
@@ -326,7 +338,7 @@ export default function ConverterIsland({
               type="button"
               onClick={() => {
                 setMode('1d');
-                updateUrl('1d', widthIn, heightIn, singleIn, dpi);
+                updateUrl('1d', widthIn, heightIn, singleIn, dpi, true);
               }}
               className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 mode === '1d'
@@ -369,7 +381,7 @@ export default function ConverterIsland({
                 setCustomDpi('300');
                 setIsCustomDpi(false);
                 setLockAspectRatio(true);
-                updateUrl(mode, 8.5, 11, 8.5, 300);
+                updateUrl(mode, 8.5, 11, 8.5, 300, true);
                 showToast('Reset to default US Letter (8.5 × 11" @ 300 DPI)');
               }}
               className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted border border-border/50 transition-all"
@@ -693,7 +705,7 @@ export default function ConverterIsland({
                       </span>
 
                       {/* Center Metrics Pill */}
-                      <div className="text-center bg-card/95 backdrop-blur-md px-2.5 py-1.5 rounded-lg border border-border/80 shadow-md">
+                      <div className="text-center bg-card px-2.5 py-1.5 rounded-lg border border-border/80 shadow-md">
                         <div className="text-xs font-bold font-mono text-foreground">
                           {widthPx} × {heightPx}
                         </div>
