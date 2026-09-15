@@ -40,9 +40,12 @@ for (let i = 1; i <= 100; i++) {
     mm: Number((i * 25.4).toFixed(1)),
   });
 }
+
+const initialRows = rows.slice(0, 25);
+const remainingRows = rows.slice(25);
 ---
 
-<section id="reference-tables" class="w-full mt-16 scroll-mt-20">
+<section id="reference-tables" class="w-full mt-16 scroll-mt-20 content-visibility-auto">
   <div class="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
     <div>
       <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20 mb-2">
@@ -82,14 +85,14 @@ for (let i = 1; i <= 100; i++) {
             <th scope="col" class="py-3.5 px-4 font-bold text-foreground">Inches (in)</th>
             <th scope="col" class="py-3.5 px-4 text-cyan-glow font-bold">72 DPI (Web)</th>
             <th scope="col" class="py-3.5 px-4 text-primary font-bold">96 DPI (Screen)</th>
-            <th scope="col" class="py-3.5 px-4">150 DPI (Draft)</th>
+            <th scope="col" class="py-3.5 px-4 font-bold text-foreground">150 DPI (Draft)</th>
             <th scope="col" class="py-3.5 px-4 text-success font-bold">300 DPI (Print)</th>
-            <th scope="col" class="py-3.5 px-4">600 DPI (Fine Art)</th>
-            <th scope="col" class="py-3.5 px-4">Metric (cm)</th>
+            <th scope="col" class="py-3.5 px-4 font-bold text-foreground">600 DPI (Fine Art)</th>
+            <th scope="col" class="py-3.5 px-4 font-bold text-foreground">Metric (cm)</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-border/40 font-mono tabular-numbers" id="conversion-tbody">
-          {rows.map((row) => (
+          {initialRows.map((row) => (
             <tr class="table-row-item" data-inch={row.inches}>
               <td><a href={`${translatePath('/')}?mode=1d&val=${row.inches}&dpi=300#converter`}>{row.inches}"</a></td>
               <td>{row.px72.toLocaleString()} px</td>
@@ -102,6 +105,33 @@ for (let i = 1; i <= 100; i++) {
           ))}
         </tbody>
       </table>
+
+      <!-- Inert Template for Remaining Rows (Preserves fast initial render & zero layout cost) -->
+      <template id="remaining-rows-template">
+        {remainingRows.map((row) => (
+          <tr class="table-row-item" data-inch={row.inches}>
+            <td><a href={`${translatePath('/')}?mode=1d&val=${row.inches}&dpi=300#converter`}>{row.inches}"</a></td>
+            <td>{row.px72.toLocaleString()} px</td>
+            <td class="col-dpi-96">{row.px96.toLocaleString()} px</td>
+            <td>{row.px150.toLocaleString()} px</td>
+            <td class="col-dpi-300">{row.px300.toLocaleString()} px</td>
+            <td>{row.px600.toLocaleString()} px</td>
+            <td>{row.cm} cm</td>
+          </tr>
+        ))}
+      </template>
+    </div>
+
+    <!-- Load More Rows Action -->
+    <div id="load-more-container" class="py-3 px-4 bg-muted/10 border-t border-border/40 flex justify-center">
+      <button
+        id="load-all-rows-btn"
+        type="button"
+        class="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-xl bg-card border border-border hover:border-primary/50 hover:bg-primary/5 text-foreground transition-all shadow-xs cursor-pointer"
+      >
+        <span>Show all 100 inches</span>
+        <span class="px-2 py-0.5 rounded-md bg-primary/10 text-primary font-mono text-[11px]">+75 rows</span>
+      </button>
     </div>
 
     <!-- Table Footer Note -->
@@ -113,21 +143,52 @@ for (let i = 1; i <= 100; i++) {
 </section>
 
 <script>
-  // High-performance zero-dependency search filter for the table
+  // Progressive loading & high-performance zero-dependency search filter
   const searchInput = document.getElementById('table-search-input') as HTMLInputElement | null;
-  const tableRows = document.querySelectorAll<HTMLTableRowElement>('.table-row-item');
+  const tbody = document.getElementById('conversion-tbody');
+  const template = document.getElementById('remaining-rows-template') as HTMLTemplateElement | null;
+  const loadBtn = document.getElementById('load-all-rows-btn');
+  const loadContainer = document.getElementById('load-more-container');
 
-  if (searchInput && tableRows.length > 0) {
-    const rowCache = Array.from(tableRows).map((row) => ({
+  let rowsAppended = false;
+  let rowCache: { el: HTMLTableRowElement; inch: string }[] = [];
+
+  function updateRowCache() {
+    const tableRows = document.querySelectorAll<HTMLTableRowElement>('.table-row-item');
+    rowCache = Array.from(tableRows).map((row) => ({
       el: row,
       inch: row.getAttribute('data-inch') || '',
     }));
+  }
 
+  function expandAllRows() {
+    if (rowsAppended || !template || !tbody) return;
+    tbody.appendChild(template.content.cloneNode(true));
+    rowsAppended = true;
+    if (loadContainer) loadContainer.style.display = 'none';
+    updateRowCache();
+  }
+
+  updateRowCache();
+
+  if (loadBtn) {
+    loadBtn.addEventListener('click', () => {
+      expandAllRows();
+    });
+  }
+
+  if (searchInput) {
     let filterRaf: number | null = null;
 
     searchInput.addEventListener('input', (e) => {
-      if (filterRaf) cancelAnimationFrame(filterRaf);
       const query = (e.target as HTMLInputElement).value.trim();
+
+      // Auto-expand all 100 rows if user is actively searching
+      if (query && !rowsAppended) {
+        expandAllRows();
+      }
+
+      if (filterRaf) cancelAnimationFrame(filterRaf);
 
       filterRaf = requestAnimationFrame(() => {
         if (!query) {

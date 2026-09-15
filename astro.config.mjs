@@ -6,6 +6,20 @@ import sitemap from '@astrojs/sitemap';
 
 import mdx from '@astrojs/mdx';
 
+function interactionDirective() {
+  return {
+    name: 'client-interaction-directive',
+    hooks: {
+      'astro:config:setup': ({ addClientDirective }) => {
+        addClientDirective({
+          name: 'interaction',
+          entrypoint: './src/directives/interaction.js',
+        });
+      },
+    },
+  };
+}
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://inchpixels.com',
@@ -23,12 +37,12 @@ export default defineConfig({
     },
   },
   build: {
-    inlineStylesheets: 'auto',
+    inlineStylesheets: 'always',
   },
   vite: {
     plugins: [tailwindcss()],
   },
-  integrations: [react(), sitemap({
+  integrations: [interactionDirective(), react(), sitemap({
     filter: (page) => !page.includes('/404') && !page.includes('/500'),
     i18n: {
       defaultLocale: 'en',

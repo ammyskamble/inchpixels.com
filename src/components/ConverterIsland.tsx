@@ -402,26 +402,36 @@ export default function ConverterIsland({
           </div>
 
           <div className="flex flex-wrap items-center gap-1.5">
-            {STANDARD_DPIS.map((item) => (
-              <button
-                key={item.value}
-                type="button"
-                onClick={() => handleSelectDpi(item.value)}
-                className={`px-3 py-1 rounded-full text-xs font-semibold tabular-numbers transition-all ${
-                  dpi === item.value && !isCustomDpi
-                    ? 'bg-primary text-primary-foreground shadow-sm shadow-primary/20 scale-105'
-                    : 'bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground border border-border/40'
-                }`}
-                title={item.description}
-              >
-                {item.value} <span className="font-normal opacity-80">DPI</span>
-              </button>
-            ))}
+            {STANDARD_DPIS.map((item) => {
+              const isSelected = dpi === item.value && !isCustomDpi;
+              return (
+                <button
+                  key={item.value}
+                  type="button"
+                  onClick={() => handleSelectDpi(item.value)}
+                  className={`px-3 py-1 rounded-full text-xs font-semibold tabular-numbers transition-all ${
+                    isSelected
+                      ? 'bg-primary text-primary-foreground font-bold shadow-sm shadow-primary/25 scale-105 border border-primary'
+                      : 'bg-card text-foreground font-semibold hover:bg-muted border border-border'
+                  }`}
+                  title={item.description}
+                  aria-label={`Set resolution to ${item.value} DPI`}
+                >
+                  {item.value}{' '}
+                  <span className={isSelected ? 'font-semibold text-primary-foreground' : 'font-semibold text-foreground/85'}>
+                    DPI
+                  </span>
+                </button>
+              );
+            })}
 
             {/* Custom DPI Input */}
             <div className="flex items-center gap-1.5 ml-1">
               <div className="relative flex items-center">
+                <label htmlFor="converter-custom-dpi" className="sr-only">Custom DPI Resolution</label>
                 <input
+                  id="converter-custom-dpi"
+                  name="customDpi"
                   type="number"
                   min="1"
                   max="9600"
@@ -433,8 +443,9 @@ export default function ConverterIsland({
                       : 'bg-background border-border text-foreground hover:border-border/80'
                   }`}
                   placeholder="Custom"
+                  aria-label="Custom DPI resolution"
                 />
-                <span className="absolute right-1.5 text-[10px] text-muted-foreground pointer-events-none">
+                <span className="absolute right-1.5 text-[10px] text-muted-foreground pointer-events-none font-semibold">
                   DPI
                 </span>
               </div>
@@ -445,14 +456,14 @@ export default function ConverterIsland({
         {/* Converter Work Area */}
         <div className="p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Column: Interactive Inputs & Formulas (7 cols) */}
-          <div className="lg:col-span-7 flex flex-col gap-5">
+          <form role="form" aria-label="Inches to pixels conversion calculator" onSubmit={(e) => e.preventDefault()} className="lg:col-span-7 flex flex-col gap-5">
             {mode === '2d' ? (
               /* 2D Canvas Controls */
               <div className="flex flex-col gap-4">
                 {/* Width Card */}
                 <div className="p-4 rounded-xl bg-muted/20 border border-border/60 hover:border-border transition-all">
                   <div className="flex items-center justify-between mb-2">
-                    <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                    <label htmlFor="converter-width-in" className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5 cursor-pointer">
                       <span className="w-2 h-2 rounded-full bg-primary" />
                       {labels?.width ? `${labels.width} Dimension` : 'Width Dimension'}
                     </label>
@@ -464,11 +475,14 @@ export default function ConverterIsland({
                     {/* Inches Input */}
                     <div className="relative">
                       <input
+                        id="converter-width-in"
+                        name="widthInches"
                         type="number"
                         step="any"
                         min="0.01"
                         value={widthIn || ''}
                         onChange={(e) => handleWidthInChange(parseFloat(e.target.value))}
+                        aria-label="Width in inches"
                         className="w-full pl-3 pr-14 py-2.5 bg-background border border-border rounded-xl text-lg font-bold tabular-numbers text-foreground focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all"
                       />
                       <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold uppercase text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
@@ -479,11 +493,14 @@ export default function ConverterIsland({
                     {/* Pixels Input */}
                     <div className="relative">
                       <input
+                        id="converter-width-px"
+                        name="widthPixels"
                         type="number"
                         step="1"
                         min="1"
                         value={widthPx || ''}
                         onChange={(e) => handleWidthPxChange(parseInt(e.target.value, 10))}
+                        aria-label="Width in pixels"
                         className="w-full pl-3 pr-14 py-2.5 bg-background border border-border rounded-xl text-lg font-bold tabular-numbers text-foreground focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all"
                       />
                       <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold uppercase text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
@@ -504,6 +521,7 @@ export default function ConverterIsland({
                         : 'bg-muted/40 border-border text-muted-foreground hover:text-foreground'
                     }`}
                     title={lockAspectRatio ? 'Aspect ratio locked' : 'Aspect ratio unlocked'}
+                    aria-label={lockAspectRatio ? 'Aspect ratio is locked, click to unlock' : 'Aspect ratio is unlocked, click to lock'}
                   >
                     {lockAspectRatio ? (
                       <>
@@ -523,6 +541,7 @@ export default function ConverterIsland({
                     onClick={handleSwapOrientation}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-muted/40 hover:bg-muted border border-border text-foreground transition-all"
                     title="Swap Width and Height (Portrait / Landscape)"
+                    aria-label="Swap width and height dimensions"
                   >
                     <ArrowLeftRight className="w-3.5 h-3.5 text-muted-foreground" />
                     <span>Swap Orientation</span>
@@ -532,7 +551,7 @@ export default function ConverterIsland({
                 {/* Height Card */}
                 <div className="p-4 rounded-xl bg-muted/20 border border-border/60 hover:border-border transition-all">
                   <div className="flex items-center justify-between mb-2">
-                    <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                    <label htmlFor="converter-height-in" className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5 cursor-pointer">
                       <span className="w-2 h-2 rounded-full bg-cyan-glow" />
                       {labels?.height ? `${labels.height} Dimension` : 'Height Dimension'}
                     </label>
@@ -544,11 +563,14 @@ export default function ConverterIsland({
                     {/* Inches Input */}
                     <div className="relative">
                       <input
+                        id="converter-height-in"
+                        name="heightInches"
                         type="number"
                         step="any"
                         min="0.01"
                         value={heightIn || ''}
                         onChange={(e) => handleHeightInChange(parseFloat(e.target.value))}
+                        aria-label="Height in inches"
                         className="w-full pl-3 pr-14 py-2.5 bg-background border border-border rounded-xl text-lg font-bold tabular-numbers text-foreground focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all"
                       />
                       <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold uppercase text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
@@ -559,11 +581,14 @@ export default function ConverterIsland({
                     {/* Pixels Input */}
                     <div className="relative">
                       <input
+                        id="converter-height-px"
+                        name="heightPixels"
                         type="number"
                         step="1"
                         min="1"
                         value={heightPx || ''}
                         onChange={(e) => handleHeightPxChange(parseInt(e.target.value, 10))}
+                        aria-label="Height in pixels"
                         className="w-full pl-3 pr-14 py-2.5 bg-background border border-border rounded-xl text-lg font-bold tabular-numbers text-foreground focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all"
                       />
                       <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold uppercase text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
@@ -588,16 +613,19 @@ export default function ConverterIsland({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Single Inches */}
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-muted-foreground">
+                    <label htmlFor="converter-single-in" className="text-xs font-semibold text-muted-foreground cursor-pointer">
                       Length in Inches
                     </label>
                     <div className="relative">
                       <input
+                        id="converter-single-in"
+                        name="singleInches"
                         type="number"
                         step="any"
                         min="0.01"
                         value={singleIn || ''}
                         onChange={(e) => handleSingleInChange(parseFloat(e.target.value))}
+                        aria-label="Length in inches"
                         className="w-full pl-3 pr-14 py-3 bg-background border border-border rounded-xl text-xl font-bold tabular-numbers text-foreground focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all"
                       />
                       <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold uppercase text-primary bg-primary/10 px-2 py-1 rounded">
@@ -608,16 +636,19 @@ export default function ConverterIsland({
 
                   {/* Single Pixels */}
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-muted-foreground">
+                    <label htmlFor="converter-single-px" className="text-xs font-semibold text-muted-foreground cursor-pointer">
                       Length in Pixels
                     </label>
                     <div className="relative">
                       <input
+                        id="converter-single-px"
+                        name="singlePixels"
                         type="number"
                         step="1"
                         min="1"
                         value={singlePx || ''}
                         onChange={(e) => handleSinglePxChange(parseInt(e.target.value, 10))}
+                        aria-label="Length in pixels"
                         className="w-full pl-3 pr-14 py-3 bg-background border border-border rounded-xl text-xl font-bold tabular-numbers text-foreground focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all"
                       />
                       <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold uppercase text-cyan-glow bg-cyan-glow/10 px-2 py-1 rounded">
@@ -667,7 +698,7 @@ export default function ConverterIsland({
                 ))}
               </div>
             </div>
-          </div>
+          </form>
 
           {/* Right Column: Dynamic Aspect Ratio Visualizer Canvas & Metrics (5 cols) */}
           <div className="lg:col-span-5 flex flex-col gap-4">
@@ -966,21 +997,21 @@ export default function ConverterIsland({
                 key={preset.id}
                 type="button"
                 onClick={() => handleApplyPreset(preset)}
-                className={`p-2.5 rounded-xl border text-left transition-all hover:border-primary/50 hover:bg-card/80 group ${
+                className={`p-2.5 rounded-xl border text-left transition-all hover:border-primary/60 hover:bg-muted/30 group ${
                   widthIn === preset.widthIn && heightIn === preset.heightIn && dpi === preset.defaultDpi
                     ? 'bg-card border-primary ring-1 ring-primary/40'
-                    : 'bg-card/50 border-border/60'
+                    : 'bg-card border-border'
                 }`}
               >
                 <div className="text-xs font-bold text-foreground truncate group-hover:text-primary transition-colors">
                   {preset.name}
                 </div>
-                <div className="text-[11px] font-mono text-muted-foreground tabular-numbers mt-0.5">
+                <div className="text-[11px] font-mono text-muted-foreground font-semibold tabular-numbers mt-0.5">
                   {preset.widthIn} × {preset.heightIn}"
                 </div>
-                <div className="text-[10px] text-muted-foreground/80 mt-1 flex items-center justify-between">
+                <div className="text-[10px] text-muted-foreground font-medium mt-1.5 flex items-center justify-between">
                   <span>{preset.defaultDpi} DPI</span>
-                  <span className="text-[9px] uppercase font-semibold opacity-60">
+                  <span className="text-[9px] uppercase font-bold text-foreground/80 bg-muted px-1.5 py-0.5 rounded">
                     {preset.category}
                   </span>
                 </div>

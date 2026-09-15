@@ -977,14 +977,29 @@ Sitemap: https://inchpixels.com/sitemap-index.xml
       }
       return Response.redirect(url.toString(), 301);
     }
-    return await context2.next();
+    const response = await context2.next();
+    const newHeaders = new Headers(response.headers);
+    if (!newHeaders.has("Strict-Transport-Security")) {
+      newHeaders.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
+    }
+    if (!newHeaders.has("Cross-Origin-Opener-Policy")) {
+      newHeaders.set("Cross-Origin-Opener-Policy", "same-origin");
+    }
+    if (!newHeaders.has("Content-Security-Policy")) {
+      newHeaders.set("Content-Security-Policy", "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://cloudflareinsights.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self';");
+    }
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: newHeaders
+    });
   } catch (err) {
     console.error("Cloudflare Pages middleware error:", err);
     return await context2.next();
   }
 }, "onRequest");
 
-// ../.wrangler/tmp/pages-FMFk1G/functionsRoutes-0.3769795293770555.mjs
+// ../.wrangler/tmp/pages-EG3SQg/functionsRoutes-0.779648745682835.mjs
 var routes = [
   {
     routePath: "/",

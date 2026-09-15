@@ -3,6 +3,28 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ========================================================
+   LOCAL HIGH-PERFORMANCE FONTS (Zero Third-Party Latency)
+   ======================================================== */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: optional;
+  src: url('/fonts/inter-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ========================================================
+   OFF-SCREEN CONTENT VISIBILITY CONTAINMENT
+   Skips rendering & layout work for below-the-fold sections
+   until scrolled near the viewport (eliminates long tasks & layout work)
+   ======================================================== */
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 600px;
+}
+
+/* ========================================================
    INCHPIXELS DESIGN TOKENS (OKLCH Color Space)
    ======================================================== */
 
@@ -25,17 +47,17 @@
   --secondary: oklch(0.94 0.01 250);
   --secondary-foreground: oklch(0.20 0.02 260);
   --muted: oklch(0.94 0.008 250);
-  --muted-foreground: oklch(0.46 0.03 260);
+  --muted-foreground: oklch(0.32 0.03 260);
 
   /* Accents */
   --accent: oklch(0.93 0.04 230);
   --accent-foreground: oklch(0.35 0.18 250);
-  --cyan-glow: oklch(0.72 0.16 210);
+  --cyan-glow: oklch(0.42 0.15 210);
 
   /* Status */
   --destructive: oklch(0.58 0.24 25);
   --destructive-foreground: oklch(0.99 0 0);
-  --success: oklch(0.62 0.17 145);
+  --success: oklch(0.43 0.16 145);
   --success-foreground: oklch(0.99 0 0);
 
   /* Borders & Inputs */
@@ -65,17 +87,17 @@
   --secondary: oklch(0.20 0.02 260);
   --secondary-foreground: oklch(0.95 0.01 250);
   --muted: oklch(0.19 0.02 260);
-  --muted-foreground: oklch(0.68 0.02 260);
+  --muted-foreground: oklch(0.74 0.02 260);
 
   /* Accents */
   --accent: oklch(0.24 0.05 240);
   --accent-foreground: oklch(0.85 0.12 220);
-  --cyan-glow: oklch(0.75 0.18 205);
+  --cyan-glow: oklch(0.78 0.18 205);
 
   /* Status */
   --destructive: oklch(0.65 0.20 25);
   --destructive-foreground: oklch(0.99 0 0);
-  --success: oklch(0.68 0.18 145);
+  --success: oklch(0.72 0.18 145);
   --success-foreground: oklch(0.10 0.02 260);
 
   /* Borders & Inputs */

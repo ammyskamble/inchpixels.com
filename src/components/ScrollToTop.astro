@@ -285,26 +285,35 @@
 
       let hidePillTimer = null;
       let isTicking = false;
-      let maxScroll = 0;
+      let maxScroll = 1;
       let lastPctInt = -1;
       let isVisible = false;
+      let resizeTimer = null;
+      let heightsMeasured = false;
 
       function measureHeights() {
-        const scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight || 0);
-        const clientHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+        const scrollHeight = Math.max(document.documentElement.scrollHeight, document.body ? document.body.scrollHeight : 0);
+        const clientHeight = window.innerHeight || document.documentElement.clientHeight || 1;
         maxScroll = Math.max(scrollHeight - clientHeight, 1);
+        heightsMeasured = true;
       }
 
       function updateProgress() {
-        const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
+        // Read phase
+        const scrollTop = window.scrollY || window.pageYOffset || 0;
 
+        // Write phase
         if (scrollTop <= SHOW_THRESHOLD) {
           if (isVisible) {
-            container.classList.remove('stt-visible');
-            container.classList.remove('stt-scrolling');
+            container.classList.remove('stt-visible', 'stt-scrolling');
             isVisible = false;
           }
           return;
+        }
+
+        // Lazy measure on first scroll beyond threshold, completely avoiding initial-load forced reflow
+        if (!heightsMeasured) {
+          measureHeights();
         }
 
         if (!isVisible) {
@@ -312,7 +321,6 @@
           isVisible = true;
         }
 
-        if (!maxScroll) measureHeights();
         const pct = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
         const pctInt = Math.round(pct * 100);
 
@@ -323,15 +331,13 @@
           pctText.textContent = pctInt + '%';
         }
 
-        if (isVisible) {
-          if (!container.classList.contains('stt-scrolling')) {
-            container.classList.add('stt-scrolling');
-          }
-          if (hidePillTimer) clearTimeout(hidePillTimer);
-          hidePillTimer = setTimeout(function() {
-            container.classList.remove('stt-scrolling');
-          }, 900);
+        if (!container.classList.contains('stt-scrolling')) {
+          container.classList.add('stt-scrolling');
         }
+        if (hidePillTimer) clearTimeout(hidePillTimer);
+        hidePillTimer = setTimeout(function() {
+          container.classList.remove('stt-scrolling');
+        }, 900);
       }
 
       function onScroll() {
@@ -345,8 +351,15 @@
       }
 
       function onResize() {
-        measureHeights();
-        onScroll();
+        if (resizeTimer) clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+          if (heightsMeasured) {
+            measureHeights();
+            if (isVisible) {
+              window.requestAnimationFrame(updateProgress);
+            }
+          }
+        }, 200);
       }
 
       function scrollToTop() {

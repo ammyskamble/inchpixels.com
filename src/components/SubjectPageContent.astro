@@ -80,7 +80,7 @@ const relatedSubjects = SUBJECTS.filter((s) => subject.relatedSlugs.includes(s.s
       <span class="text-xs font-mono text-muted-foreground">Pre-calibrated for {subject.shortTitle}</span>
     </div>
     <ConverterIsland
-      client:visible
+      client:interaction
       labels={labels}
       initialMode={subject.initialCalc.mode}
       initialWidth={subject.initialCalc.width}
